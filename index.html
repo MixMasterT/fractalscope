@@ -3,18 +3,24 @@
   <head>
     <meta charset="utf-8">
     <title>title</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <link rel="stylesheet" type='text/css' href="fractalscope.scss">
+    <link href="https://fonts.googleapis.com/css?family=Scada" rel="stylesheet">
+    <script src="main.js"></script>
   </head>
   <body>
-    <canvas height="500"
-            width="500"
-            id="fractal"
-            >Your browswer is too old. Download a <a
-            href='https://www.google.com/chrome/browser/desktop/'
-            >newer browser</a> that supports canvas!
-    </canvas>
-    <canvas height="500" width="500" id="grid"></canvas>
-    <canvas height="500" width="500" id="drag"></canvas>
+    <section class='outer-wrapper'>
+      <section id='canvas-wrapper'>
+        <canvas height="500"
+          width="500"
+          id="fractal"
+          >Your browswer is too old. Download a <a
+          href='https://www.google.com/chrome/browser/desktop/'
+          >newer browser</a> that supports canvas!
+        </canvas>
+        <canvas height="500" width="500" id="grid"></canvas>
+        <canvas height="500" width="500" id="drag"></canvas>
+      </section>
+      <button id='grid-on-off'>grid on/off</button>
+    </section>
   </body>
 </html>

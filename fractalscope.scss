@@ -1,0 +1,35 @@
+body {
+  background-color: white;
+}
+
+.outer-wrapper {
+  margin: 0 auto;
+  width: 80%;
+  background-color: grey;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.canvas-wrapper {
+  display: inline-block;
+}
+
+#fractal {
+  position: absolute;
+  z-index: 1;
+}
+#drag {
+  position: absolute;
+  z-index: 3;
+}
+#grid {
+  position: absolute;
+  z-index: 2;
+}
+
+#grid-on-off {
+  position: relative;
+  top: 500px;
+}
