@@ -1,10 +1,7 @@
 // import drawGrid from './js/drawGrid.js';
 const drawGrid = (ctx, center, scale) => {
-  //
-  // const gridCanvas = document.getElementById('grid');
-  //
-  // const gridCtx = gridCanvas.getContext("2d");
-
+  // start by clearing the grid and setting the stroke style
+  ctx.clearRect(0,0,500,500);
   ctx.strokeStyle = "#222"
 
   //horizontal lines
@@ -48,6 +45,13 @@ const drawGrid = (ctx, center, scale) => {
 
 }
 
+const hide = (ctx) => {
+  ctx.globalAlpha = 0;
+}
+
+const show = (ctx) => {
+  ctx.globalAlpha = 1;
+}
 
 // above code should be relocated to external files
 document.addEventListener('DOMContentLoaded', () => {
@@ -72,5 +76,17 @@ document.addEventListener('DOMContentLoaded', () => {
   fractalCtx.fillRect(0, 0, 500, 500);
 
   drawGrid(gridCtx, center, scale);
+
+  const showGridButton = document.getElementById('grid-on-off');
+  showGridButton.onclick = () => {
+    if(showGridButton.innerHTML === 'hide grid') {
+      showGridButton.innerHTML = 'show grid';
+      gridCanvas.style.visibility = 'hidden';
+    } else {
+      showGridButton.innerHTML = 'hide grid';
+      drawGrid(gridCtx, center, scale);
+      gridCanvas.style.visibility = 'visible';
+    }
+  }
 
 });
