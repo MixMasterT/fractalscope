@@ -1,4 +1,4 @@
-// import drawGrid from './js/drawGrid.js';
+// move this and import drawGrid from './js/drawGrid.js'; TODO
 const drawGrid = (ctx, center, scale) => {
   // start by clearing the grid and setting the stroke style
   ctx.clearRect(0,0,500,500);
@@ -36,12 +36,12 @@ const drawGrid = (ctx, center, scale) => {
   //set numbers based on scale and center
   const p = 2; // p for 'precision'
 
-  ctx.fillText(`${(center.y + scale/2).toFixed(p)}i`, 3, 125 );
-  ctx.fillText(`${(center.y).toFixed(p)}i`, 3, 250 );
-  ctx.fillText(`${(center.y - scale/2).toFixed(p)}i`, 3, 375 );
-  ctx.fillText(`${(center.x - scale/2).toFixed(p)}`, 110, 15 );
-  ctx.fillText(`${(center.x).toFixed(p)}`, 235, 15 );
-  ctx.fillText(`${(center.x + scale/2).toFixed(p)}`, 360, 15 );
+  ctx.fillText(`${(center.i + scale/2).toFixed(p)}i`, 3, 125 );
+  ctx.fillText(`${(center.i).toFixed(p)}i`, 3, 250 );
+  ctx.fillText(`${(center.i - scale/2).toFixed(p)}i`, 3, 375 );
+  ctx.fillText(`${(center.r - scale/2).toFixed(p)}`, 110, 15 );
+  ctx.fillText(`${(center.r).toFixed(p)}`, 235, 15 );
+  ctx.fillText(`${(center.r + scale/2).toFixed(p)}`, 360, 15 );
 
 };
 
@@ -56,10 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const fractalCtx = fractalCanvas.getContext("2d");
 
   //set center
-  let centerX = 0;
-  let centerY = 0;
+  let centerR = 0;
+  let centerI = 0;
 
-  const center = {x: centerX, y: centerY};
+  //set complex center
+
+
+  const center = {r: centerR, i: centerI};
 
   //Set scale
   let scale = 3;
@@ -68,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
   fractalCtx.fillRect(0, 0, 500, 500);
 
   drawGrid(gridCtx, center, scale);
-
 
   //Button to Show  and hide Grid
   const showGridButton = document.getElementById('grid-on-off');
@@ -87,28 +89,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const imaginary = document.getElementById('imaginary');
 
   const updateCenterDisplay = () => {
-    real.innerHTML = center.x.toFixed(3);
-    imaginary.innerHTML = center.y.toFixed(3);
+    real.innerHTML = center.r.toFixed(3);
+    imaginary.innerHTML = center.i.toFixed(3);
     drawGrid(gridCtx, center, scale);
   };
 
+  const slideFactor = (1 / 5);
+
   const slideLeft = () => {
-    center.x -= (scale / 5);
+    center.r -= (scale * slideFactor);
     updateCenterDisplay();
   };
 
   const slideRight = () => {
-    center.x += (scale / 5);
+    center.r += (scale * slideFactor);
     updateCenterDisplay();
   };
 
   const slideUp = () => {
-    center.y -= (scale / 5);
+    center.i -= (scale * slideFactor);
     updateCenterDisplay();
   };
 
   const slideDown = () => {
-    center.y += (scale / 5);
+    center.i += (scale * slideFactor);
     updateCenterDisplay();
   };
 
@@ -123,6 +127,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const down = document.getElementById('slide-down');
   down.onclick = slideDown;
+
+  //zoom controls
+  const zoomFactor = 3/2;
+
+  const zoomIn = () => {
+    scale /= zoomFactor;
+    updateCenterDisplay();
+  };
+
+  const zoomOut = () => {
+    scale *= zoomFactor;
+    updateCenterDisplay();
+  };
+
+  const resetZoom = () => {
+    scale = 3;
+    updateCenterDisplay();
+  };
+
+  const zoom = document.getElementById('in');
+  zoom.onclick = zoomIn;
+
+  const zoomReset = document.getElementById('reset-zoom');
+  zoomReset.onclick = resetZoom;
+
+  const zoomBack = document.getElementById('out');
+  zoomBack.onclick = zoomOut;
+
+
 
   // Key binding for slide acitions
   document.onkeydown= (e) => {
@@ -139,6 +172,15 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
       case 40:
         slideDown();
+        break;
+      case 90:
+        zoomIn();
+        break;
+      case 88:
+        zoomOut();
+        break;
+      case 82:
+        resetZoom();
         break;
     }
   };

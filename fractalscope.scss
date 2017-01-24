@@ -54,8 +54,27 @@ button:hover {
   position: relative;
   top: 500px;
 }
+.control-panel {
+  text-align; center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
 
-.slide-control {
+.zoom button {
+  border: 1px solid black;
+  padding: 20px;
+}
+.zoom h3, h5 {
+  font-size: 22px;
+  width: 40%;
+}
+
+.zoom h5 {
+  font-size: 22px;
+  width: 120px;
+}
+.slide, .zoom {
   background-color: orange;
   width: 300px;
   height: 250px;
@@ -91,35 +110,35 @@ button:hover {
 #slide-up {
   width: 75px;
   height: 50px;
-  background: url('./images/up_arrow.png') no-repeat;
-  background-size:     cover;                      /* <------ */
-  background-repeat:   no-repeat;
-  background-position: center center;
+  background: url('./images/up_arrow.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 #slide-left {
   width: 50px;
   height: 75px;
-  background: url('./images/left_arrow.png') no-repeat;
-  background-size:     cover;                      /* <------ */
-  background-repeat:   no-repeat;
-  background-position: center center;
+  background: url('./images/left_arrow.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 #slide-right {
   width: 50px;
   height: 75px;
-  background: url('./images/right_arrow.png') no-repeat;
-  background-size:     cover;                      /* <------ */
-  background-repeat:   no-repeat;
-  background-position: center center;
+  background: url('./images/right_arrow.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 #slide-down {
   width: 75px;
   height: 50px;
-  background: url('./images/down_arrow.png') no-repeat;
-  background-size:     cover;                      /* <------ */
-  background-repeat:   no-repeat;
-  background-position: center center;
+  background: url('./images/down_arrow.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }

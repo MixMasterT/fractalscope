@@ -24,30 +24,47 @@
 
       <button id='grid-on-off'>hide grid</button>
 
-      <div class='slide-control'>
-        <div class='top'>
-          <button id='slide-up' />
-        </div>
+      <div class='control-panel'>
 
-        <div class='middle'>
-          <div>
-            <button id='slide-left' />
+        <div class='slide'>
+
+          <div class='top'>
+            <button id='slide-up' />
           </div>
 
-          <div id='center-display'>
-            <div id='real'>0.000</div>
-            <div id='imaginary'>0.000</div>
+          <div class='middle'>
+            <div>
+              <button id='slide-left' />
+            </div>
+
+            <div id='center-display'>
+              <div id='real'>0.000</div>
+              <div id='imaginary'>0.000</div>
+            </div>
+
+            <div>
+              <button id='slide-right' />
+            </div>
           </div>
 
-          <div>
-            <button id='slide-right' />
+          <div class='bottom'>
+            <button id='slide-down' />
+          </div>
+        </div><!-- close slide -->
+
+        <div class='zoom'>
+          <div class='top'>
+            <h5>Zoom factor<h5>
+            <h3 id='zoom-factor'>1.0</h3>
+          </div>
+
+          <div class='bottom'>
+            <button id='in'>in</button>
+            <button id='reset-zoom'>Reset</button>
+            <button id='out'>out</button>
           </div>
         </div>
-
-        <div class='bottom'>
-          <button id='slide-down' />
-        </div>
-      </div>
+      </div> <!-- close control-panel-->
 
     </div>
   </body>
