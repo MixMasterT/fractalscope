@@ -1,51 +1,7 @@
-// move this and import drawGrid from './js/drawGrid.js'; TODO
-const drawGrid = (ctx, center, scale) => {
-  // start by clearing the grid and setting the stroke style
-  ctx.clearRect(0,0,500,500);
-  ctx.strokeStyle = "#222";
+import drawGrid from './js/draw_grid.js';
 
-  //horizontal lines
-  ctx.moveTo(35, 125);
-  ctx.lineTo(500,125);
-  ctx.stroke();
+import expandMandlebrot from './js/expand_mandlebrot';
 
-  ctx.moveTo(35, 250);
-  ctx.lineTo(500,250);
-  ctx.stroke();
-
-  ctx.moveTo(35, 375);
-  ctx.lineTo(500,375);
-  ctx.stroke();
-
-  //vertical lines
-  ctx.moveTo(125, 20);
-  ctx.lineTo(125, 500);
-  ctx.stroke();
-
-  ctx.moveTo(250, 20);
-  ctx.lineTo(250, 500);
-  ctx.stroke();
-
-  ctx.moveTo(375, 20);
-  ctx.lineTo(375, 500);
-  ctx.stroke();
-
-  // Add number marking
-  ctx.font = "18px Scada Sans-serif";
-
-  //set numbers based on scale and center
-  const p = 2; // p for 'precision'
-
-  ctx.fillText(`${(center.i + scale/2).toFixed(p)}i`, 3, 125 );
-  ctx.fillText(`${(center.i).toFixed(p)}i`, 3, 250 );
-  ctx.fillText(`${(center.i - scale/2).toFixed(p)}i`, 3, 375 );
-  ctx.fillText(`${(center.r - scale/2).toFixed(p)}`, 110, 15 );
-  ctx.fillText(`${(center.r).toFixed(p)}`, 235, 15 );
-  ctx.fillText(`${(center.r + scale/2).toFixed(p)}`, 360, 15 );
-
-};
-
-// above code should be relocated to external files
 document.addEventListener('DOMContentLoaded', () => {
   const fractalCanvas = document.getElementById('fractal');
   const gridCanvas = document.getElementById('grid');
@@ -60,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let centerI = 0;
 
   //set complex center
-
 
   const center = {r: centerR, i: centerI};
 
@@ -90,7 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const updateCenterDisplay = () => {
     real.innerHTML = center.r.toFixed(3);
-    imaginary.innerHTML = center.i.toFixed(3);
+    imaginary.innerHTML = `${center.i.toFixed(3)}i`;
+    currentZoomDisplay.innerHTML = `${(3 / scale).toFixed(3)} x`;
     drawGrid(gridCtx, center, scale);
   };
 
@@ -131,6 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
   //zoom controls
   const zoomFactor = 3/2;
 
+  const currentZoomDisplay = document.getElementById('zoom-factor');
+
   const zoomIn = () => {
     scale /= zoomFactor;
     updateCenterDisplay();
@@ -145,6 +103,10 @@ document.addEventListener('DOMContentLoaded', () => {
     scale = 3;
     updateCenterDisplay();
   };
+  //
+  // const dial = $('.dial').knob({
+  //   'change': () => { scale = this.value; }
+  // });
 
   const zoom = document.getElementById('in');
   zoom.onclick = zoomIn;
@@ -184,4 +146,5 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
     }
   };
+
 });

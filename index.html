@@ -5,7 +5,8 @@
     <title>title</title>
     <link rel="stylesheet" type='text/css' href="fractalscope.scss">
     <link href="https://fonts.googleapis.com/css?family=Scada" rel="stylesheet">
-    <script src="main.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="bundle.js"></script>
   </head>
   <body>
     <div class='outer-wrapper'>
@@ -23,6 +24,7 @@
       </div>
 
       <button id='grid-on-off'>hide grid</button>
+      <button id='recenter'>reset center</button>
 
       <div class='control-panel'>
 
@@ -55,6 +57,7 @@
         <div class='zoom'>
           <div class='top'>
             <h5>Zoom factor<h5>
+            <input type='number' class='dial' value=3>
             <h3 id='zoom-factor'>1.0</h3>
           </div>
 
