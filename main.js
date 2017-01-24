@@ -100,27 +100,56 @@ document.addEventListener('DOMContentLoaded', () => {
     drawGrid(gridCtx, center, scale);
   };
 
-  const left = document.getElementById('slide-left');
-  left.onclick = () => {
+  const slideLeft = () => {
     center.x -= (scale / 5);
     updateCenterDisplay();
   };
 
-  const right = document.getElementById('slide-right');
-  right.onclick = () => {
+  const slideRight = () => {
     center.x += (scale / 5);
     updateCenterDisplay();
   };
 
-  const up = document.getElementById('slide-up');
-  up.onclick = () => {
+  const slideUp = () => {
     center.y -= (scale / 5);
     updateCenterDisplay();
   };
 
-  const down = document.getElementById('slide-down');
-  down.onclick = () => {
+  const slideDown = () => {
     center.y += (scale / 5);
     updateCenterDisplay();
+  };
+
+  const left = document.getElementById('slide-left');
+  left.onclick = slideLeft;
+
+
+  const right = document.getElementById('slide-right');
+  right.onclick = slideRight;
+
+  const up = document.getElementById('slide-up');
+  up.onclick = slideUp;
+
+
+  const down = document.getElementById('slide-down');
+  down.onclick = slideDown;
+
+  // Key binding for slide acitions
+  document.onkeydown= (e) => {
+    e.preventDefault();
+    switch (e.keyCode) {
+      case 37:
+        slideLeft();
+        break;
+      case 38:
+        slideUp();
+        break;
+      case 39:
+        slideRight();
+        break;
+      case 40:
+        slideDown();
+        break;
+    }
   };
 });
