@@ -2,6 +2,8 @@ import drawGrid from './js/draw_grid.js';
 
 import expandMandlebrot from './js/expand_mandlebrot';
 
+import drawMandlebrot from './js/draw_mandlebrot';
+
 document.addEventListener('DOMContentLoaded', () => {
   const fractalCanvas = document.getElementById('fractal');
   const gridCanvas = document.getElementById('grid');
@@ -9,7 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const gridCtx = gridCanvas.getContext("2d");
   const dragCtx = dragCanvas.getContext("2d");
-  const fractalCtx = fractalCanvas.getContext("2d");
+  // const fractalCtx = fractalCanvas.getContext("2d");
+
+  console.log(gridCanvas.width);
 
   //set center
   let centerR = 0;
@@ -20,10 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const center = {r: centerR, i: centerI};
 
   //Set scale
-  let scale = 3;
+  let scale = 2;
 
-  fractalCtx.fillStyle = "#990";
-  fractalCtx.fillRect(0, 0, 500, 500);
+  //Set viewPort object for drawing Mandlebrot...
+  const viewPort = { scale, center };
+
+  drawMandlebrot(fractalCanvas, viewPort, { 2: [0, 0, 0],
+                                            10: [255, 0, 0],
+                                            100: [0, 0, 255],
+                                            500: [255, 255, 255] }, 501);
+
+  // fractalCtx.fillStyle = "#990";
+  // fractalCtx.fillRect(0, 0, 500, 500);
 
   drawGrid(gridCtx, center, scale);
 
@@ -100,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const resetZoom = () => {
-    scale = 3;
+    scale = 2;
     updateCenterDisplay();
   };
   //
