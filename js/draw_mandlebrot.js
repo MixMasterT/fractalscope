@@ -9,6 +9,7 @@ const drawMandlebrot = (canvas, viewPort, colorsObj, max) => {
   const centerR = viewPort.center.r;
   const centerI = viewPort.center.i;
   const scale = viewPort.scale;
+  console.log(`current scale is ${scale}`);
 
   // loop over pixels on canvas, mapping each pixel to a Complex numbers
   // move by 4s because each pixel has 4 values for R, G, B and Alpha

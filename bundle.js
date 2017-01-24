@@ -60,6 +60,10 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var STARTER_COLORS = { 2: [0, 0, 0], 10: [255, 0, 0],
+	  100: [0, 0, 255],
+	  500: [255, 255, 255] };
+	
 	document.addEventListener('DOMContentLoaded', function () {
 	  var fractalCanvas = document.getElementById('fractal');
 	  var gridCanvas = document.getElementById('grid');
@@ -79,19 +83,8 @@
 	
 	  var center = { r: centerR, i: centerI };
 	
-	  //Set scale
+	  //Set initial scale
 	  var scale = 2;
-	
-	  //Set viewPort object for drawing Mandlebrot...
-	  var viewPort = { scale: scale, center: center };
-	
-	  (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, { 2: [0, 0, 0],
-	    10: [255, 0, 0],
-	    100: [0, 0, 255],
-	    500: [255, 255, 255] }, 501);
-	
-	  // fractalCtx.fillStyle = "#990";
-	  // fractalCtx.fillRect(0, 0, 500, 500);
 	
 	  (0, _draw_grid2.default)(gridCtx, center, scale);
 	
@@ -116,9 +109,11 @@
 	    imaginary.innerHTML = center.i.toFixed(3) + 'i';
 	    currentZoomDisplay.innerHTML = (3 / scale).toFixed(3) + ' x';
 	    (0, _draw_grid2.default)(gridCtx, center, scale);
+	    var viewPort = { scale: scale, center: center };
+	    (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, STARTER_COLORS, 501);
 	  };
 	
-	  var slideFactor = 1 / 5;
+	  var slideFactor = 1 / 8;
 	
 	  var slideLeft = function slideLeft() {
 	    center.r -= scale * slideFactor;
@@ -342,6 +337,7 @@
 	  var centerR = viewPort.center.r;
 	  var centerI = viewPort.center.i;
 	  var scale = viewPort.scale;
+	  console.log('current scale is ' + scale);
 	
 	  // loop over pixels on canvas, mapping each pixel to a Complex numbers
 	  // move by 4s because each pixel has 4 values for R, G, B and Alpha

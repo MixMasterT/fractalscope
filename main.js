@@ -4,6 +4,10 @@ import expandMandlebrot from './js/expand_mandlebrot';
 
 import drawMandlebrot from './js/draw_mandlebrot';
 
+const STARTER_COLORS =  { 2: [0, 0, 0], 10: [255, 0, 0],
+                                          100: [0, 0, 255],
+                                          500: [255, 255, 255] };
+
 document.addEventListener('DOMContentLoaded', () => {
   const fractalCanvas = document.getElementById('fractal');
   const gridCanvas = document.getElementById('grid');
@@ -23,19 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const center = {r: centerR, i: centerI};
 
-  //Set scale
+  //Set initial scale
   let scale = 2;
-
-  //Set viewPort object for drawing Mandlebrot...
-  const viewPort = { scale, center };
-
-  drawMandlebrot(fractalCanvas, viewPort, { 2: [0, 0, 0],
-                                            10: [255, 0, 0],
-                                            100: [0, 0, 255],
-                                            500: [255, 255, 255] }, 501);
-
-  // fractalCtx.fillStyle = "#990";
-  // fractalCtx.fillRect(0, 0, 500, 500);
 
   drawGrid(gridCtx, center, scale);
 
@@ -60,9 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
     imaginary.innerHTML = `${center.i.toFixed(3)}i`;
     currentZoomDisplay.innerHTML = `${(3 / scale).toFixed(3)} x`;
     drawGrid(gridCtx, center, scale);
+    const viewPort = { scale, center };
+    drawMandlebrot(fractalCanvas, viewPort, STARTER_COLORS , 501);
   };
 
-  const slideFactor = (1 / 5);
+  const slideFactor = (1 / 8);
 
   const slideLeft = () => {
     center.r -= (scale * slideFactor);
