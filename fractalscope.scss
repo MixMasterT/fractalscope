@@ -32,22 +32,21 @@ button:hover {
 .outer-wrapper {
   margin: 0 auto;
   width: 90%;
+  min-width: 600px;
   background-color: grey;
   position: relative;
   text-align: center;
 }
 
-
-#fractal {
+#fractal, #drag, #grid {
   position: absolute;
+  left: 10%;
   z-index: 1;
 }
 #drag {
-  position: absolute;
   z-index: 3;
 }
 #grid {
-  position: absolute;
   z-index: 2;
 }
 
@@ -58,9 +57,9 @@ button:hover {
 
 .slide-control {
   background-color: orange;
-  width: 400px;
-  height: 400px;
-  top: 600px;
+  width: 300px;
+  height: 250px;
+  top: 500px;
   display: flex;
   flex-direction: column;
   align-items: space-between;
@@ -90,8 +89,8 @@ button:hover {
 }
 
 #slide-up {
-  width: 150px;
-  height: 100px;
+  width: 75px;
+  height: 50px;
   background: url('./images/up_arrow.png') no-repeat;
   background-size:     cover;                      /* <------ */
   background-repeat:   no-repeat;
@@ -99,8 +98,8 @@ button:hover {
 }
 
 #slide-left {
-  width: 100px;
-  height: 150px;
+  width: 50px;
+  height: 75px;
   background: url('./images/left_arrow.png') no-repeat;
   background-size:     cover;                      /* <------ */
   background-repeat:   no-repeat;
@@ -108,8 +107,8 @@ button:hover {
 }
 
 #slide-right {
-  width: 100px;
-  height: 150px;
+  width: 50px;
+  height: 75px;
   background: url('./images/right_arrow.png') no-repeat;
   background-size:     cover;                      /* <------ */
   background-repeat:   no-repeat;
@@ -117,8 +116,8 @@ button:hover {
 }
 
 #slide-down {
-  width: 150px;
-  height: 100px;
+  width: 75px;
+  height: 50px;
   background: url('./images/down_arrow.png') no-repeat;
   background-size:     cover;                      /* <------ */
   background-repeat:   no-repeat;

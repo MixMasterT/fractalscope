@@ -45,14 +45,6 @@ const drawGrid = (ctx, center, scale) => {
 
 };
 
-const hide = (ctx) => {
-  ctx.globalAlpha = 0;
-};
-
-const show = (ctx) => {
-  ctx.globalAlpha = 1;
-};
-
 // above code should be relocated to external files
 document.addEventListener('DOMContentLoaded', () => {
   const fractalCanvas = document.getElementById('fractal');
@@ -123,13 +115,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const left = document.getElementById('slide-left');
   left.onclick = slideLeft;
 
-
   const right = document.getElementById('slide-right');
   right.onclick = slideRight;
 
   const up = document.getElementById('slide-up');
   up.onclick = slideUp;
-
 
   const down = document.getElementById('slide-down');
   down.onclick = slideDown;
