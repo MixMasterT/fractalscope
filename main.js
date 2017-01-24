@@ -2,7 +2,7 @@
 const drawGrid = (ctx, center, scale) => {
   // start by clearing the grid and setting the stroke style
   ctx.clearRect(0,0,500,500);
-  ctx.strokeStyle = "#222"
+  ctx.strokeStyle = "#222";
 
   //horizontal lines
   ctx.moveTo(35, 125);
@@ -31,7 +31,7 @@ const drawGrid = (ctx, center, scale) => {
   ctx.stroke();
 
   // Add number marking
-  ctx.font = "18px Scada Sans-serif"
+  ctx.font = "18px Scada Sans-serif";
 
   //set numbers based on scale and center
   const p = 2; // p for 'precision'
@@ -43,15 +43,15 @@ const drawGrid = (ctx, center, scale) => {
   ctx.fillText(`${(center.x).toFixed(p)}`, 235, 15 );
   ctx.fillText(`${(center.x + scale/2).toFixed(p)}`, 360, 15 );
 
-}
+};
 
 const hide = (ctx) => {
   ctx.globalAlpha = 0;
-}
+};
 
 const show = (ctx) => {
   ctx.globalAlpha = 1;
-}
+};
 
 // above code should be relocated to external files
 document.addEventListener('DOMContentLoaded', () => {
@@ -77,6 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   drawGrid(gridCtx, center, scale);
 
+
+  //Button to Show  and hide Grid
   const showGridButton = document.getElementById('grid-on-off');
   showGridButton.onclick = () => {
     if(showGridButton.innerHTML === 'hide grid') {
@@ -87,6 +89,38 @@ document.addEventListener('DOMContentLoaded', () => {
       drawGrid(gridCtx, center, scale);
       gridCanvas.style.visibility = 'visible';
     }
-  }
+  };
 
+  const real = document.getElementById('real');
+  const imaginary = document.getElementById('imaginary');
+
+  const updateCenterDisplay = () => {
+    real.innerHTML = center.x.toFixed(3);
+    imaginary.innerHTML = center.y.toFixed(3);
+    drawGrid(gridCtx, center, scale);
+  };
+
+  const left = document.getElementById('slide-left');
+  left.onclick = () => {
+    center.x -= (scale / 5);
+    updateCenterDisplay();
+  };
+
+  const right = document.getElementById('slide-right');
+  right.onclick = () => {
+    center.x += (scale / 5);
+    updateCenterDisplay();
+  };
+
+  const up = document.getElementById('slide-up');
+  up.onclick = () => {
+    center.y -= (scale / 5);
+    updateCenterDisplay();
+  };
+
+  const down = document.getElementById('slide-down');
+  down.onclick = () => {
+    center.y += (scale / 5);
+    updateCenterDisplay();
+  };
 });

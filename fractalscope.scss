@@ -1,20 +1,42 @@
+/* RESET */
+html, body, section, div, button, canvas {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: inherit;
+  vertical-align: inherit;
+  box-sizing: inherit;
+  background: transparent;
+}
+
 body {
   background-color: white;
+  width: 100vw;
+}
+
+button {
+  border: 1px solid black;
+  border-radius: 5%;
+  padding: 10px;
+}
+
+button:hover {
+  cursor: pointer;
+  box-shadow: 2px 2px 2px 2px blue;
 }
 
 .outer-wrapper {
   margin: 0 auto;
-  width: 80%;
+  width: 90%;
   background-color: grey;
   position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+  text-align: center;
 }
 
-.canvas-wrapper {
-  display: inline-block;
-}
 
 #fractal {
   position: absolute;
@@ -32,4 +54,73 @@ body {
 #grid-on-off {
   position: relative;
   top: 500px;
+}
+
+.slide-control {
+  background-color: orange;
+  width: 400px;
+  height: 400px;
+  top: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  position: relative;
+}
+
+.top, .middle, .bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.top, .bottom {
+  height: 110px;
+}
+
+.middle {
+  height: 180px;
+}
+
+#center-display {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#slide-up {
+  width: 150px;
+  height: 100px;
+  background: url('./images/up_arrow.png') no-repeat;
+  background-size:     cover;                      /* <------ */
+  background-repeat:   no-repeat;
+  background-position: center center;
+}
+
+#slide-left {
+  width: 100px;
+  height: 150px;
+  background: url('./images/left_arrow.png') no-repeat;
+  background-size:     cover;                      /* <------ */
+  background-repeat:   no-repeat;
+  background-position: center center;
+}
+
+#slide-right {
+  width: 100px;
+  height: 150px;
+  background: url('./images/right_arrow.png') no-repeat;
+  background-size:     cover;                      /* <------ */
+  background-repeat:   no-repeat;
+  background-position: center center;
+}
+
+#slide-down {
+  width: 150px;
+  height: 100px;
+  background: url('./images/down_arrow.png') no-repeat;
+  background-size:     cover;                      /* <------ */
+  background-repeat:   no-repeat;
+  background-position: center center;
 }

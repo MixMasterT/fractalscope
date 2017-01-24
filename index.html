@@ -8,8 +8,9 @@
     <script src="main.js"></script>
   </head>
   <body>
-    <section class='outer-wrapper'>
-      <section id='canvas-wrapper'>
+    <div class='outer-wrapper'>
+
+      <div id='canvas-wrapper'>
         <canvas height="500"
           width="500"
           id="fractal"
@@ -19,8 +20,35 @@
         </canvas>
         <canvas height="500" width="500" id="grid"></canvas>
         <canvas height="500" width="500" id="drag"></canvas>
-      </section>
+      </div>
+
       <button id='grid-on-off'>hide grid</button>
-    </section>
+
+      <div class='slide-control'>
+        <div class='top'>
+          <button id='slide-up' />
+        </div>
+
+        <div class='middle'>
+          <div>
+            <button id='slide-left' />
+          </div>
+
+          <div id='center-display'>
+            <div id='real'>0.000</div>
+            <div id='imaginary'>0.000</div>
+          </div>
+
+          <div>
+            <button id='slide-right' />
+          </div>
+        </div>
+
+        <div class='bottom'>
+          <button id='slide-down' />
+        </div>
+      </div>
+
+    </div>
   </body>
 </html>
