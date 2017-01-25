@@ -64,6 +64,8 @@
 	  100: [0, 0, 255],
 	  500: [255, 255, 255] };
 	
+	var MAX_ITERATIONS = 500;
+	
 	document.addEventListener('DOMContentLoaded', function () {
 	  var fractalCanvas = document.getElementById('fractal');
 	  var gridCanvas = document.getElementById('grid');
@@ -71,8 +73,6 @@
 	
 	  var gridCtx = gridCanvas.getContext("2d");
 	  // const fractalCtx = fractalCanvas.getContext("2d");
-	
-	  console.log(gridCanvas.width);
 	
 	  //set center
 	  var centerR = 0;
@@ -86,7 +86,7 @@
 	  var scale = 2;
 	
 	  (0, _draw_grid2.default)(gridCtx, center, scale);
-	  (0, _draw_mandlebrot2.default)(fractalCanvas, { center: center, scale: scale }, STARTER_COLORS, 501);
+	  (0, _draw_mandlebrot2.default)(fractalCanvas, { center: center, scale: scale }, STARTER_COLORS, MAX_ITERATIONS);
 	
 	  //Button to Show  and hide Grid
 	  var showGridButton = document.getElementById('grid-on-off');
@@ -110,7 +110,13 @@
 	    currentZoomDisplay.innerHTML = (3 / scale).toFixed(3) + ' x';
 	    (0, _draw_grid2.default)(gridCtx, center, scale);
 	    var viewPort = { scale: scale, center: center };
-	    (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, STARTER_COLORS, 501);
+	    console.log('current max iterations = ' + MAX_ITERATIONS);
+	    (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, STARTER_COLORS, MAX_ITERATIONS);
+	  };
+	
+	  var maxIterations = document.getElementById('max-iterations');
+	  maxIterations.onchange = function (e) {
+	    MAX_ITERATIONS = e.target.value;
 	  };
 	
 	  var slideFactor = 1 / 8;
@@ -135,6 +141,12 @@
 	    updateCenterDisplay();
 	  };
 	
+	  var recenter = function recenter() {
+	    center.i = 0;
+	    center.r = 0;
+	    updateCenterDisplay();
+	  };
+	
 	  var left = document.getElementById('slide-left');
 	  left.onclick = slideLeft;
 	
@@ -146,6 +158,9 @@
 	
 	  var down = document.getElementById('slide-down');
 	  down.onclick = slideDown;
+	
+	  var recenterButton = document.getElementById('recenter');
+	  recenterButton.onclick = recenter;
 	
 	  //zoom controls
 	  var zoomFactor = 3 / 2;
@@ -166,7 +181,7 @@
 	    scale = 2;
 	    updateCenterDisplay();
 	  };
-	  //
+	
 	  // const dial = $('.dial').knob({
 	  //   'change': () => { scale = this.value; }
 	  // });
@@ -184,16 +199,16 @@
 	  document.onkeydown = function (e) {
 	    e.preventDefault();
 	    switch (e.keyCode) {
-	      case 37:
+	      case 39:
 	        slideLeft();
 	        break;
-	      case 40:
+	      case 38:
 	        slideUp();
 	        break;
-	      case 39:
+	      case 37:
 	        slideRight();
 	        break;
-	      case 38:
+	      case 40:
 	        slideDown();
 	        break;
 	      case 90:

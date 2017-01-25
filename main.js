@@ -8,6 +8,8 @@ const STARTER_COLORS =  { 2: [0, 0, 0], 10: [255, 0, 0],
                                           100: [0, 0, 255],
                                           500: [255, 255, 255] };
 
+let MAX_ITERATIONS = 500;
+
 document.addEventListener('DOMContentLoaded', () => {
   const fractalCanvas = document.getElementById('fractal');
   const gridCanvas = document.getElementById('grid');
@@ -15,8 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const gridCtx = gridCanvas.getContext("2d");
   // const fractalCtx = fractalCanvas.getContext("2d");
-
-  console.log(gridCanvas.width);
 
   //set center
   let centerR = 0;
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let scale = 2;
 
   drawGrid(gridCtx, center, scale);
-  drawMandlebrot(fractalCanvas, { center, scale }, STARTER_COLORS , 501);
+  drawMandlebrot(fractalCanvas, { center, scale }, STARTER_COLORS , MAX_ITERATIONS);
 
   //Button to Show  and hide Grid
   const showGridButton = document.getElementById('grid-on-off');
@@ -54,7 +54,13 @@ document.addEventListener('DOMContentLoaded', () => {
     currentZoomDisplay.innerHTML = `${(3 / scale).toFixed(3)} x`;
     drawGrid(gridCtx, center, scale);
     const viewPort = { scale, center };
-    drawMandlebrot(fractalCanvas, viewPort, STARTER_COLORS , 501);
+    console.log(`current max iterations = ${MAX_ITERATIONS}`);
+    drawMandlebrot(fractalCanvas, viewPort, STARTER_COLORS , MAX_ITERATIONS);
+  };
+
+  const maxIterations = document.getElementById('max-iterations');
+  maxIterations.onchange = (e) => {
+    MAX_ITERATIONS = e.target.value;
   };
 
   const slideFactor = (1 / 8);
@@ -79,6 +85,12 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCenterDisplay();
   };
 
+  const recenter = () => {
+    center.i = 0;
+    center.r = 0;
+    updateCenterDisplay();
+  };
+
   const left = document.getElementById('slide-left');
   left.onclick = slideLeft;
 
@@ -90,6 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const down = document.getElementById('slide-down');
   down.onclick = slideDown;
+
+  const recenterButton = document.getElementById('recenter');
+  recenterButton.onclick = recenter;
 
   //zoom controls
   const zoomFactor = 3/2;
@@ -110,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scale = 2;
     updateCenterDisplay();
   };
-  //
+
   // const dial = $('.dial').knob({
   //   'change': () => { scale = this.value; }
   // });
@@ -124,22 +139,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const zoomBack = document.getElementById('out');
   zoomBack.onclick = zoomOut;
 
-
-
   // Key binding for slide acitions
   document.onkeydown= (e) => {
     e.preventDefault();
     switch (e.keyCode) {
-      case 37:
+      case 39:
         slideLeft();
         break;
-      case 40:
+      case 38:
         slideUp();
         break;
-      case 39:
+      case 37:
         slideRight();
         break;
-      case 38:
+      case 40:
         slideDown();
         break;
       case 90:
