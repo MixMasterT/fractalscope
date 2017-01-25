@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const dragCanvas = document.getElementById('drag');
 
   const gridCtx = gridCanvas.getContext("2d");
-  const dragCtx = dragCanvas.getContext("2d");
   // const fractalCtx = fractalCanvas.getContext("2d");
 
   console.log(gridCanvas.width);
@@ -31,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let scale = 2;
 
   drawGrid(gridCtx, center, scale);
+  drawMandlebrot(fractalCanvas, { center, scale }, STARTER_COLORS , 501);
 
   //Button to Show  and hide Grid
   const showGridButton = document.getElementById('grid-on-off');
@@ -133,13 +133,13 @@ document.addEventListener('DOMContentLoaded', () => {
       case 37:
         slideLeft();
         break;
-      case 38:
+      case 40:
         slideUp();
         break;
       case 39:
         slideRight();
         break;
-      case 40:
+      case 38:
         slideDown();
         break;
       case 90:

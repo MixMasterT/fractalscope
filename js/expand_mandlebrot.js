@@ -16,20 +16,3 @@ const expandMandlebrot = (real, imaginary, max) => {
 };
 
 export default expandMandlebrot;
-//
-//
-// function exapand_M(real,imaginary,MAX) {
-//   var count=0;
-//   var r = real, i = imaginary;
-//   var mag = Math.sqrt(r * r + i * i);
-//   var new_r = 0.0;
-//   while( mag < 4.0 ) {
-//     ++count;
-//     if(count > MAX) { return -1; }
-//     new_r = r * r - i * i + real;
-//     i = r * i * 2 + imaginary;
-//     r = new_r;
-//     mag = Math.sqrt(r * r + i * i);
-//   }
-//   return count;
-// }

@@ -11,64 +11,78 @@
   <body>
     <div class='outer-wrapper'>
 
-      <div id='canvas-wrapper'>
-        <canvas height="500"
-          width="500"
-          id="fractal"
-          >Your browswer is too old. Download a <a
-          href='https://www.google.com/chrome/browser/desktop/'
-          >newer browser</a> that supports canvas!
-        </canvas>
-        <canvas height="500" width="500" id="grid"></canvas>
-        <canvas height="500" width="500" id="drag"></canvas>
-      </div>
-
-      <button id='grid-on-off'>hide grid</button>
-      <button id='recenter'>reset center</button>
-
-      <div class='control-panel'>
-
-        <div class='slide'>
-
-          <div class='top'>
-            <button id='slide-up' />
-          </div>
-
-          <div class='middle'>
-            <div>
-              <button id='slide-left' />
-            </div>
-
-            <div id='center-display'>
-              <div id='real'>0.000</div>
-              <div id='imaginary'>0.000</div>
-            </div>
-
-            <div>
-              <button id='slide-right' />
-            </div>
-          </div>
-
-          <div class='bottom'>
-            <button id='slide-down' />
-          </div>
-        </div><!-- close slide -->
-
-        <div class='zoom'>
-          <div class='top'>
-            <h5>Zoom factor<h5>
-            <input type='number' class='dial' value=3>
-            <h3 id='zoom-factor'>1.0</h3>
-          </div>
-
-          <div class='bottom'>
-            <button id='in'>in</button>
-            <button id='reset-zoom'>Reset</button>
-            <button id='out'>out</button>
-          </div>
+      <div id='main'>
+        <div id='canvas-wrapper'>
+          <canvas height="500"
+            width="500"
+            id="fractal"
+            >Your browswer is too old. Download a <a
+            href='https://www.google.com/chrome/browser/desktop/'
+            >newer browser</a> that supports canvas!
+          </canvas>
+          <canvas height="500" width="500" id="grid"></canvas>
         </div>
-      </div> <!-- close control-panel-->
 
-    </div>
+        <div class='control-panel'>
+
+          <div class='slide'>
+
+            <div class='top'>
+              <button id='slide-up' />
+            </div>
+
+            <div class='middle'>
+              <div>
+                <button id='slide-left' />
+              </div>
+
+              <div id='center-display'>
+                <div id='real'>0.000</div>
+                <div id='imaginary'>0.000</div>
+              </div>
+
+              <div>
+                <button id='slide-right' />
+              </div>
+            </div>
+
+            <div class='bottom'>
+              <button id='slide-down' />
+            </div>
+          </div><!-- close slide -->
+
+          <div class='zoom'>
+            <div class='top'>
+              <h5>Zoom factor<h5>
+              <input type='number' class='dial' value=3>
+              <h3 id='zoom-factor'>1.0</h3>
+            </div>
+
+            <div class='bottom'>
+              <button id='in'>in</button>
+              <button id='reset-zoom'>Reset</button>
+              <button id='out'>out</button>
+            </div>
+          </div>
+        </div> <!-- close control-panel-->
+      </div><!-- close main -->
+
+      <div class='side-panel'>
+        <button id='grid-on-off'>hide grid</button>
+        <button id='recenter'>reset center</button>
+
+        <div class='color-picker'>
+          <h4>Color Picker</h4>
+          <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+      </div>
+    </div><!-- close outer-wrapper -->
   </body>
 </html>

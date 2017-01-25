@@ -32,39 +32,42 @@ button:hover {
 .outer-wrapper {
   margin: 0 auto;
   width: 90%;
-  min-width: 600px;
+  min-width: 700px;
   background-color: grey;
-  position: relative;
-  text-align: center;
+  display: flex;
+  flex-direction: row;
 }
 
-#fractal, #drag, #grid {
-  position: absolute;
+#canvas-wrapper {
+  position: relative;
+  width: 500px;
+  height: 500px;
+}
+
+#fractal, #grid {
   left: 10%;
   z-index: 1;
+  position: absolute;
 }
-#drag {
-  z-index: 3;
-}
+
 #grid {
   z-index: 2;
 }
 
-#grid-on-off {
-  position: relative;
-  top: 500px;
-}
 .control-panel {
-  text-align; center;
+  width: 600px;
+  text-align: center;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  position: relative;
 }
 
 .zoom button {
   border: 1px solid black;
   padding: 20px;
 }
+
 .zoom h3, h5 {
   font-size: 22px;
   width: 40%;
@@ -76,9 +79,8 @@ button:hover {
 }
 .slide, .zoom {
   background-color: orange;
-  width: 300px;
+  width: 280px;
   height: 250px;
-  top: 500px;
   display: flex;
   flex-direction: column;
   align-items: space-between;
