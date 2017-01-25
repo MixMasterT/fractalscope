@@ -4,6 +4,8 @@ import expandMandlebrot from './js/expand_mandlebrot';
 
 import drawMandlebrot from './js/draw_mandlebrot';
 
+import setupColorPicker from './js/color_picker';
+
 const STARTER_COLORS =  { 2: [0, 0, 0], 10: [255, 0, 0],
                                           100: [0, 0, 255],
                                           250: [0, 255, 255],
@@ -14,7 +16,6 @@ let MAX_ITERATIONS = 500;
 document.addEventListener('DOMContentLoaded', () => {
   const fractalCanvas = document.getElementById('fractal');
   const gridCanvas = document.getElementById('grid');
-  const dragCanvas = document.getElementById('drag');
 
   const gridCtx = gridCanvas.getContext("2d");
   // const fractalCtx = fractalCanvas.getContext("2d");
@@ -58,8 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
     currentZoomDisplay.innerHTML = `${(3 / scale).toFixed(3)} x`;
     drawGrid(gridCtx, center, scale);
     const viewPort = { scale, center };
-    console.log(`current max iterations = ${MAX_ITERATIONS}`);
-    drawMandlebrot(fractalCanvas, viewPort, STARTER_COLORS , MAX_ITERATIONS);
+    // console.log(`current max iterations = ${MAX_ITERATIONS}`);
+    drawMandlebrot(fractalCanvas,
+                    viewPort,
+                    STARTER_COLORS,
+                    MAX_ITERATIONS);
   };
 
   const maxIterations = document.getElementById('max-iterations');
@@ -130,7 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCenterDisplay();
   };
 
-  $('li').append("<input type='color' />");
+  // $('li').append("<input type='color' />");
+  setupColorPicker();
 
   const zoom = document.getElementById('in');
   zoom.onclick = zoomIn;

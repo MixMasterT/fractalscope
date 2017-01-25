@@ -73,9 +73,21 @@
         <button id='recenter'>reset center</button>
         <div><input type='number' id='max-iterations' value=500></div>
 
-        <div class='color-picker'>
+        <div id='color-picker'>
           <h4>Color Picker</h4>
+          <ul id='colors-list'></ul>
+
+          <form id='add-color'>
+            <label>Choose color
+              <input class="jscolor" value="ac8635" id="color">
+            </label>
+            <label>Iteration Width
+              <input type="number" id="width" value="20">
+            </label>
+            <button type='submit'>Add Color</button>
+          </form>
         </div>
+
       </div>
     </div><!-- close outer-wrapper -->
   </body>
