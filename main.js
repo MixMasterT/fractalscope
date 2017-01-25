@@ -6,6 +6,7 @@ import drawMandlebrot from './js/draw_mandlebrot';
 
 const STARTER_COLORS =  { 2: [0, 0, 0], 10: [255, 0, 0],
                                           100: [0, 0, 255],
+                                          250: [0, 255, 255],
                                           500: [255, 255, 255] };
 
 let MAX_ITERATIONS = 500;
@@ -30,7 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let scale = 2;
 
   drawGrid(gridCtx, center, scale);
-  drawMandlebrot(fractalCanvas, { center, scale }, STARTER_COLORS , MAX_ITERATIONS);
+  drawMandlebrot(fractalCanvas,
+                  { center, scale },
+                  STARTER_COLORS,
+                  MAX_ITERATIONS);
 
   //Button to Show  and hide Grid
   const showGridButton = document.getElementById('grid-on-off');
@@ -126,9 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCenterDisplay();
   };
 
-  // const dial = $('.dial').knob({
-  //   'change': () => { scale = this.value; }
-  // });
+  $('li').append("<input type='color' />");
 
   const zoom = document.getElementById('in');
   zoom.onclick = zoomIn;
@@ -139,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const zoomBack = document.getElementById('out');
   zoomBack.onclick = zoomOut;
 
-  // Key binding for slide acitions
+  // Key binding for slide and zoom actions
   document.onkeydown= (e) => {
     e.preventDefault();
     switch (e.keyCode) {

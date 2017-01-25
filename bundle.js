@@ -62,6 +62,7 @@
 	
 	var STARTER_COLORS = { 2: [0, 0, 0], 10: [255, 0, 0],
 	  100: [0, 0, 255],
+	  250: [0, 255, 255],
 	  500: [255, 255, 255] };
 	
 	var MAX_ITERATIONS = 500;
@@ -182,9 +183,7 @@
 	    updateCenterDisplay();
 	  };
 	
-	  // const dial = $('.dial').knob({
-	  //   'change': () => { scale = this.value; }
-	  // });
+	  $('li').append("<input type='color' />");
 	
 	  var zoom = document.getElementById('in');
 	  zoom.onclick = zoomIn;
@@ -195,7 +194,7 @@
 	  var zoomBack = document.getElementById('out');
 	  zoomBack.onclick = zoomOut;
 	
-	  // Key binding for slide acitions
+	  // Key binding for slide and zoom actions
 	  document.onkeydown = function (e) {
 	    e.preventDefault();
 	    switch (e.keyCode) {

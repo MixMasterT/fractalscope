@@ -5,7 +5,8 @@
     <title>title</title>
     <link rel="stylesheet" type='text/css' href="fractalscope.scss">
     <link href="https://fonts.googleapis.com/css?family=Scada" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="./js/jscolor.js"></script>
     <script src="bundle.js"></script>
   </head>
   <body>
@@ -54,7 +55,7 @@
           <div class='zoom'>
             <div class='top'>
               <h5>Zoom factor<h5>
-              <input type='number' class='dial' value=3>
+              <input type="text" class="dial" data-min="-50" data-max="50">
               <h3 id='zoom-factor'>1.0</h3>
             </div>
 
