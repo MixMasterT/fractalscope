@@ -62,6 +62,10 @@
 	
 	var _color_picker2 = _interopRequireDefault(_color_picker);
 	
+	var _set_colors = __webpack_require__(6);
+	
+	var _set_colors2 = _interopRequireDefault(_set_colors);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var STARTER_COLORS = { 2: [0, 0, 0], 10: [255, 0, 0],
@@ -115,7 +119,7 @@
 	    (0, _draw_grid2.default)(gridCtx, center, scale);
 	    var viewPort = { scale: scale, center: center };
 	    // console.log(`current max iterations = ${MAX_ITERATIONS}`);
-	    (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, STARTER_COLORS, MAX_ITERATIONS);
+	    (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, (0, _set_colors2.default)(), MAX_ITERATIONS);
 	  };
 	
 	  var maxIterations = document.getElementById('max-iterations');
@@ -419,10 +423,18 @@
 	    colorsList.appendChild(newLi);
 	
 	    //now gotta update global color object
+	
+	    // const testButton = document.createElement('BUTTON');
+	    // testButton.innerHTML = "TEST IT"
+	    //
+	    // colorPicker.appendChild(testButton);
+	    //
+	    // testButton.onclick = () => {
+	    //   setColors();
+	    // }
 	  };
 	
 	  var handleAddColorClick = function handleAddColorClick() {
-	    (0, _set_colors2.default)();
 	    if (addColorButton.innerHTML === 'add color') {
 	      addColorForm.style.visibility = 'visible';
 	      addColorButton.innerHTML = 'hide';
@@ -2148,19 +2160,22 @@
 	  var currentSum = 0;
 	
 	  var colorsList = document.getElementById('colors-list');
-	  var colors = colorsList.getElementsByTagName('li');
+	  var colors = [].slice.call(colorsList.getElementsByTagName('li'));
+	
 	  colors.forEach(function (color) {
 	    var incs = parseInt(color.innerHTML);
 	
-	    console.log(incs);
-	    // currentSum += incs;
-	    //
-	    // const rgbStrings = color.style.backgroundColor.match(/[\d]{1,3}/g);
-	    // const rgbInts = [];
-	    // rgbStrings.forEach((str, idx) => { rgbInts[idx] = parseInt(str); });
-	    //
-	    // newColorsObj[currentSum] = rgbInts;
+	    currentSum += incs;
+	
+	    var rgbStrings = color.style.backgroundColor.match(/[\d]{1,3}/g);
+	    var rgbInts = [];
+	    rgbStrings.forEach(function (str, idx) {
+	      rgbInts[idx] = parseInt(str);
+	    });
+	
+	    newColorsObj[currentSum] = rgbInts;
 	  });
+	  return newColorsObj;
 	};
 	
 	exports.default = setColors;

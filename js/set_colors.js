@@ -8,19 +8,20 @@ const setColors = () => {
   let currentSum = 0;
 
   const colorsList = document.getElementById('colors-list');
-  const colors = colorsList.getElementsByTagName('li');
+  const colors = [].slice.call(colorsList.getElementsByTagName('li'));
+
   colors.forEach((color) => {
     const incs = parseInt(color.innerHTML);
 
-    console.log(incs);
-    // currentSum += incs;
-    //
-    // const rgbStrings = color.style.backgroundColor.match(/[\d]{1,3}/g);
-    // const rgbInts = [];
-    // rgbStrings.forEach((str, idx) => { rgbInts[idx] = parseInt(str); });
-    //
-    // newColorsObj[currentSum] = rgbInts;
+    currentSum += incs;
+
+    const rgbStrings = color.style.backgroundColor.match(/[\d]{1,3}/g);
+    const rgbInts = [];
+    rgbStrings.forEach((str, idx) => { rgbInts[idx] = parseInt(str); });
+
+    newColorsObj[currentSum] = rgbInts;
   })
+  return newColorsObj;
 }
 
 export default setColors;

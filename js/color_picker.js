@@ -34,10 +34,18 @@ const setupColorPicker = () => {
     colorsList.appendChild(newLi);
 
     //now gotta update global color object
+    
+    // const testButton = document.createElement('BUTTON');
+    // testButton.innerHTML = "TEST IT"
+    //
+    // colorPicker.appendChild(testButton);
+    //
+    // testButton.onclick = () => {
+    //   setColors();
+    // }
   };
 
   const handleAddColorClick = () => {
-    setColors();
     if (addColorButton.innerHTML === 'add color') {
       addColorForm.style.visibility = 'visible';
       addColorButton.innerHTML = 'hide';

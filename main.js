@@ -6,6 +6,8 @@ import drawMandlebrot from './js/draw_mandlebrot';
 
 import setupColorPicker from './js/color_picker';
 
+import setColors from './js/set_colors';
+
 const STARTER_COLORS =  { 2: [0, 0, 0], 10: [255, 0, 0],
                                           100: [0, 0, 255],
                                           250: [0, 255, 255],
@@ -62,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // console.log(`current max iterations = ${MAX_ITERATIONS}`);
     drawMandlebrot(fractalCanvas,
                     viewPort,
-                    STARTER_COLORS,
+                    setColors(),
                     MAX_ITERATIONS);
   };
 
