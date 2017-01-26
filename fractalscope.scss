@@ -105,6 +105,18 @@ button:hover {
   height: 180px;
 }
 
+#color-picker {
+  width: 100px;
+
+  // li {
+  //   padding: 10px;
+  // }
+}
+
+#color-picker li {
+  padding: 10px;
+}
+
 #center-display {
   width: 200px;
   display: flex;

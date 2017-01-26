@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // console.log(`current max iterations = ${MAX_ITERATIONS}`);
     drawMandlebrot(fractalCanvas,
                     viewPort,
-                    setColors(),
+                    setColors(MAX_ITERATIONS),
                     MAX_ITERATIONS);
   };
 

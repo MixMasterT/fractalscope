@@ -119,7 +119,7 @@
 	    (0, _draw_grid2.default)(gridCtx, center, scale);
 	    var viewPort = { scale: scale, center: center };
 	    // console.log(`current max iterations = ${MAX_ITERATIONS}`);
-	    (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, (0, _set_colors2.default)(), MAX_ITERATIONS);
+	    (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, (0, _set_colors2.default)(MAX_ITERATIONS), MAX_ITERATIONS);
 	  };
 	
 	  var maxIterations = document.getElementById('max-iterations');
@@ -420,18 +420,15 @@
 	      newLi.style.color = 'white';
 	    }
 	
-	    colorsList.appendChild(newLi);
+	    //get first li in colorsList
+	    var firstLi = colorsList.childNodes[0];
+	    // debugger;
 	
-	    //now gotta update global color object
-	
-	    // const testButton = document.createElement('BUTTON');
-	    // testButton.innerHTML = "TEST IT"
-	    //
-	    // colorPicker.appendChild(testButton);
-	    //
-	    // testButton.onclick = () => {
-	    //   setColors();
-	    // }
+	    if (firstLi) {
+	      colorsList.insertBefore(newLi, firstLi);
+	    } else {
+	      colorsList.appendChild(newLi);
+	    }
 	  };
 	
 	  var handleAddColorClick = function handleAddColorClick() {
@@ -2155,26 +2152,30 @@
 	//                                           250: [0, 255, 255],
 	//                                           500: [255, 255, 255] };
 	
-	var setColors = function setColors() {
+	var setColors = function setColors(max) {
 	  var newColorsObj = {};
 	  var currentSum = 0;
 	
 	  var colorsList = document.getElementById('colors-list');
 	  var colors = [].slice.call(colorsList.getElementsByTagName('li'));
 	
-	  colors.forEach(function (color) {
-	    var incs = parseInt(color.innerHTML);
+	  while (currentSum < max) {
+	    colors.forEach(function (color) {
+	      var incs = parseInt(color.innerHTML);
 	
-	    currentSum += incs;
+	      currentSum += incs;
 	
-	    var rgbStrings = color.style.backgroundColor.match(/[\d]{1,3}/g);
-	    var rgbInts = [];
-	    rgbStrings.forEach(function (str, idx) {
-	      rgbInts[idx] = parseInt(str);
+	      var rgbStrings = color.style.backgroundColor.match(/[\d]{1,3}/g);
+	      var rgbInts = [];
+	      rgbStrings.forEach(function (str, idx) {
+	        rgbInts[idx] = parseInt(str);
+	      });
+	
+	      newColorsObj[currentSum] = rgbInts;
 	    });
+	  }
 	
-	    newColorsObj[currentSum] = rgbInts;
-	  });
+	  console.log(newColorsObj);
 	  return newColorsObj;
 	};
 	

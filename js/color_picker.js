@@ -31,18 +31,15 @@ const setupColorPicker = () => {
       newLi.style.color = 'white';
     }
 
-    colorsList.appendChild(newLi);
+    //get first li in colorsList
+    const firstLi = colorsList.childNodes[0];
+    // debugger;
 
-    //now gotta update global color object
-    
-    // const testButton = document.createElement('BUTTON');
-    // testButton.innerHTML = "TEST IT"
-    //
-    // colorPicker.appendChild(testButton);
-    //
-    // testButton.onclick = () => {
-    //   setColors();
-    // }
+    if(firstLi) {
+      colorsList.insertBefore(newLi, firstLi);
+    } else {
+      colorsList.appendChild(newLi);
+    }
   };
 
   const handleAddColorClick = () => {
