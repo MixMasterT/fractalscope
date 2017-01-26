@@ -68,12 +68,16 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var STARTER_COLORS = { 2: [0, 0, 0], 10: [255, 0, 0],
+	var DEFAULT_COLORS = { 2: [0, 0, 0], 10: [255, 0, 0],
 	  100: [0, 0, 255],
 	  250: [0, 255, 255],
 	  500: [255, 255, 255] };
 	
 	var MAX_ITERATIONS = 500;
+	
+	// const handleColorApplication = () => { colors = setColors(MAX_ITERATIONS); };
+	
+	// applyColorsButton.onclick = handleColorApplication();
 	
 	document.addEventListener('DOMContentLoaded', function () {
 	  var fractalCanvas = document.getElementById('fractal');
@@ -94,7 +98,7 @@
 	  var scale = 2;
 	
 	  (0, _draw_grid2.default)(gridCtx, center, scale);
-	  (0, _draw_mandlebrot2.default)(fractalCanvas, { center: center, scale: scale }, STARTER_COLORS, MAX_ITERATIONS);
+	  (0, _draw_mandlebrot2.default)(fractalCanvas, { center: center, scale: scale }, DEFAULT_COLORS, MAX_ITERATIONS);
 	
 	  //Button to Show  and hide Grid
 	  var showGridButton = document.getElementById('grid-on-off');
@@ -118,8 +122,8 @@
 	    currentZoomDisplay.innerHTML = (3 / scale).toFixed(3) + ' x';
 	    (0, _draw_grid2.default)(gridCtx, center, scale);
 	    var viewPort = { scale: scale, center: center };
-	    // console.log(`current max iterations = ${MAX_ITERATIONS}`);
-	    (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, (0, _set_colors2.default)(MAX_ITERATIONS), MAX_ITERATIONS);
+	
+	    (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, document.getElementById('colors-list').childNodes.length > 0 ? (0, _set_colors2.default)(MAX_ITERATIONS) : DEFAULT_COLORS, MAX_ITERATIONS);
 	  };
 	
 	  var maxIterations = document.getElementById('max-iterations');
@@ -2147,11 +2151,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	// const STARTER_COLORS =  { 2: [0, 0, 0], 10: [255, 0, 0],
-	//                                           100: [0, 0, 255],
-	//                                           250: [0, 255, 255],
-	//                                           500: [255, 255, 255] };
-	
 	var setColors = function setColors(max) {
 	  var newColorsObj = {};
 	  var currentSum = 0;
@@ -2174,8 +2173,6 @@
 	      newColorsObj[currentSum] = rgbInts;
 	    });
 	  }
-	
-	  console.log(newColorsObj);
 	  return newColorsObj;
 	};
 	

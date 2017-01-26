@@ -8,12 +8,16 @@ import setupColorPicker from './js/color_picker';
 
 import setColors from './js/set_colors';
 
-const STARTER_COLORS =  { 2: [0, 0, 0], 10: [255, 0, 0],
-                                          100: [0, 0, 255],
-                                          250: [0, 255, 255],
-                                          500: [255, 255, 255] };
+let DEFAULT_COLORS =  { 2: [0, 0, 0], 10: [255, 0, 0],
+  100: [0, 0, 255],
+  250: [0, 255, 255],
+  500: [255, 255, 255] };
 
 let MAX_ITERATIONS = 500;
+
+// const handleColorApplication = () => { colors = setColors(MAX_ITERATIONS); };
+
+// applyColorsButton.onclick = handleColorApplication();
 
 document.addEventListener('DOMContentLoaded', () => {
   const fractalCanvas = document.getElementById('fractal');
@@ -36,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
   drawGrid(gridCtx, center, scale);
   drawMandlebrot(fractalCanvas,
                   { center, scale },
-                  STARTER_COLORS,
+                  DEFAULT_COLORS,
                   MAX_ITERATIONS);
 
   //Button to Show  and hide Grid
@@ -61,10 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
     currentZoomDisplay.innerHTML = `${(3 / scale).toFixed(3)} x`;
     drawGrid(gridCtx, center, scale);
     const viewPort = { scale, center };
-    // console.log(`current max iterations = ${MAX_ITERATIONS}`);
+
     drawMandlebrot(fractalCanvas,
                     viewPort,
-                    setColors(MAX_ITERATIONS),
+                    (document.getElementById('colors-list').childNodes.length > 0 ?
+                     setColors(MAX_ITERATIONS) : DEFAULT_COLORS),
                     MAX_ITERATIONS);
   };
 

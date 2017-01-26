@@ -1,8 +1,3 @@
-// const STARTER_COLORS =  { 2: [0, 0, 0], 10: [255, 0, 0],
-//                                           100: [0, 0, 255],
-//                                           250: [0, 255, 255],
-//                                           500: [255, 255, 255] };
-
 const setColors = (max) => {
   const newColorsObj = {};
   let currentSum = 0;
@@ -23,8 +18,6 @@ const setColors = (max) => {
       newColorsObj[currentSum] = rgbInts;
     })
   }
-
-  console.log(newColorsObj);
   return newColorsObj;
 }
 
