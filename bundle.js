@@ -75,23 +75,21 @@
 	
 	var MAX_ITERATIONS = 500;
 	
-	// const handleColorApplication = () => { colors = setColors(MAX_ITERATIONS); };
+	var SLIDE_FACTOR = 1 / 8;
 	
-	// applyColorsButton.onclick = handleColorApplication();
+	var ZOOM_FACTOR = 3 / 2;
 	
 	document.addEventListener('DOMContentLoaded', function () {
 	  var fractalCanvas = document.getElementById('fractal');
 	  var gridCanvas = document.getElementById('grid');
 	
 	  var gridCtx = gridCanvas.getContext("2d");
-	  // const fractalCtx = fractalCanvas.getContext("2d");
 	
 	  //set center
 	  var centerR = 0;
 	  var centerI = 0;
 	
 	  //set complex center
-	
 	  var center = { r: centerR, i: centerI };
 	
 	  //Set initial scale
@@ -244,7 +242,7 @@
 	
 	  var openModalButton = document.getElementById("info-modal");
 	
-	  // Get the <span> element that closes the modal
+	  // Get the element that closes the modal
 	  var closeButton = document.getElementById("close");
 	
 	  // When the user clicks on the button, open the modal
@@ -252,12 +250,12 @@
 	    infoModal.style.display = "block";
 	  };
 	
-	  // When the user clicks on <span> (x), close the infoModal
+	  // close the infoModal
 	  closeButton.onclick = function () {
 	    infoModal.style.display = "none";
 	  };
 	
-	  // When the user clicks anywhere outside of the infoModal, close it
+	  // When the user clicks outside of the infoModal, close it
 	  window.onclick = function (event) {
 	    if (event.target == infoModal) {
 	      infoModal.style.display = "none";

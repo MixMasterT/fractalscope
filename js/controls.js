@@ -1,4 +1,6 @@
-const applyControls = (slideFactor, zoomFactor) => {
+import updateCenterDisplay from '../main';
+
+const applyControls = (slideFactor, zoomFactor, scale, center) => {
 
   const slideLeft = () => {
     center.r -= (scale * slideFactor);
@@ -86,3 +88,5 @@ const applyControls = (slideFactor, zoomFactor) => {
     }
   };
 }
+
+export default applyControls;
