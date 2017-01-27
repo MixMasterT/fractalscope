@@ -188,4 +188,28 @@ document.addEventListener('DOMContentLoaded', () => {
     var dataURL = fractalCanvas.toDataURL('image/png');
     downloadButton.href = dataURL;
   });
+
+  const infoModal = document.getElementById('info');
+
+  const openModalButton = document.getElementById("info-modal");
+
+  // Get the <span> element that closes the modal
+  const closeButton = document.getElementById("close");
+
+  // When the user clicks on the button, open the modal
+  openModalButton.onclick = function() {
+      infoModal.style.display = "block";
+  }
+
+  // When the user clicks on <span> (x), close the infoModal
+  closeButton.onclick = function() {
+      infoModal.style.display = "none";
+  }
+
+  // When the user clicks anywhere outside of the infoModal, close it
+  window.onclick = function(event) {
+      if (event.target == infoModal) {
+          infoModal.style.display = "none";
+      }
+  }
 });
