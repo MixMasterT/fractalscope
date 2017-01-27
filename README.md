@@ -28,35 +28,61 @@ diverge.
 
 [more info](https://en.wikipedia.org/wiki/Mandelbrot_set)
 
-### Functionality & MVP  
-
-This fractalscope will be able to:
-
-- [ ] render the Mandlebrot set image.
-- [ ] Zoom in or out on a given location in the complex plane.
-- [ ] Pan the center location.
-- [ ] Export, save, or download the image.
-
-In addition, this project will include:
-
-- [ ] A link to the Mandlebrot Set wikipedia package
-- [ ] Links to my personal page, the github repo, and my LinkedIn
-- [ ] A production Readme
-
-### Wireframes
-
-This project will be a single interactive panel with a large canvas
-element and various control panels around it. The user will be able to
-make adjustments to the image by clicking on the control panels.
-
-![wireframes](images/fractalscope_layout_wireframe.png)
-
 ### Architecture and Technologies
 
 #### Technologies
-This project will be implemented with the following technologies:
+This project is implemented with the following technologies:
 
 - Vanilla Javascript
 - 'jscolor' for color picking,
 - `HTML5 Canvas` for image rendering,
 - Webpack to bundle, transpile, and serve up the various scripts.
+
+#### Architecture
+Rendering the Mandlebrot set with canvas requires several layers of nested
+functions. At the top level, a simple scaling function is used to map the
+pixels of the canvas to points along the Complex plane. This process is
+handled in the drawMandlebrot Function which lives in the draw_mandlebrot.js file. In order to render the Mandlebrot set, these points must then be expanded
+by iteratively applying the Mandlebrot function (Z = Z^2 + C) and checking
+how many iterations are required to 'escape.' This process is handled in a
+function called expandMandlebrot which lives in a dedicated JavaScript file called expand_mandlebrot.js.
+
+Colors are stored in a custom-designed 'color object' called colorObj locally.
+This object has integer keys which correspond to iteration widths. For example
+if a key is 10, that means its value will be applied to 10 possible values
+of iterations-to-escape (called incsToEscape locally). The values for each
+key within this object are RGB colors represented as an array of three
+integers. The color object generation process automatically repeats the
+color pattern up to the maximum iterations value.
+
+Although an attempt was made to apply Object-oriented design to this project
+with the creation of a Complex Number class, the resulting image appeared
+distorted. Therefore, this design approach is not used in the project's
+current form. All calculations are performed directly in JavaScript's default
+floating-point number type.
+
+### Usage
+
+The 'show/hide grid' button shows range of real and imaginary
+numbers that are currently in view.
+
+The 'max iterations' setting determines the maximum number of
+iterations of the Mandlebrot equation to which each pixel will be
+expanded. Warning: higher settings for this value will slow rendering
+down significantly. If rendering seems to lag, lower this value.
+
+Use the buttons on the control panels below the image to zoom in
+out and pan around the Mandlebrot image. Keyboard controls are also
+available. The 'z' key zooms in on the image, and the 'x' key zooms
+out. They arrow keys allow you to slide the image up, down, left, and
+right. The numbers located in the middle of the slide control panel
+(the one with the arrow buttons) tell the current center of the viewed
+image. Note that the edges of the Mandlebrot set are the most interesting
+to look at.
+
+To modify the color scheme, click the 'add color' button in the 'color
+picker' panel to the right. Choose a color clicking on the color box and
+using the color picker. The 'iteration width' determines width of that
+colors 'band' in the resulting imgage. Be sure to select <em>at least
+two colors </em> or the image will only be a single solid color! If no
+colors are selected, a default color sheme will be rendered.
