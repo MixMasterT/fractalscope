@@ -1,66 +1,88 @@
-export const slideFactor = (1 / 5);
+const applyControls = (slideFactor, zoomFactor) => {
 
-export const slideLeft = () => {
-  center.r -= (scale * slideFactor);
-  updateCenterDisplay();
-};
+  const slideLeft = () => {
+    center.r -= (scale * slideFactor);
+    updateCenterDisplay();
+  };
 
-export const slideRight = () => {
-  center.r += (scale * slideFactor);
-  updateCenterDisplay();
-};
+  const slideRight = () => {
+    center.r += (scale * slideFactor);
+    updateCenterDisplay();
+  };
 
-export const slideUp = () => {
-  center.i -= (scale * slideFactor);
-  updateCenterDisplay();
-};
+  const slideUp = () => {
+    center.i -= (scale * slideFactor);
+    updateCenterDisplay();
+  };
 
-export const slideDown = () => {
-  center.i += (scale * slideFactor);
-  updateCenterDisplay();
-};
+  const slideDown = () => {
+    center.i += (scale * slideFactor);
+    updateCenterDisplay();
+  };
 
-export const left = document.getElementById('slide-left');
-left.onclick = slideLeft;
+  const left = document.getElementById('slide-left');
+  left.onclick = slideLeft;
 
-export const right = document.getElementById('slide-right');
-right.onclick = slideRight;
+  const right = document.getElementById('slide-right');
+  right.onclick = slideRight;
 
-export const up = document.getElementById('slide-up');
-up.onclick = slideUp;
+  const up = document.getElementById('slide-up');
+  up.onclick = slideUp;
 
-export const down = document.getElementById('slide-down');
-down.onclick = slideDown;
+  const down = document.getElementById('slide-down');
+  down.onclick = slideDown;
 
-//zoom controls
-export const zoomFactor = 3/2;
+  const currentZoomDisplay = document.getElementById('magnification');
 
-export const currentZoomDisplay = document.getElementById('magnification');
+  const zoomIn = () => {
+    scale /= zoomFactor;
+    updateCenterDisplay();
+  };
 
-export const zoomIn = () => {
-  scale /= zoomFactor;
-  updateCenterDisplay();
-};
+  const zoomOut = () => {
+    scale *= zoomFactor;
+    updateCenterDisplay();
+  };
 
-export const zoomOut = () => {
-  scale *= zoomFactor;
-  updateCenterDisplay();
-};
+  const resetZoom = () => {
+    scale = 3;
+    updateCenterDisplay();
+  };
 
-export const resetZoom = () => {
-  scale = 3;
-  updateCenterDisplay();
-};
-//
-// export const dial = $('.dial').knob({
-//   'change': () => { scale = this.value; }
-// });
+  const zoom = document.getElementById('in');
+  zoom.onclick = zoomIn;
 
-export const zoom = document.getElementById('in');
-zoom.onclick = zoomIn;
+  const zoomReset = document.getElementById('reset-zoom');
+  zoomReset.onclick = resetZoom;
 
-const zoomReset = document.getElementById('reset-zoom');
-zoomReset.onclick = resetZoom;
+  const zoomBack = document.getElementById('out');
+  zoomBack.onclick = zoomOut;
 
-const zoomBack = document.getElementById('out');
-zoomBack.onclick = zoomOut;
+  // Key binding for slide and zoom actions
+  document.onkeydown= (e) => {
+    e.preventDefault();
+    switch (e.keyCode) {
+      case 39:
+        slideLeft();
+        break;
+      case 38:
+        slideUp();
+        break;
+      case 37:
+        slideRight();
+        break;
+      case 40:
+        slideDown();
+        break;
+      case 90:
+        zoomIn();
+        break;
+      case 88:
+        zoomOut();
+        break;
+      case 82:
+        resetZoom();
+        break;
+    }
+  };
+}

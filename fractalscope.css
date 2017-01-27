@@ -200,9 +200,22 @@ button:hover {
 .color-picker li {
   border-radius: 8%;
   border: 1px solid black;
-  padding: 10px;
+  padding: 8px;
   margin: auto;
+  margin-top: 5px;
+  font-size: 12px;
   width: 80%;
+}
+
+.color-picker li div {
+  color: #AAA;
+  margin-left: 5px;
+  display: inline-block;
+}
+
+.color-picker li div:hover {
+  cursor: pointer;
+  color: white;
 }
 
 .color-picker form {
@@ -214,12 +227,16 @@ button:hover {
 }
 
 .color-picker > form label {
-  margin-top: 20px;
+  padding-top: 12px; /* STILL TRYING TO MAKE THESE BREATHE */
 }
 
 .color-picker > form label input {
   width: 80%;
   text-align: center;
+}
+
+.color-input {
+  margin-top: 20px;
 }
 
 .link {
@@ -328,16 +345,25 @@ button:hover {
   font-weight: bolder;
 }
 
+.modal-content p a {
+  margin: 0 auto; /* STILL LOOKING FOR A WAY TO CENTER THIS */
+}
+
 .modal-content p {
-  line-height: 1.6em;
+  line-height: 1.8em;
   margin: auto;
+  margin-top: 20px;
   width: 80%;
+  text-align: left;
 }
 
 .modal-content h3 {
   font-size: 24px;
 }
 
+.wiki-link {
+  text-align: center;
+}
 /* close Button */
 #close {
     color: #555;

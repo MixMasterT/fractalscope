@@ -92,13 +92,20 @@
             <ul id='colors-list'></ul>
 
             <form id='add-color'>
-              <label>Choose color
-                <input class="jscolor" value="ac8635" id="color">
-              </label>
-              <label>Iteration Width
-                <input type="number" id="width" value="20">
-              </label>
-              <button type='submit'>Add Color</button>
+
+              <div class='color-input'>
+                <label>Color
+                  <input class="jscolor" value="ac8635" id="color">
+                </label>
+              </div>
+
+              <div class='color-input'>
+                <label>Width
+                  <input type="number" id="width" value="20">
+                </label>
+              </div>
+
+              <button type='submit'>Add</button>
             </form>
           </div>
 
@@ -120,7 +127,7 @@
             <img src='./images/github-logo.svg' width='40px' height='40px'/>
           </a>
         </div>
-        
+
                 <!-- Trigger Modal -->
         <button class='link' id="info-modal">
           <img src='./images/info-icon.png' width='40px' height='40px' />
@@ -155,12 +162,16 @@
             on how many iterations of the function it takes to escape the boundary.
             Points that remain bounded are in the set. Points that escape will be
             assigned a color depending on the number of iterations it takes to
-            diverge.
+            diverge.<br>
 
-            <a href='https://en.wikipedia.org/wiki/Mandelbrot_set'
-               target='_blank'>
+
+            <div class='wiki-link'>
+              <a href='https://en.wikipedia.org/wiki/Mandelbrot_set'
+              target='_blank'>
               Wikipedia
-            </a></p>
+              </a>
+            </div>
+          </p>
 
             <br>
             <h3>How to use this Fractalscope></h3>
@@ -181,6 +192,7 @@
             colors 'band' in the resulting imgage. Be sure to select <em>at least
             two colors </em> or the image will only be a single solid color! If no
             colors are selected, a default color sheme will be rendered.</p>
+            <p>Pan or zoom to rerender the image with your selected colors.</p>
           </div>
 
         </div> <!-- close Modal -->

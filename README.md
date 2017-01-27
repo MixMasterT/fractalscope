@@ -85,4 +85,7 @@ picker' panel to the right. Choose a color clicking on the color box and
 using the color picker. The 'iteration width' determines width of that
 colors 'band' in the resulting imgage. Be sure to select <em>at least
 two colors </em> or the image will only be a single solid color! If no
-colors are selected, a default color sheme will be rendered.
+colors are selected, a default color sheme will be rendered. Click the
+'X' within a color block to remove it from the color scheme.
+
+Pan or zoom to generate a new image with your selected color scheme.
