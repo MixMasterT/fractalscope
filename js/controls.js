@@ -35,7 +35,7 @@ down.onclick = slideDown;
 //zoom controls
 export const zoomFactor = 3/2;
 
-export const currentZoomDisplay = document.getElementById('zoom-factor');
+export const currentZoomDisplay = document.getElementById('magnification');
 
 export const zoomIn = () => {
   scale /= zoomFactor;

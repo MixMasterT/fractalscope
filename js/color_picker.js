@@ -3,7 +3,7 @@ import jscolor from './jscolor';
 import setColors from './set_colors';
 
 const setupColorPicker = () => {
-  const colorPicker = document.getElementById('color-picker');
+  const colorPicker = document.querySelector('.color-picker');
 
   const addColorButton = document.createElement('BUTTON');
   addColorButton.innerHTML = 'add color';
@@ -26,6 +26,12 @@ const setupColorPicker = () => {
     const newLi = document.createElement('li');
     newLi.innerHTML = `${width.value} incs`;
     newLi.style.backgroundColor = color.style.backgroundColor;
+
+    // const deleteButton = document.createElement('DIV');
+    // deleteButton.innerHTML = 'X';
+    // deleteButton.onclick = () => {
+    //   this.parentNode.remove();
+    // }
 
     if(((rgb.reduce((a, b) => parseInt(a) + parseInt(b))) / 3) < 127) {
       newLi.style.color = 'white';

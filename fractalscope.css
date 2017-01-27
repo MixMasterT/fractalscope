@@ -1,0 +1,265 @@
+/* RESET */
+html, body, section, div, button, canvas, li, ul, label,
+h3, h4, h5 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: inherit;
+  vertical-align: inherit;
+  box-sizing: inherit;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+li {
+  list-style: none;
+}
+
+body {
+  background-color: hsla(0,0%,83%,1);
+  background-image: linear-gradient(-45deg, hsla(0,0%,0%,0), hsla(0,0%,0%,.05) );
+  background-size: 5px;
+  width: 100vw;
+  font-family: 'Scada', sans-serif;
+}
+
+h1 {
+  color: hsla(0, 0%, 10%, 0.7);
+}
+
+button {
+  border: 1px solid black;
+  border-radius: 8%;
+  padding: 10px;
+  background-image: linear-gradient(180deg, hsl(0,0%,78%)  0%,
+                    hsl(0,0%,90%) 47%,
+                    hsl(0,0%,78%) 53%,
+                    hsl(0,0%,70%)100%);
+}
+
+button:hover {
+  cursor: pointer;
+  box-shadow: 2px 2px 2px 2px blue;
+}
+
+.outer-wrapper {
+  padding-top: 20px;
+  text-align: center;
+  width: 80%;
+  color: hsla(0,0%,20%,1);
+  text-shadow: hsla(0,0%,40%,.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px;
+
+  background-color: hsl(0,0%,40%);
+  box-shadow: inset hsla(0,0%,15%,  1) 0  0px 0px 4px, /* border */
+    inset hsla(0,0%,15%, .8) 0 -1px 5px 4px, /* soft SD */
+    inset hsla(0,0%,0%, .25) 0 -1px 0px 7px, /* bottom SD */
+    inset hsla(0,0%,100%,.7) 0  2px 1px 7px, /* top HL */
+
+    hsla(0,0%, 0%,.15) 0 -5px 6px 4px, /* outer SD */
+    hsla(0,0%,100%,.5) 0  5px 6px 4px; /* outer HL */
+  margin: 0 auto;
+  min-width: 675;
+}
+
+.wrapper {
+  margin: 0 auto;
+  width: 90%;
+  min-width: 700px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.main {
+  width: 500px;
+}
+
+#canvas-wrapper, .zoom, .slide, .buttons, .color-picker {
+  border: solid 3px hsla(0, 0, 6%, 58%);
+  border-radius: 8%;
+}
+
+.zoom, .slide, .buttons, .color-picker {
+
+  background-image:
+    -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%, .1) 7.5%),
+    -webkit-repeating-linear-gradient(left, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   4%, hsla(0,0%,  0%,.03) 4.5%),
+    -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.15) 2.2%),
+    linear-gradient(180deg, hsl(0,0%,78%)  0%, hsl(0,0%,90%) 47%, hsl(0,0%,78%) 53%, hsl(0,0%,70%)100%);
+}
+
+#canvas-wrapper {
+  position: relative;
+  width: 500px;
+  height: 500px;
+}
+
+#fractal, #grid {
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+#grid {
+  z-index: 2;
+}
+
+.control-panel {
+  margin-top: 20px;
+  width: 100%;
+  height: 200px;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+}
+
+.color-picker {
+  width: 100%;
+}
+
+.zoom button {
+  border: 1px solid black;
+  padding: 20px;
+}
+
+.zoom h3, h5 {
+  font-size: 18px;
+}
+
+.slide, .zoom {
+  width: 240px;
+  height: 150px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  position: relative;
+}
+
+.top, .middle, .bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.top, .bottom {
+  height: 110px;
+}
+
+.middle {
+  height: 180px;
+}
+
+.side-panel {
+  margin: 0 20px;
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.buttons, .color-picker {
+  width: 90%;
+}
+
+.buttons {
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.side-panel .buttons button {
+  width: 100%;
+}
+
+.color-picker {
+  margin-top: 20px;
+  height: 60%;
+}
+
+.color-picker h4{
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.color-picker li {
+  border-radius: 8%;
+  border: 1px solid black;
+  padding: 10px;
+  margin: auto;
+  width: 80%;
+}
+
+.color-picker form {
+  box-sizing: border-box;
+  border-radius: 8%;
+  border: 2px solid hsla(0,0,0);
+  padding: 10px;
+  width: 100%;
+}
+
+.color-picker > form label {
+  margin-top: 20px;
+}
+
+.color-picker > form label input {
+  width: 80%;
+  text-align: center;
+}
+
+#add-colors {
+  width: 90%;
+}
+
+#center-display {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#slide-up {
+  width: 45px;
+  height: 30px;
+  background: url('./images/up_arrow.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#slide-left {
+  width: 30px;
+  height: 45px;
+  background: url('./images/left_arrow.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#slide-right {
+  width: 30px;
+  height: 45px;
+  background: url('./images/right_arrow.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#slide-down {
+  width: 45px;
+  height: 30px;
+  background: url('./images/down_arrow.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}

@@ -1,7 +1,7 @@
 const drawGrid = (ctx, center, scale) => {
   // start by clearing the grid and setting the stroke style
   ctx.clearRect(0,0,500,500);
-  ctx.strokeStyle = "#222";
+  ctx.strokeStyle = "#888";
 
   //horizontal lines
   ctx.moveTo(35, 125);
@@ -31,6 +31,7 @@ const drawGrid = (ctx, center, scale) => {
 
   // Add number marking
   ctx.font = "18px Scada Sans-serif";
+  ctx.fillStyle = '#888';
 
   //set numbers based on scale and center
   const p = 2; // p for 'precision'

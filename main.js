@@ -59,17 +59,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const real = document.getElementById('real');
   const imaginary = document.getElementById('imaginary');
 
-  const updateCenterDisplay = () => {
+  const updateDisplay = () => {
     real.innerHTML = center.r.toFixed(3);
     imaginary.innerHTML = `${center.i.toFixed(3)}i`;
-    currentZoomDisplay.innerHTML = `${(3 / scale).toFixed(3)} x`;
+    currentZoomDisplay.innerHTML = `${(2 / scale).toFixed(1)} x`;
     drawGrid(gridCtx, center, scale);
     const viewPort = { scale, center };
 
     drawMandlebrot(fractalCanvas,
                     viewPort,
-                    (document.getElementById('colors-list').childNodes.length > 0 ?
-                     setColors(MAX_ITERATIONS) : DEFAULT_COLORS),
+                    (document.getElementById('colors-list')
+                    .childNodes.length > 0 ?
+                     setColors(MAX_ITERATIONS) :
+                     DEFAULT_COLORS),
                     MAX_ITERATIONS);
   };
 
@@ -82,28 +84,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const slideLeft = () => {
     center.r -= (scale * slideFactor);
-    updateCenterDisplay();
+    updateDisplay();
   };
 
   const slideRight = () => {
     center.r += (scale * slideFactor);
-    updateCenterDisplay();
+    updateDisplay();
   };
 
   const slideUp = () => {
     center.i -= (scale * slideFactor);
-    updateCenterDisplay();
+    updateDisplay();
   };
 
   const slideDown = () => {
     center.i += (scale * slideFactor);
-    updateCenterDisplay();
+    updateDisplay();
   };
 
   const recenter = () => {
     center.i = 0;
     center.r = 0;
-    updateCenterDisplay();
+    updateDisplay();
   };
 
   const left = document.getElementById('slide-left');
@@ -124,21 +126,21 @@ document.addEventListener('DOMContentLoaded', () => {
   //zoom controls
   const zoomFactor = 3/2;
 
-  const currentZoomDisplay = document.getElementById('zoom-factor');
+  const currentZoomDisplay = document.getElementById('magnification');
 
   const zoomIn = () => {
     scale /= zoomFactor;
-    updateCenterDisplay();
+    updateDisplay();
   };
 
   const zoomOut = () => {
     scale *= zoomFactor;
-    updateCenterDisplay();
+    updateDisplay();
   };
 
   const resetZoom = () => {
     scale = 2;
-    updateCenterDisplay();
+    updateDisplay();
   };
 
   // $('li').append("<input type='color' />");
@@ -180,5 +182,4 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
     }
   };
-
 });

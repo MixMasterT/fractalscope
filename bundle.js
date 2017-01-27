@@ -116,10 +116,10 @@
 	  var real = document.getElementById('real');
 	  var imaginary = document.getElementById('imaginary');
 	
-	  var updateCenterDisplay = function updateCenterDisplay() {
+	  var updateDisplay = function updateDisplay() {
 	    real.innerHTML = center.r.toFixed(3);
 	    imaginary.innerHTML = center.i.toFixed(3) + 'i';
-	    currentZoomDisplay.innerHTML = (3 / scale).toFixed(3) + ' x';
+	    currentZoomDisplay.innerHTML = (2 / scale).toFixed(1) + ' x';
 	    (0, _draw_grid2.default)(gridCtx, center, scale);
 	    var viewPort = { scale: scale, center: center };
 	
@@ -135,28 +135,28 @@
 	
 	  var slideLeft = function slideLeft() {
 	    center.r -= scale * slideFactor;
-	    updateCenterDisplay();
+	    updateDisplay();
 	  };
 	
 	  var slideRight = function slideRight() {
 	    center.r += scale * slideFactor;
-	    updateCenterDisplay();
+	    updateDisplay();
 	  };
 	
 	  var slideUp = function slideUp() {
 	    center.i -= scale * slideFactor;
-	    updateCenterDisplay();
+	    updateDisplay();
 	  };
 	
 	  var slideDown = function slideDown() {
 	    center.i += scale * slideFactor;
-	    updateCenterDisplay();
+	    updateDisplay();
 	  };
 	
 	  var recenter = function recenter() {
 	    center.i = 0;
 	    center.r = 0;
-	    updateCenterDisplay();
+	    updateDisplay();
 	  };
 	
 	  var left = document.getElementById('slide-left');
@@ -177,21 +177,21 @@
 	  //zoom controls
 	  var zoomFactor = 3 / 2;
 	
-	  var currentZoomDisplay = document.getElementById('zoom-factor');
+	  var currentZoomDisplay = document.getElementById('magnification');
 	
 	  var zoomIn = function zoomIn() {
 	    scale /= zoomFactor;
-	    updateCenterDisplay();
+	    updateDisplay();
 	  };
 	
 	  var zoomOut = function zoomOut() {
 	    scale *= zoomFactor;
-	    updateCenterDisplay();
+	    updateDisplay();
 	  };
 	
 	  var resetZoom = function resetZoom() {
 	    scale = 2;
-	    updateCenterDisplay();
+	    updateDisplay();
 	  };
 	
 	  // $('li').append("<input type='color' />");
@@ -247,7 +247,7 @@
 	var drawGrid = function drawGrid(ctx, center, scale) {
 	  // start by clearing the grid and setting the stroke style
 	  ctx.clearRect(0, 0, 500, 500);
-	  ctx.strokeStyle = "#222";
+	  ctx.strokeStyle = "#888";
 	
 	  //horizontal lines
 	  ctx.moveTo(35, 125);
@@ -277,6 +277,7 @@
 	
 	  // Add number marking
 	  ctx.font = "18px Scada Sans-serif";
+	  ctx.fillStyle = '#888';
 	
 	  //set numbers based on scale and center
 	  var p = 2; // p for 'precision'
@@ -394,7 +395,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var setupColorPicker = function setupColorPicker() {
-	  var colorPicker = document.getElementById('color-picker');
+	  var colorPicker = document.querySelector('.color-picker');
 	
 	  var addColorButton = document.createElement('BUTTON');
 	  addColorButton.innerHTML = 'add color';
@@ -417,6 +418,12 @@
 	    var newLi = document.createElement('li');
 	    newLi.innerHTML = width.value + ' incs';
 	    newLi.style.backgroundColor = color.style.backgroundColor;
+	
+	    // const deleteButton = document.createElement('DIV');
+	    // deleteButton.innerHTML = 'X';
+	    // deleteButton.onclick = () => {
+	    //   this.parentNode.remove();
+	    // }
 	
 	    if (rgb.reduce(function (a, b) {
 	      return parseInt(a) + parseInt(b);
