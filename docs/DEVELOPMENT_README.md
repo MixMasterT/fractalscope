@@ -23,6 +23,29 @@ Canvas stack:
 - grid
 - fractal
 
+### Functionality & MVP  
+
+This fractalscope will be able to:
+
+- [ ] render the Mandlebrot set image.
+- [ ] Zoom in or out on a given location in the complex plane.
+- [ ] Pan the center location.
+- [ ] Export, save, or download the image.
+
+In addition, this project will include:
+
+- [ ] A link to the Mandlebrot Set wikipedia package
+- [ ] Links to my personal page, the github repo, and my LinkedIn
+- [ ] A production Readme
+
+### Wireframes
+
+This project will be a single interactive panel with a large canvas
+element and various control panels around it. The user will be able to
+make adjustments to the image by clicking on the control panels.
+
+![wireframes](images/fractalscope_layout_wireframe.png)
+
 ### Implementation Timeline
 
 **Day 1**:
