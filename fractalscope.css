@@ -180,10 +180,11 @@ button:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  align-items: center;
 }
 
 .side-panel .buttons button {
-  width: 100%;
+  width: 80%;
 }
 
 .color-picker {
