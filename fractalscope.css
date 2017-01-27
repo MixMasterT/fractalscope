@@ -28,6 +28,7 @@ body {
 }
 
 h1 {
+  font-size: 48px;
   color: hsla(0, 0%, 10%, 0.7);
 }
 
@@ -83,13 +84,16 @@ button:hover {
   border-radius: 8%;
 }
 
-.zoom, .slide, .buttons, .color-picker {
-
+.zoom, .slide, .buttons, .color-picker, .link {
   background-image:
     -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%, .1) 7.5%),
     -webkit-repeating-linear-gradient(left, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   4%, hsla(0,0%,  0%,.03) 4.5%),
     -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.15) 2.2%),
     linear-gradient(180deg, hsl(0,0%,78%)  0%, hsl(0,0%,90%) 47%, hsl(0,0%,78%) 53%, hsl(0,0%,70%)100%);
+
+    border: 2px solid #444;
+    box-shadow: 1px 2px #222;
+
 }
 
 #canvas-wrapper {
@@ -110,9 +114,8 @@ button:hover {
 }
 
 .control-panel {
-  margin-top: 20px;
+  margin: 20px 0;
   width: 100%;
-  height: 200px;
   text-align: center;
   display: flex;
   flex-direction: row;
@@ -159,11 +162,12 @@ button:hover {
 }
 
 .side-panel {
-  margin: 0 20px;
+  margin: 0 15px;
   width: 120px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: space-between;
+  justify-content: space-around;
 }
 
 .buttons, .color-picker {
@@ -171,7 +175,7 @@ button:hover {
 }
 
 .buttons {
-  height: 30%;
+  height: 35%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -216,6 +220,19 @@ button:hover {
   text-align: center;
 }
 
+.link {
+  border-radius: 12%;
+  padding: 10px 10px 6px 10px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 #add-colors {
   width: 90%;
 }
@@ -244,6 +261,15 @@ button:hover {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+#download {
+  font-size: 18px;
+  text-decoration: none;
+  position: relative;
+  height: 30px;
+  top: 10px;
+  right: 180px;
 }
 
 #slide-right {

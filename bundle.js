@@ -233,6 +233,12 @@
 	        break;
 	    }
 	  };
+	
+	  var downloadButton = document.getElementById('download');
+	  downloadButton.addEventListener('click', function (e) {
+	    var dataURL = fractalCanvas.toDataURL('image/png');
+	    downloadButton.href = dataURL;
+	  });
 	});
 
 /***/ },

@@ -182,4 +182,10 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
     }
   };
+
+  const downloadButton = document.getElementById('download');
+  downloadButton.addEventListener('click', function (e) {
+    var dataURL = fractalCanvas.toDataURL('image/png');
+    downloadButton.href = dataURL;
+  });
 });
