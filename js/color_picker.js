@@ -27,11 +27,15 @@ const setupColorPicker = () => {
     newLi.innerHTML = `${width.value} incs`;
     newLi.style.backgroundColor = color.style.backgroundColor;
 
-    // const deleteButton = document.createElement('DIV');
-    // deleteButton.innerHTML = 'X';
-    // deleteButton.onclick = () => {
-    //   this.parentNode.remove();
-    // }
+    const deleteButton = document.createElement('DIV');
+    deleteButton.innerHTML = 'X';
+    deleteButton.onclick = (e) => {
+      $(e.target).closest('li').remove();
+    }
+
+
+    
+    newLi.appendChild(deleteButton);
 
     if(((rgb.reduce((a, b) => parseInt(a) + parseInt(b))) / 3) < 127) {
       newLi.style.color = 'white';

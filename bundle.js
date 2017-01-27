@@ -419,11 +419,13 @@
 	    newLi.innerHTML = width.value + ' incs';
 	    newLi.style.backgroundColor = color.style.backgroundColor;
 	
-	    // const deleteButton = document.createElement('DIV');
-	    // deleteButton.innerHTML = 'X';
-	    // deleteButton.onclick = () => {
-	    //   this.parentNode.remove();
-	    // }
+	    var deleteButton = document.createElement('DIV');
+	    deleteButton.innerHTML = 'X';
+	    deleteButton.onclick = function (e) {
+	      $(e.target).closest('li').remove();
+	    };
+	
+	    newLi.appendChild(deleteButton);
 	
 	    if (rgb.reduce(function (a, b) {
 	      return parseInt(a) + parseInt(b);
