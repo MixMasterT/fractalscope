@@ -68,11 +68,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var DEFAULT_COLORS = { 2: [0, 0, 0], 10: [255, 0, 0],
-	  100: [0, 0, 255],
-	  250: [0, 255, 255],
-	  500: [255, 255, 255] };
-	
+	//
+	// const DEFAULT_COLORS =  { 2: [0, 0, 0], 10: [255, 0, 0],
+	//   100: [0, 0, 255],
+	//   250: [0, 255, 255],
+	//   500: [255, 255, 255] };
 	var MAX_ITERATIONS = 500;
 	
 	var SLIDE_FACTOR = 1 / 8;
@@ -95,8 +95,10 @@
 	  //Set initial scale
 	  var scale = 2;
 	
+	  var currentColors = (0, _set_colors2.default)(MAX_ITERATIONS);
+	
 	  (0, _draw_grid2.default)(gridCtx, center, scale);
-	  (0, _draw_mandlebrot2.default)(fractalCanvas, { center: center, scale: scale }, DEFAULT_COLORS, MAX_ITERATIONS);
+	  (0, _draw_mandlebrot2.default)(fractalCanvas, { center: center, scale: scale }, currentColors, MAX_ITERATIONS);
 	
 	  //Button to Show  and hide Grid
 	  var showGridButton = document.getElementById('grid-on-off');
@@ -111,6 +113,11 @@
 	    }
 	  };
 	
+	  var colorsList = document.getElementById('colors-list');
+	  colorsList.addEventListener('DOMSubtreeModified', function (e) {
+	    currentColors = (0, _set_colors2.default)(MAX_ITERATIONS);
+	  });
+	
 	  var real = document.getElementById('real');
 	  var imaginary = document.getElementById('imaginary');
 	
@@ -120,8 +127,7 @@
 	    currentZoomDisplay.innerHTML = (2 / scale).toFixed(1) + ' x';
 	    (0, _draw_grid2.default)(gridCtx, center, scale);
 	    var viewPort = { scale: scale, center: center };
-	
-	    (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, document.getElementById('colors-list').childNodes.length > 0 ? (0, _set_colors2.default)(MAX_ITERATIONS) : DEFAULT_COLORS, MAX_ITERATIONS);
+	    (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, currentColors, MAX_ITERATIONS);
 	  };
 	
 	  var maxIterations = document.getElementById('max-iterations');
@@ -229,6 +235,30 @@
 	      case 82:
 	        resetZoom();
 	        break;
+	    }
+	  };
+	
+	  var rotateColorsButton = document.getElementById('rotate-colors');
+	  var rotationInterval = void 0;
+	  rotateColorsButton.onclick = function (e) {
+	    if (rotateColorsButton.innerHTML === 'Rotate Colors') {
+	      rotateColorsButton.innerHTML = 'Stop Rotation';
+	      rotationInterval = setInterval(function () {
+	        var colorKeys = Object.keys(currentColors);
+	        var newColors = {};
+	        for (var i = 0; i < colorKeys.length; i++) {
+	          var newKey = colorKeys[i] - 1;
+	          if (newKey < 0) {
+	            newKey += MAX_ITERATIONS;
+	          }
+	          newColors[newKey] = currentColors[colorKeys[i]];
+	        }
+	        currentColors = newColors;
+	        updateDisplay();
+	      }, 50);
+	    } else {
+	      rotateColorsButton.innerHTML = 'Rotate Colors';
+	      clearInterval(rotationInterval);
 	    }
 	  };
 	
@@ -439,6 +469,7 @@
 	    e.preventDefault();
 	
 	    var color = document.getElementById('color');
+	    // this is 'width' of color band in iterations, not a pixel value
 	    var width = document.getElementById('width');
 	
 	    var rgb = color.style.backgroundColor.match(/[\d]{1,3}/g);
@@ -463,7 +494,6 @@
 	
 	    //get first li in colorsList
 	    var firstLi = colorsList.childNodes[0];
-	    // debugger;
 	
 	    if (firstLi) {
 	      colorsList.insertBefore(newLi, firstLi);
@@ -2188,29 +2218,50 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
 	var setColors = function setColors(max) {
-	  var newColorsObj = {};
-	  var currentSum = 0;
 	
 	  var colorsList = document.getElementById('colors-list');
-	  var colors = [].slice.call(colorsList.getElementsByTagName('li'));
 	
-	  while (currentSum < max) {
-	    colors.forEach(function (color) {
-	      var incs = parseInt(color.innerHTML);
+	  if (colorsList.childNodes.length > 1) {
+	    var _ret = function () {
+	      var colors = [].slice.call(colorsList.getElementsByTagName('li'));
 	
-	      currentSum += incs;
+	      var newColorsObj = {};
+	      var currentSum = 0;
 	
-	      var rgbStrings = color.style.backgroundColor.match(/[\d]{1,3}/g);
-	      var rgbInts = [];
-	      rgbStrings.forEach(function (str, idx) {
-	        rgbInts[idx] = parseInt(str);
-	      });
+	      while (currentSum < max) {
+	        colors.forEach(function (color) {
+	          var incs = parseInt(color.innerHTML);
 	
-	      newColorsObj[currentSum] = rgbInts;
-	    });
+	          currentSum += incs;
+	
+	          var rgbStrings = color.style.backgroundColor.match(/[\d]{1,3}/g);
+	          var rgbInts = [];
+	          rgbStrings.forEach(function (str, idx) {
+	            rgbInts[idx] = parseInt(str);
+	          });
+	
+	          newColorsObj[currentSum] = rgbInts;
+	        });
+	      }
+	      return {
+	        v: newColorsObj
+	      };
+	    }();
+	
+	    if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	  } else {
+	    return { 20: [0, 0, 0], 40: [203, 151, 37], 60: [0, 0, 0], 80: [229, 184, 46],
+	      100: [255, 255, 255], 120: [0, 0, 0], 140: [203, 151, 37], 160: [0, 0, 0],
+	      180: [229, 184, 46], 200: [255, 255, 255], 220: [0, 0, 0], 240: [203, 151, 37],
+	      260: [0, 0, 0], 280: [229, 184, 46], 300: [255, 255, 255], 320: [0, 0, 0],
+	      340: [203, 151, 37], 360: [0, 0, 0], 380: [229, 184, 46], 400: [255, 255, 255],
+	      420: [0, 0, 0], 440: [203, 151, 37], 460: [0, 0, 0], 480: [229, 184, 46],
+	      500: [255, 255, 255] };
 	  }
-	  return newColorsObj;
 	};
 	
 	exports.default = setColors;

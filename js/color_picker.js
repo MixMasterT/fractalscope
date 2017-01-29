@@ -19,6 +19,7 @@ const setupColorPicker = () => {
     e.preventDefault();
 
     const color = document.getElementById('color');
+    // this is 'width' of color band in iterations, not a pixel value
     const width = document.getElementById('width');
 
     const rgb = color.style.backgroundColor.match(/[\d]{1,3}/g);
@@ -33,8 +34,6 @@ const setupColorPicker = () => {
       $(e.target).closest('li').remove();
     }
 
-
-    
     newLi.appendChild(deleteButton);
 
     if(((rgb.reduce((a, b) => parseInt(a) + parseInt(b))) / 3) < 127) {
@@ -43,7 +42,6 @@ const setupColorPicker = () => {
 
     //get first li in colorsList
     const firstLi = colorsList.childNodes[0];
-    // debugger;
 
     if(firstLi) {
       colorsList.insertBefore(newLi, firstLi);

@@ -7,12 +7,11 @@ import drawMandlebrot from './js/draw_mandlebrot';
 import setupColorPicker from './js/color_picker';
 
 import setColors from './js/set_colors';
-
-let DEFAULT_COLORS =  { 2: [0, 0, 0], 10: [255, 0, 0],
-  100: [0, 0, 255],
-  250: [0, 255, 255],
-  500: [255, 255, 255] };
-
+//
+// const DEFAULT_COLORS =  { 2: [0, 0, 0], 10: [255, 0, 0],
+//   100: [0, 0, 255],
+//   250: [0, 255, 255],
+//   500: [255, 255, 255] };
 let MAX_ITERATIONS = 500;
 
 const SLIDE_FACTOR = (1 / 8);
@@ -35,10 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
   //Set initial scale
   let scale = 2;
 
+  let currentColors = setColors(MAX_ITERATIONS);
+
   drawGrid(gridCtx, center, scale);
   drawMandlebrot(fractalCanvas,
-                  { center, scale },
-                  DEFAULT_COLORS,
+                 { center, scale },
+                  currentColors,
                   MAX_ITERATIONS);
 
   //Button to Show  and hide Grid
@@ -54,6 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const colorsList = document.getElementById('colors-list');
+  colorsList.addEventListener('DOMSubtreeModified', (e) => {
+    currentColors = setColors(MAX_ITERATIONS);
+  });
+
   const real = document.getElementById('real');
   const imaginary = document.getElementById('imaginary');
 
@@ -63,14 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
     currentZoomDisplay.innerHTML = `${(2 / scale).toFixed(1)} x`;
     drawGrid(gridCtx, center, scale);
     const viewPort = { scale, center };
-
     drawMandlebrot(fractalCanvas,
-                    viewPort,
-                    (document.getElementById('colors-list')
-                    .childNodes.length > 0 ?
-                     setColors(MAX_ITERATIONS) :
-                     DEFAULT_COLORS),
-                     MAX_ITERATIONS);
+                   viewPort,
+                   currentColors,
+                   MAX_ITERATIONS);
   };
 
   const maxIterations = document.getElementById('max-iterations');
@@ -181,8 +183,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const rotateColorsButton = document.getElementById('rotate-colors');
+  let rotationInterval;
+  rotateColorsButton.onclick = (e) => {
+    if (rotateColorsButton.innerHTML === 'Rotate Colors') {
+      rotateColorsButton.innerHTML = 'Stop Rotation';
+      rotationInterval = setInterval(() => {
+        const colorKeys = Object.keys(currentColors);
+        const newColors = {};
+        for (let i = 0; i < colorKeys.length; i++) {
+          let newKey = colorKeys[i] - 1;
+          if (newKey < 0) {
+            newKey += MAX_ITERATIONS;
+          }
+          newColors[newKey] = currentColors[colorKeys[i]];
+        }
+        currentColors = newColors;
+        updateDisplay();
+      }, 50);
+    } else {
+      rotateColorsButton.innerHTML = 'Rotate Colors';
+      clearInterval(rotationInterval);
+    }
+  }
+
   const downloadButton = document.getElementById('download');
-  downloadButton.addEventListener('click', function (e) {
+  downloadButton.addEventListener('click', (e) => {
     var dataURL = fractalCanvas.toDataURL('image/png');
     downloadButton.href = dataURL;
   });
