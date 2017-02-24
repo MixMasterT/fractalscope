@@ -18,15 +18,27 @@ const setupColorPicker = () => {
   addColorForm.onsubmit = (e) => {
     e.preventDefault();
 
+    const hexToRgb = (hex) => {
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16)
+      ] : null;
+    }
+
     const color = document.getElementById('color');
+
     // this is 'width' of color band in iterations, not a pixel value
     const width = document.getElementById('width');
 
-    const rgb = color.style.backgroundColor.match(/[\d]{1,3}/g);
+    const rgb = hexToRgb(color.value);
 
     const newLi = document.createElement('li');
     newLi.innerHTML = `${width.value} incs`;
-    newLi.style.backgroundColor = color.style.backgroundColor;
+    newLi.style.backgroundColor = color.value;
+
+    newLi.data = rgb;
 
     const deleteButton = document.createElement('DIV');
     deleteButton.innerHTML = 'X';
@@ -34,11 +46,15 @@ const setupColorPicker = () => {
       $(e.target).closest('li').remove();
     }
 
-    newLi.appendChild(deleteButton);
+    let colorSum = 0;
+    Object.keys(rgb).forEach((color) => { colorSum += rgb[color] })
+    const darknessAvg = colorSum / 3;
 
-    if(((rgb.reduce((a, b) => parseInt(a) + parseInt(b))) / 3) < 127) {
+    if(darknessAvg < 127) {
       newLi.style.color = 'white';
     }
+
+    newLi.appendChild(deleteButton);
 
     //get first li in colorsList
     const firstLi = colorsList.childNodes[0];

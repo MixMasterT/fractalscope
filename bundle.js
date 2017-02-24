@@ -126,14 +126,12 @@ var setColors = function setColors(max) {
           var incs = parseInt(color.innerHTML);
 
           currentSum += incs;
+          //
+          // const rgbArr = color.data;
+          // const rgbInts = [];
+          // Object.keys(rgbData).forEach((k, i) => { rgbInts[i] = rgbData[k] });
 
-          var rgbStrings = color.style.backgroundColor.match(/[\d]{1,3}/g);
-          var rgbInts = [];
-          rgbStrings.forEach(function (str, idx) {
-            rgbInts[idx] = parseInt(str);
-          });
-
-          newColorsObj[currentSum] = rgbInts;
+          newColorsObj[currentSum] = color.data;
         });
       }
       return {
@@ -192,15 +190,23 @@ var setupColorPicker = function setupColorPicker() {
   addColorForm.onsubmit = function (e) {
     e.preventDefault();
 
+    var hexToRgb = function hexToRgb(hex) {
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : null;
+    };
+
     var color = document.getElementById('color');
+
     // this is 'width' of color band in iterations, not a pixel value
     var width = document.getElementById('width');
 
-    var rgb = color.style.backgroundColor.match(/[\d]{1,3}/g);
+    var rgb = hexToRgb(color.value);
 
     var newLi = document.createElement('li');
     newLi.innerHTML = width.value + ' incs';
-    newLi.style.backgroundColor = color.style.backgroundColor;
+    newLi.style.backgroundColor = color.value;
+
+    newLi.data = rgb;
 
     var deleteButton = document.createElement('DIV');
     deleteButton.innerHTML = 'X';
@@ -208,13 +214,17 @@ var setupColorPicker = function setupColorPicker() {
       $(e.target).closest('li').remove();
     };
 
-    newLi.appendChild(deleteButton);
+    var colorSum = 0;
+    Object.keys(rgb).forEach(function (color) {
+      colorSum += rgb[color];
+    });
+    var darknessAvg = colorSum / 3;
 
-    if (rgb.reduce(function (a, b) {
-      return parseInt(a) + parseInt(b);
-    }) / 3 < 127) {
+    if (darknessAvg < 127) {
       newLi.style.color = 'white';
     }
+
+    newLi.appendChild(deleteButton);
 
     //get first li in colorsList
     var firstLi = colorsList.childNodes[0];
