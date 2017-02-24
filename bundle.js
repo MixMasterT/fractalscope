@@ -2085,6 +2085,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var gridCanvas = document.getElementById('grid');
   var clickCanvas = document.getElementById('click');
 
+  var fractalCtx = fractalCanvas.getContext("2d");
   var gridCtx = gridCanvas.getContext("2d");
 
   //set center
@@ -2213,15 +2214,64 @@ document.addEventListener('DOMContentLoaded', function () {
   zoomBack.onclick = zoomOut;
 
   // Add listeners to #click canvas
-  clickCanvas.onclick = function (e) {
+  // 
+  // let isDown = false;
+  // let dragStartX;
+  // let dragStartY;
+  // let mouseX;
+  // let mouseY;
+  //
+  // clickCanvas.onmousedown = (e) => {
+  //   e.stopPropagation();
+  //   const rect = clickCanvas.getBoundingClientRect();
+  //   dragStartX = Math.floor(e.clientX - rect.left);
+  //   dragStartY = Math.floor(e.clientY - rect.top);
+  //   isDown = true;
+  //
+  //   mouseX = dragStartX;
+  //   mouseY = dragStartY;
+  // }
+  //
+  // clickCanvas.onmousemove = (e) => {
+  //   if (!isDown) {
+  //     return;
+  //   }
+  //   const rect = clickCanvas.getBoundingClientRect();
+  //   mouseX = Math.floor(e.clientX - rect.left);
+  //   mouseY = Math.floor(e.clientY - rect.top);
+  //
+  //   center.r = center.r + ((dragStartX - mouseX) / 500) * scale;
+  //   center.i = center.i + ((mouseY - dragStartY) / 500) * scale;
+  //
+  //   updateDisplay();
+  // }
+  //
+  // const handleRelease = (e) => {
+  //   const rect = clickCanvas.getBoundingClientRect();
+  //   const finishX = Math.floor(e.clientX - rect.left);
+  //   const finishY = Math.floor(e.clientY - rect.top);
+  //
+  //   center.r = center.r + ((dragStartX - finishX) / 500) * scale;
+  //   center.i = center.i + ((finishY - dragStartY) / 500) * scale;
+  //
+  //   updateDisplay();
+  //
+  //   isDown = false;
+  // }
+  //
+  // clickCanvas.onmouseup = handleRelease;
+  // clickCanvas.onmouseout = handleRelease;
+
+  clickCanvas.ondblclick = function (e) {
+    e.preventDefault();
+    e.stopPropagation();
     var rect = clickCanvas.getBoundingClientRect();
     var clickX = Math.floor(e.clientX - rect.left);
     var clickY = Math.floor(e.clientY - rect.top);
 
     center.r = center.r - scale + clickX / 500 * 2 * scale;
     center.i = center.i + scale - clickY / 500 * 2 * scale;
-
-    updateDisplay();
+    zoomIn();
   };
 
   // Key binding for slide and zoom actions
