@@ -2083,6 +2083,7 @@ var ZOOM_FACTOR = 3 / 2;
 document.addEventListener('DOMContentLoaded', function () {
   var fractalCanvas = document.getElementById('fractal');
   var gridCanvas = document.getElementById('grid');
+  var clickCanvas = document.getElementById('click');
 
   var gridCtx = gridCanvas.getContext("2d");
 
@@ -2203,7 +2204,6 @@ document.addEventListener('DOMContentLoaded', function () {
     resetZoom();
   };
 
-  // $('li').append("<input type='color' />");
   (0, _color_picker2.default)();
 
   var zoom = document.getElementById('in');
@@ -2211,6 +2211,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var zoomBack = document.getElementById('out');
   zoomBack.onclick = zoomOut;
+
+  // Add listeners to #click canvas
+  clickCanvas.onclick = function (e) {
+    var rect = clickCanvas.getBoundingClientRect();
+    var clickX = Math.floor(e.clientX - rect.left);
+    var clickY = Math.floor(e.clientY - rect.top);
+
+    center.r = center.r - scale + clickX / 500 * 2 * scale;
+    center.i = center.i + scale - clickY / 500 * 2 * scale;
+
+    updateDisplay();
+  };
 
   // Key binding for slide and zoom actions
   document.onkeydown = function (e) {

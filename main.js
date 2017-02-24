@@ -17,6 +17,7 @@ const ZOOM_FACTOR = (3 / 2);
 document.addEventListener('DOMContentLoaded', () => {
   const fractalCanvas = document.getElementById('fractal');
   const gridCanvas = document.getElementById('grid');
+  const clickCanvas = document.getElementById('click');
 
   const gridCtx = gridCanvas.getContext("2d");
 
@@ -143,7 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
     resetZoom();
   }
 
-  // $('li').append("<input type='color' />");
   setupColorPicker();
 
   const zoom = document.getElementById('in');
@@ -151,6 +151,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const zoomBack = document.getElementById('out');
   zoomBack.onclick = zoomOut;
+
+  // Add listeners to #click canvas
+  clickCanvas.onclick = (e) => {
+    const rect = clickCanvas.getBoundingClientRect();
+    const clickX = Math.floor(e.clientX - rect.left);
+    const clickY = Math.floor(e.clientY - rect.top);
+
+    center.r = (center.r - scale) + (clickX / 500) * 2 * scale;
+    center.i = (center.i + scale) - (clickY / 500) * 2 * scale;
+
+    updateDisplay();
+  }
 
   // Key binding for slide and zoom actions
   document.onkeydown= (e) => {
