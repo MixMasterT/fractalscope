@@ -158,6 +158,10 @@ button:hover {
   height: 110px;
 }
 
+.zoom .bottom {
+  justify-content: space-around;
+}
+
 .middle {
   height: 180px;
 }

@@ -7,11 +7,7 @@ import drawMandlebrot from './js/draw_mandlebrot';
 import setupColorPicker from './js/color_picker';
 
 import setColors from './js/set_colors';
-//
-// const DEFAULT_COLORS =  { 2: [0, 0, 0], 10: [255, 0, 0],
-//   100: [0, 0, 255],
-//   250: [0, 255, 255],
-//   500: [255, 255, 255] };
+
 let MAX_ITERATIONS = 500;
 
 const SLIDE_FACTOR = (1 / 8);
@@ -80,6 +76,26 @@ document.addEventListener('DOMContentLoaded', () => {
     MAX_ITERATIONS = e.target.value;
   };
 
+  //zoom controls
+  const zoomFactor = 3/2;
+
+  const currentZoomDisplay = document.getElementById('magnification');
+
+  const zoomIn = () => {
+    scale /= zoomFactor;
+    updateDisplay();
+  };
+
+  const zoomOut = () => {
+    scale *= zoomFactor;
+    updateDisplay();
+  };
+
+  const resetZoom = () => {
+    scale = 2;
+    updateDisplay();
+  };
+
   const slideFactor = (1 / 8);
 
   const slideLeft = () => {
@@ -121,36 +137,17 @@ document.addEventListener('DOMContentLoaded', () => {
   down.onclick = slideDown;
 
   const recenterButton = document.getElementById('recenter');
-  recenterButton.onclick = recenter;
-
-  //zoom controls
-  const zoomFactor = 3/2;
-
-  const currentZoomDisplay = document.getElementById('magnification');
-
-  const zoomIn = () => {
-    scale /= zoomFactor;
-    updateDisplay();
-  };
-
-  const zoomOut = () => {
-    scale *= zoomFactor;
-    updateDisplay();
-  };
-
-  const resetZoom = () => {
-    scale = 2;
-    updateDisplay();
-  };
+  recenterButton.onclick = () => {
+    center.i = 0;
+    center.r = 0;
+    resetZoom();
+  }
 
   // $('li').append("<input type='color' />");
   setupColorPicker();
 
   const zoom = document.getElementById('in');
   zoom.onclick = zoomIn;
-
-  const zoomReset = document.getElementById('reset-zoom');
-  zoomReset.onclick = resetZoom;
 
   const zoomBack = document.getElementById('out');
   zoomBack.onclick = zoomOut;
@@ -184,7 +181,9 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const rotateColorsButton = document.getElementById('rotate-colors');
+
   let rotationInterval;
+
   rotateColorsButton.onclick = (e) => {
     if (rotateColorsButton.innerHTML === 'Rotate Colors') {
       rotateColorsButton.innerHTML = 'Stop Rotation';
