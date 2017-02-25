@@ -103,7 +103,7 @@ button:hover {
   height: 500px;
 }
 
-#fractal, #grid {
+#fractal, #grid, #click {
   z-index: 1;
   position: absolute;
   left: 0;
@@ -112,6 +112,10 @@ button:hover {
 
 #grid {
   z-index: 2;
+}
+
+#click {
+  z-index: 3;
 }
 
 .control-panel {
@@ -156,6 +160,10 @@ button:hover {
 
 .top, .bottom {
   height: 110px;
+}
+
+.zoom .bottom {
+  justify-content: space-around;
 }
 
 .middle {

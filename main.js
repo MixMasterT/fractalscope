@@ -7,11 +7,7 @@ import drawMandlebrot from './js/draw_mandlebrot';
 import setupColorPicker from './js/color_picker';
 
 import setColors from './js/set_colors';
-//
-// const DEFAULT_COLORS =  { 2: [0, 0, 0], 10: [255, 0, 0],
-//   100: [0, 0, 255],
-//   250: [0, 255, 255],
-//   500: [255, 255, 255] };
+
 let MAX_ITERATIONS = 500;
 
 const SLIDE_FACTOR = (1 / 8);
@@ -21,7 +17,9 @@ const ZOOM_FACTOR = (3 / 2);
 document.addEventListener('DOMContentLoaded', () => {
   const fractalCanvas = document.getElementById('fractal');
   const gridCanvas = document.getElementById('grid');
+  const clickCanvas = document.getElementById('click');
 
+  const fractalCtx = fractalCanvas.getContext("2d");
   const gridCtx = gridCanvas.getContext("2d");
 
   //set center
@@ -80,6 +78,26 @@ document.addEventListener('DOMContentLoaded', () => {
     MAX_ITERATIONS = e.target.value;
   };
 
+  //zoom controls
+  const zoomFactor = 3/2;
+
+  const currentZoomDisplay = document.getElementById('magnification');
+
+  const zoomIn = () => {
+    scale /= zoomFactor;
+    updateDisplay();
+  };
+
+  const zoomOut = () => {
+    scale *= zoomFactor;
+    updateDisplay();
+  };
+
+  const resetZoom = () => {
+    scale = 2;
+    updateDisplay();
+  };
+
   const slideFactor = (1 / 8);
 
   const slideLeft = () => {
@@ -121,39 +139,80 @@ document.addEventListener('DOMContentLoaded', () => {
   down.onclick = slideDown;
 
   const recenterButton = document.getElementById('recenter');
-  recenterButton.onclick = recenter;
+  recenterButton.onclick = () => {
+    center.i = 0;
+    center.r = 0;
+    resetZoom();
+  }
 
-  //zoom controls
-  const zoomFactor = 3/2;
-
-  const currentZoomDisplay = document.getElementById('magnification');
-
-  const zoomIn = () => {
-    scale /= zoomFactor;
-    updateDisplay();
-  };
-
-  const zoomOut = () => {
-    scale *= zoomFactor;
-    updateDisplay();
-  };
-
-  const resetZoom = () => {
-    scale = 2;
-    updateDisplay();
-  };
-
-  // $('li').append("<input type='color' />");
   setupColorPicker();
 
   const zoom = document.getElementById('in');
   zoom.onclick = zoomIn;
 
-  const zoomReset = document.getElementById('reset-zoom');
-  zoomReset.onclick = resetZoom;
-
   const zoomBack = document.getElementById('out');
   zoomBack.onclick = zoomOut;
+
+  // Add listeners to #click canvas
+  // 
+  // let isDown = false;
+  // let dragStartX;
+  // let dragStartY;
+  // let mouseX;
+  // let mouseY;
+  //
+  // clickCanvas.onmousedown = (e) => {
+  //   e.stopPropagation();
+  //   const rect = clickCanvas.getBoundingClientRect();
+  //   dragStartX = Math.floor(e.clientX - rect.left);
+  //   dragStartY = Math.floor(e.clientY - rect.top);
+  //   isDown = true;
+  //
+  //   mouseX = dragStartX;
+  //   mouseY = dragStartY;
+  // }
+  //
+  // clickCanvas.onmousemove = (e) => {
+  //   if (!isDown) {
+  //     return;
+  //   }
+  //   const rect = clickCanvas.getBoundingClientRect();
+  //   mouseX = Math.floor(e.clientX - rect.left);
+  //   mouseY = Math.floor(e.clientY - rect.top);
+  //
+  //   center.r = center.r + ((dragStartX - mouseX) / 500) * scale;
+  //   center.i = center.i + ((mouseY - dragStartY) / 500) * scale;
+  //
+  //   updateDisplay();
+  // }
+  //
+  // const handleRelease = (e) => {
+  //   const rect = clickCanvas.getBoundingClientRect();
+  //   const finishX = Math.floor(e.clientX - rect.left);
+  //   const finishY = Math.floor(e.clientY - rect.top);
+  //
+  //   center.r = center.r + ((dragStartX - finishX) / 500) * scale;
+  //   center.i = center.i + ((finishY - dragStartY) / 500) * scale;
+  //
+  //   updateDisplay();
+  //
+  //   isDown = false;
+  // }
+  //
+  // clickCanvas.onmouseup = handleRelease;
+  // clickCanvas.onmouseout = handleRelease;
+
+  clickCanvas.ondblclick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const rect = clickCanvas.getBoundingClientRect();
+    const clickX = Math.floor(e.clientX - rect.left);
+    const clickY = Math.floor(e.clientY - rect.top);
+
+    center.r = (center.r - scale) + (clickX / 500) * 2 * scale;
+    center.i = (center.i + scale) - (clickY / 500) * 2 * scale;
+    zoomIn();
+  }
 
   // Key binding for slide and zoom actions
   document.onkeydown= (e) => {
@@ -184,7 +243,9 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const rotateColorsButton = document.getElementById('rotate-colors');
+
   let rotationInterval;
+
   rotateColorsButton.onclick = (e) => {
     if (rotateColorsButton.innerHTML === 'Rotate Colors') {
       rotateColorsButton.innerHTML = 'Stop Rotation';

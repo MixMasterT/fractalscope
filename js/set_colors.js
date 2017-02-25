@@ -13,12 +13,12 @@ const setColors = (max) => {
         const incs = parseInt(color.innerHTML);
 
         currentSum += incs;
+        //
+        // const rgbArr = color.data;
+        // const rgbInts = [];
+        // Object.keys(rgbData).forEach((k, i) => { rgbInts[i] = rgbData[k] });
 
-        const rgbStrings = color.style.backgroundColor.match(/[\d]{1,3}/g);
-        const rgbInts = [];
-        rgbStrings.forEach((str, idx) => { rgbInts[idx] = parseInt(str); });
-
-        newColorsObj[currentSum] = rgbInts;
+        newColorsObj[currentSum] = color.data;
       })
     }
     return newColorsObj;
