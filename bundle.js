@@ -319,20 +319,10 @@ var drawMandlebrot = function drawMandlebrot(canvas, mandleCache, colorsObj, max
   var height = canvas.height;
   var imgData = ctx.getImageData(0, 0, width, height);
   var cutoffs = Object.keys(colorsObj);
-  // const centerR = viewPort.center.r;
-  // const centerI = viewPort.center.i;
-  // const scale = viewPort.scale;
 
   // loop over pixels on canvas, mapping each pixel to a Complex numbers
   // move by 4s because each pixel has 4 values for R, G, B and Alpha
   for (var j = 0; j < imgData.data.length; j += 4) {
-    // const x = (j / 4) % width;
-    // const y = ((j / 4) - x)/ width;
-    //
-    // const r = (centerR - scale) + (x / width) * 2 * scale;
-    // const i = (centerI + scale) - (y / width) * 2 * scale;
-    //
-    // const incsToEscape = expandMandlebrot(r, i, max);
     var incsToEscape = mandleCache[Math.floor(j / 4)];
 
     for (var k = 0; k < cutoffs.length; k++) {
@@ -2403,6 +2393,7 @@ var getMandleCache = function getMandleCache(canvas, viewPort, max) {
 
     mandleCache.push(incsToEscape);
   }
+  console.log("mandleCache reset");
   return mandleCache;
 };
 
