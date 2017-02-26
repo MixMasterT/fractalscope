@@ -32,13 +32,16 @@ document.addEventListener('DOMContentLoaded', () => {
   //Set initial scale
   let scale = 2;
 
+  //Set global viewPort variable
+  const viewPort = { center, scale }
+
   let currentColors = setColors(MAX_ITERATIONS);
 
   drawGrid(gridCtx, center, scale);
   drawMandlebrot(fractalCanvas,
-                 { center, scale },
-                  currentColors,
-                  MAX_ITERATIONS);
+                 viewPort,
+                 currentColors,
+                 MAX_ITERATIONS);
 
   //Button to Show  and hide Grid
   const showGridButton = document.getElementById('grid-on-off');
@@ -66,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
     imaginary.innerHTML = `${center.i.toFixed(3)}i`;
     currentZoomDisplay.innerHTML = `${(2 / scale).toFixed(1)} x`;
     drawGrid(gridCtx, center, scale);
-    const viewPort = { scale, center };
     drawMandlebrot(fractalCanvas,
                    viewPort,
                    currentColors,
@@ -78,51 +80,46 @@ document.addEventListener('DOMContentLoaded', () => {
     MAX_ITERATIONS = e.target.value;
   };
 
-  //zoom controls
-  // const zoomFactor = 3/2;
-
   const currentZoomDisplay = document.getElementById('magnification');
 
   const zoomIn = () => {
-    scale /= ZOOM_FACTOR;
+    viewPort.scale /= ZOOM_FACTOR;
     updateDisplay();
   };
 
   const zoomOut = () => {
-    scale *= ZOOM_FACTOR;
+    viewPort.scale *= ZOOM_FACTOR;
     updateDisplay();
   };
 
   const resetZoom = () => {
-    scale = 2;
+    viewPort.scale = 2;
     updateDisplay();
   };
 
-  // const slideFactor = (1 / 8);
-
   const slideLeft = () => {
-    center.r -= (scale * SLIDE_FACTOR);
+    viewPort.center.r -= (scale * SLIDE_FACTOR);
     updateDisplay();
   };
 
   const slideRight = () => {
-    center.r += (scale * SLIDE_FACTOR);
+    viewPort.center.r += (scale * SLIDE_FACTOR);
     updateDisplay();
   };
 
   const slideUp = () => {
-    center.i -= (scale * SLIDE_FACTOR);
+    viewPort.center.i -= (scale * SLIDE_FACTOR);
     updateDisplay();
   };
 
   const slideDown = () => {
-    center.i += (scale * SLIDE_FACTOR);
+    viewPort.center.i += (scale * SLIDE_FACTOR);
     updateDisplay();
   };
 
   const recenter = () => {
-    center.i = 0;
-    center.r = 0;
+    viewPort.center.i = 0;
+    viewPort.center.r = 0;
     updateDisplay();
   };
 
@@ -140,8 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const recenterButton = document.getElementById('recenter');
   recenterButton.onclick = () => {
-    center.i = 0;
-    center.r = 0;
+    viewPort.center.i = 0;
+    viewPort.center.r = 0;
     resetZoom();
   }
 
@@ -209,8 +206,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const clickX = Math.floor(e.clientX - rect.left);
     const clickY = Math.floor(e.clientY - rect.top);
 
-    center.r = (center.r - scale) + (clickX / 500) * 2 * scale;
-    center.i = (center.i + scale) - (clickY / 500) * 2 * scale;
+    viewPort.center.r = (center.r - scale) + (clickX / 500) * 2 * scale;
+    viewPort.center.i = (center.i + scale) - (clickY / 500) * 2 * scale;
     zoomIn();
   }
 
