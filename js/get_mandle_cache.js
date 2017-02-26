@@ -26,7 +26,6 @@ const getMandleCache = (canvas, viewPort, max) => {
 
     mandleCache.push(incsToEscape);
   }
-  console.log(mandleCache.length);
   return mandleCache;
 }
 

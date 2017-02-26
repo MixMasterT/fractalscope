@@ -313,26 +313,27 @@ var _expand_mandlebrot2 = _interopRequireDefault(_expand_mandlebrot);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var drawMandlebrot = function drawMandlebrot(canvas, viewPort, colorsObj, max) {
+var drawMandlebrot = function drawMandlebrot(canvas, mandleCache, colorsObj, max) {
   var ctx = canvas.getContext('2d');
   var width = canvas.width;
   var height = canvas.height;
   var imgData = ctx.getImageData(0, 0, width, height);
   var cutoffs = Object.keys(colorsObj);
-  var centerR = viewPort.center.r;
-  var centerI = viewPort.center.i;
-  var scale = viewPort.scale;
+  // const centerR = viewPort.center.r;
+  // const centerI = viewPort.center.i;
+  // const scale = viewPort.scale;
 
   // loop over pixels on canvas, mapping each pixel to a Complex numbers
   // move by 4s because each pixel has 4 values for R, G, B and Alpha
   for (var j = 0; j < imgData.data.length; j += 4) {
-    var x = j / 4 % width;
-    var y = (j / 4 - x) / width;
-
-    var r = centerR - scale + x / width * 2 * scale;
-    var i = centerI + scale - y / width * 2 * scale;
-
-    var incsToEscape = (0, _expand_mandlebrot2.default)(r, i, max);
+    // const x = (j / 4) % width;
+    // const y = ((j / 4) - x)/ width;
+    //
+    // const r = (centerR - scale) + (x / width) * 2 * scale;
+    // const i = (centerI + scale) - (y / width) * 2 * scale;
+    //
+    // const incsToEscape = expandMandlebrot(r, i, max);
+    var incsToEscape = mandleCache[Math.floor(j / 4)];
 
     for (var k = 0; k < cutoffs.length; k++) {
       if (incsToEscape < cutoffs[k]) {
@@ -2107,16 +2108,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var currentColors = (0, _set_colors2.default)(MAX_ITERATIONS);
 
-  (0, _draw_grid2.default)(gridCtx, center, scale);
-  (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, currentColors, MAX_ITERATIONS);
-
   var mandleCache = (0, _get_mandle_cache2.default)(fractalCanvas, viewPort, MAX_ITERATIONS);
 
-  console.log(mandleCache.length);
+  (0, _draw_grid2.default)(gridCtx, center, scale);
+  (0, _draw_mandlebrot2.default)(fractalCanvas, mandleCache, currentColors, MAX_ITERATIONS);
   var adjustViewPort = function adjustViewPort(newR, newI, newScale) {
     viewPort.center.r = newR, viewPort.center.i = newI, viewPort.scale = newScale;
 
     // recalculate mandleBrot calc cache Array
+    mandleCache = (0, _get_mandle_cache2.default)(fractalCanvas, viewPort, MAX_ITERATIONS);
   };
 
   //Button to Show  and hide Grid
@@ -2145,7 +2145,7 @@ document.addEventListener('DOMContentLoaded', function () {
     imaginary.innerHTML = center.i.toFixed(3) + 'i';
     currentZoomDisplay.innerHTML = (2 / viewPort.scale).toFixed(1) + ' x';
     (0, _draw_grid2.default)(gridCtx, center, scale);
-    (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, currentColors, MAX_ITERATIONS);
+    (0, _draw_mandlebrot2.default)(fractalCanvas, mandleCache, currentColors, MAX_ITERATIONS);
   };
 
   var maxIterations = document.getElementById('max-iterations');
@@ -2198,9 +2198,7 @@ document.addEventListener('DOMContentLoaded', function () {
   down.onclick = slideDown;
 
   var resetCenter = function resetCenter() {
-    viewPort.center.i = 0;
-    viewPort.center.r = 0;
-    viewPort.scale = 2;
+    adjustViewPort(0, 0, 2);
     updateDisplay();
   };
 
@@ -2271,8 +2269,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var clickX = Math.floor(e.clientX - rect.left);
     var clickY = Math.floor(e.clientY - rect.top);
 
-    viewPort.center.r = center.r - scale + clickX / 500 * 2 * scale;
-    viewPort.center.i = center.i + scale - clickY / 500 * 2 * scale;
+    viewPort.center.r = viewPort.center.r - viewPort.scale + clickX / 500 * 2 * viewPort.scale;
+    viewPort.center.i = viewPort.center.i + viewPort.scale - clickY / 500 * 2 * viewPort.scale;
     zoomIn();
   };
 
@@ -2302,6 +2300,7 @@ document.addEventListener('DOMContentLoaded', function () {
         resetCenter();
         break;
     }
+    updateDisplay();
   };
 
   var rotateColorsButton = document.getElementById('rotate-colors');
@@ -2404,7 +2403,6 @@ var getMandleCache = function getMandleCache(canvas, viewPort, max) {
 
     mandleCache.push(incsToEscape);
   }
-  console.log(mandleCache.length);
   return mandleCache;
 };
 

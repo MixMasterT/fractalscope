@@ -41,21 +41,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let currentColors = setColors(MAX_ITERATIONS);
 
-  drawGrid(gridCtx, center, scale);
-  drawMandlebrot(fractalCanvas,
-                 viewPort,
-                 currentColors,
-                 MAX_ITERATIONS);
-
   let mandleCache = getMandleCache(fractalCanvas, viewPort, MAX_ITERATIONS);
 
-  console.log(mandleCache.length);
+  drawGrid(gridCtx, center, scale);
+  drawMandlebrot(fractalCanvas,
+                 mandleCache,
+                 currentColors,
+                 MAX_ITERATIONS);
   const adjustViewPort = (newR, newI, newScale) => {
     viewPort.center.r = newR,
     viewPort.center.i = newI,
     viewPort.scale = newScale
 
     // recalculate mandleBrot calc cache Array
+    mandleCache = getMandleCache(fractalCanvas, viewPort, MAX_ITERATIONS);
   }
 
   //Button to Show  and hide Grid
@@ -85,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentZoomDisplay.innerHTML = `${(2 / viewPort.scale).toFixed(1)} x`;
     drawGrid(gridCtx, center, scale);
     drawMandlebrot(fractalCanvas,
-                   viewPort,
+                   mandleCache,
                    currentColors,
                    MAX_ITERATIONS);
   };
@@ -152,14 +151,12 @@ document.addEventListener('DOMContentLoaded', () => {
   down.onclick = slideDown;
 
   const resetCenter = () => {
-    viewPort.center.i = 0;
-    viewPort.center.r = 0;
-    viewPort.scale = 2;
+    adjustViewPort( 0, 0, 2);
     updateDisplay();
   }
 
   const recenterButton = document.getElementById('recenter');
-  recenterButton.onclick = resetCenter
+  recenterButton.onclick = resetCenter;
 
   setupColorPicker();
 
@@ -225,8 +222,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const clickX = Math.floor(e.clientX - rect.left);
     const clickY = Math.floor(e.clientY - rect.top);
 
-    viewPort.center.r = (center.r - scale) + (clickX / 500) * 2 * scale;
-    viewPort.center.i = (center.i + scale) - (clickY / 500) * 2 * scale;
+    viewPort.center.r = (viewPort.center.r - viewPort.scale) +
+                          (clickX / 500) * 2 * viewPort.scale;
+    viewPort.center.i = (viewPort.center.i + viewPort.scale) -
+                          (clickY / 500) * 2 * viewPort.scale;
     zoomIn();
   }
 
@@ -256,6 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resetCenter();
         break;
     }
+    updateDisplay();
   };
 
   const rotateColorsButton = document.getElementById('rotate-colors');
