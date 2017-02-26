@@ -2148,51 +2148,34 @@ document.addEventListener('DOMContentLoaded', function () {
   var currentZoomDisplay = document.getElementById('magnification');
 
   var zoomIn = function zoomIn() {
-    // viewPort.scale /= ZOOM_FACTOR;
     adjustViewPort(viewPort.center.r, viewPort.center.i, viewPort.scale /= ZOOM_FACTOR);
     updateDisplay();
   };
 
   var zoomOut = function zoomOut() {
-    // viewPort.scale *= ZOOM_FACTOR;
     adjustViewPort(viewPort.center.r, viewPort.center.i, viewPort.scale *= ZOOM_FACTOR);
     updateDisplay();
   };
-  //
-  // const resetZoom = () => {
-  //   viewPort.scale = 2;
-  //   updateDisplay();
-  // };
 
   var slideLeft = function slideLeft() {
-    // viewPort.center.r -= (scale * SLIDE_FACTOR);
     adjustViewPort(viewPort.center.r -= SLIDE_FACTOR, viewPort.center.i, viewPort.scale);
     updateDisplay();
   };
 
   var slideRight = function slideRight() {
-    // viewPort.center.r += (scale * SLIDE_FACTOR);
     adjustViewPort(viewPort.center.r += SLIDE_FACTOR, viewPort.center.i, viewPort.scale);
     updateDisplay();
   };
 
   var slideUp = function slideUp() {
-    // viewPort.center.i -= (scale * SLIDE_FACTOR);
     adjustViewPort(viewPort.center.r, viewPort.center.i -= SLIDE_FACTOR, viewPort.scale);
     updateDisplay();
   };
 
   var slideDown = function slideDown() {
-    // viewPort.center.i += (scale * SLIDE_FACTOR);
-    adjustViewPort(viewPort.center.r, viewPort.center.i -= SLIDE_FACTOR, viewPort.scale);
+    adjustViewPort(viewPort.center.r, viewPort.center.i += SLIDE_FACTOR, viewPort.scale);
     updateDisplay();
   };
-  //
-  // const recenter = () => {
-  //   viewPort.center.i = 0;
-  //   viewPort.center.r = 0;
-  //   updateDisplay();
-  // };
 
   var left = document.getElementById('slide-left');
   left.onclick = slideLeft;

@@ -92,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentZoomDisplay = document.getElementById('magnification');
 
   const zoomIn = () => {
-    // viewPort.scale /= ZOOM_FACTOR;
     adjustViewPort( viewPort.center.r,
                     viewPort.center.i,
                     viewPort.scale /= ZOOM_FACTOR)
@@ -100,20 +99,13 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const zoomOut = () => {
-    // viewPort.scale *= ZOOM_FACTOR;
     adjustViewPort( viewPort.center.r,
                     viewPort.center.i,
                     viewPort.scale *= ZOOM_FACTOR)
     updateDisplay();
   };
-  //
-  // const resetZoom = () => {
-  //   viewPort.scale = 2;
-  //   updateDisplay();
-  // };
 
   const slideLeft = () => {
-    // viewPort.center.r -= (scale * SLIDE_FACTOR);
     adjustViewPort( viewPort.center.r -= SLIDE_FACTOR,
                     viewPort.center.i,
                     viewPort.scale )
@@ -121,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const slideRight = () => {
-    // viewPort.center.r += (scale * SLIDE_FACTOR);
     adjustViewPort( viewPort.center.r += SLIDE_FACTOR,
                     viewPort.center.i,
                     viewPort.scale )
@@ -129,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const slideUp = () => {
-    // viewPort.center.i -= (scale * SLIDE_FACTOR);
     adjustViewPort( viewPort.center.r,
                     viewPort.center.i -= SLIDE_FACTOR,
                     viewPort.scale )
@@ -137,18 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const slideDown = () => {
-    // viewPort.center.i += (scale * SLIDE_FACTOR);
     adjustViewPort( viewPort.center.r,
-                    viewPort.center.i -= SLIDE_FACTOR,
+                    viewPort.center.i += SLIDE_FACTOR,
                     viewPort.scale )
     updateDisplay();
   };
-  //
-  // const recenter = () => {
-  //   viewPort.center.i = 0;
-  //   viewPort.center.r = 0;
-  //   updateDisplay();
-  // };
 
   const left = document.getElementById('slide-left');
   left.onclick = slideLeft;
