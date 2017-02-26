@@ -60,11 +60,12 @@ button:hover, .link:hover {
 }
 
 button:active, .link:active {
-  color: hsla(187, 97%, 73%, 1);
+  text-shadow: 1px 1px 1px 1px hsla(187, 97%, 73%, 1);
   box-shadow: 1px 1px 1px 1px hsla(187, 97%, 73%, 0.72);
 }
 
 .outer-wrapper {
+  max-width: 900px;
   padding-top: 20px;
   text-align: center;
   width: 80%;
@@ -86,8 +87,8 @@ button:active, .link:active {
 .wrapper {
   margin: 0 auto;
   padding: 15px;
-  width: 90%;
   min-width: 700px;
+  width: 90%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -113,7 +114,6 @@ button:active, .link:active {
 
     border: 2px solid #444;
     box-shadow: 1px 2px #222;
-
 }
 
 /* Specific Styles */
@@ -265,6 +265,7 @@ button:active, .link:active {
 }
 
 .color-picker li div {
+  margin-left: 5px;
   color: #AAA;
   display: inline-block;
 }
@@ -299,10 +300,6 @@ button:active, .link:active {
   border-radius: 12%;
   padding: 10px 10px 6px 10px;
 }
-/*
-.gh-ln-modal .link {
-  margin-left: 20px;
-}*/
 
 #add-colors {
   width: 90%;
@@ -314,6 +311,10 @@ button:active, .link:active {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+#slide-up, #slide-down, #slide-left, #slide-right {
+  padding: 5px;
 }
 
 #slide-up {
@@ -403,10 +404,15 @@ button:active, .link:active {
 }
 /* close Button */
 #close {
-    color: #555;
+    color: #777;
     float: left;
     font-size: 28px;
     font-weight: bolder;
+}
+
+#close:hover {
+  color: #333;
+  cursor: pointer;
 }
 
 .close:hover, .close:focus {
