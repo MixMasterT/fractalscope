@@ -35,6 +35,15 @@ document.addEventListener('DOMContentLoaded', () => {
   //Set global viewPort variable
   const viewPort = { center, scale }
 
+  //Create contained access to adjustments to the viewPort
+  const adjustViewPort = (newR, newI, newScale) => {
+    viewPort.center.r = newR,
+    viewPort.center.i = newI,
+    viewPort.scale = newScale
+
+    // recalculate mandleBrot calc cache Array
+  }
+
   let currentColors = setColors(MAX_ITERATIONS);
 
   drawGrid(gridCtx, center, scale);
@@ -83,45 +92,63 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentZoomDisplay = document.getElementById('magnification');
 
   const zoomIn = () => {
-    viewPort.scale /= ZOOM_FACTOR;
+    // viewPort.scale /= ZOOM_FACTOR;
+    adjustViewPort( viewPort.center.r,
+                    viewPort.center.i,
+                    viewPort.scale /= ZOOM_FACTOR)
     updateDisplay();
   };
 
   const zoomOut = () => {
-    viewPort.scale *= ZOOM_FACTOR;
+    // viewPort.scale *= ZOOM_FACTOR;
+    adjustViewPort( viewPort.center.r,
+                    viewPort.center.i,
+                    viewPort.scale *= ZOOM_FACTOR)
     updateDisplay();
   };
-
-  const resetZoom = () => {
-    viewPort.scale = 2;
-    updateDisplay();
-  };
+  //
+  // const resetZoom = () => {
+  //   viewPort.scale = 2;
+  //   updateDisplay();
+  // };
 
   const slideLeft = () => {
-    viewPort.center.r -= (scale * SLIDE_FACTOR);
+    // viewPort.center.r -= (scale * SLIDE_FACTOR);
+    adjustViewPort( viewPort.center.r -= SLIDE_FACTOR,
+                    viewPort.center.i,
+                    viewPort.scale )
     updateDisplay();
   };
 
   const slideRight = () => {
-    viewPort.center.r += (scale * SLIDE_FACTOR);
+    // viewPort.center.r += (scale * SLIDE_FACTOR);
+    adjustViewPort( viewPort.center.r += SLIDE_FACTOR,
+                    viewPort.center.i,
+                    viewPort.scale )
     updateDisplay();
   };
 
   const slideUp = () => {
-    viewPort.center.i -= (scale * SLIDE_FACTOR);
+    // viewPort.center.i -= (scale * SLIDE_FACTOR);
+    adjustViewPort( viewPort.center.r,
+                    viewPort.center.i -= SLIDE_FACTOR,
+                    viewPort.scale )
     updateDisplay();
   };
 
   const slideDown = () => {
-    viewPort.center.i += (scale * SLIDE_FACTOR);
+    // viewPort.center.i += (scale * SLIDE_FACTOR);
+    adjustViewPort( viewPort.center.r,
+                    viewPort.center.i -= SLIDE_FACTOR,
+                    viewPort.scale )
     updateDisplay();
   };
-
-  const recenter = () => {
-    viewPort.center.i = 0;
-    viewPort.center.r = 0;
-    updateDisplay();
-  };
+  //
+  // const recenter = () => {
+  //   viewPort.center.i = 0;
+  //   viewPort.center.r = 0;
+  //   updateDisplay();
+  // };
 
   const left = document.getElementById('slide-left');
   left.onclick = slideLeft;
@@ -139,6 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
   recenterButton.onclick = () => {
     viewPort.center.i = 0;
     viewPort.center.r = 0;
+    viewPort.scale = 2;
     resetZoom();
   }
 

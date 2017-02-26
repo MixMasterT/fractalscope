@@ -2099,6 +2099,13 @@ document.addEventListener('DOMContentLoaded', function () {
   //Set global viewPort variable
   var viewPort = { center: center, scale: scale };
 
+  //Create contained access to adjustments to the viewPort
+  var adjustViewPort = function adjustViewPort(newR, newI, newScale) {
+    viewPort.center.r = newR, viewPort.center.i = newI, viewPort.scale = newScale;
+
+    // recalculate mandleBrot calc cache Array
+  };
+
   var currentColors = (0, _set_colors2.default)(MAX_ITERATIONS);
 
   (0, _draw_grid2.default)(gridCtx, center, scale);
@@ -2141,45 +2148,51 @@ document.addEventListener('DOMContentLoaded', function () {
   var currentZoomDisplay = document.getElementById('magnification');
 
   var zoomIn = function zoomIn() {
-    viewPort.scale /= ZOOM_FACTOR;
+    // viewPort.scale /= ZOOM_FACTOR;
+    adjustViewPort(viewPort.center.r, viewPort.center.i, viewPort.scale /= ZOOM_FACTOR);
     updateDisplay();
   };
 
   var zoomOut = function zoomOut() {
-    viewPort.scale *= ZOOM_FACTOR;
+    // viewPort.scale *= ZOOM_FACTOR;
+    adjustViewPort(viewPort.center.r, viewPort.center.i, viewPort.scale *= ZOOM_FACTOR);
     updateDisplay();
   };
-
-  var resetZoom = function resetZoom() {
-    viewPort.scale = 2;
-    updateDisplay();
-  };
+  //
+  // const resetZoom = () => {
+  //   viewPort.scale = 2;
+  //   updateDisplay();
+  // };
 
   var slideLeft = function slideLeft() {
-    viewPort.center.r -= scale * SLIDE_FACTOR;
+    // viewPort.center.r -= (scale * SLIDE_FACTOR);
+    adjustViewPort(viewPort.center.r -= SLIDE_FACTOR, viewPort.center.i, viewPort.scale);
     updateDisplay();
   };
 
   var slideRight = function slideRight() {
-    viewPort.center.r += scale * SLIDE_FACTOR;
+    // viewPort.center.r += (scale * SLIDE_FACTOR);
+    adjustViewPort(viewPort.center.r += SLIDE_FACTOR, viewPort.center.i, viewPort.scale);
     updateDisplay();
   };
 
   var slideUp = function slideUp() {
-    viewPort.center.i -= scale * SLIDE_FACTOR;
+    // viewPort.center.i -= (scale * SLIDE_FACTOR);
+    adjustViewPort(viewPort.center.r, viewPort.center.i -= SLIDE_FACTOR, viewPort.scale);
     updateDisplay();
   };
 
   var slideDown = function slideDown() {
-    viewPort.center.i += scale * SLIDE_FACTOR;
+    // viewPort.center.i += (scale * SLIDE_FACTOR);
+    adjustViewPort(viewPort.center.r, viewPort.center.i -= SLIDE_FACTOR, viewPort.scale);
     updateDisplay();
   };
-
-  var recenter = function recenter() {
-    viewPort.center.i = 0;
-    viewPort.center.r = 0;
-    updateDisplay();
-  };
+  //
+  // const recenter = () => {
+  //   viewPort.center.i = 0;
+  //   viewPort.center.r = 0;
+  //   updateDisplay();
+  // };
 
   var left = document.getElementById('slide-left');
   left.onclick = slideLeft;
@@ -2197,6 +2210,7 @@ document.addEventListener('DOMContentLoaded', function () {
   recenterButton.onclick = function () {
     viewPort.center.i = 0;
     viewPort.center.r = 0;
+    viewPort.scale = 2;
     resetZoom();
   };
 
