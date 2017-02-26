@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     real.innerHTML = viewPort.center.r.toFixed(3);
     imaginary.innerHTML = `${viewPort.center.i.toFixed(3)}i`;
     currentZoomDisplay.innerHTML = `${(2 / viewPort.scale).toFixed(1)} x`;
-    drawGrid(gridCtx, center, scale);
+    drawGrid(gridCtx, viewPort.center, viewPort.scale);
     drawMandlebrot(fractalCanvas,
                    mandleCache,
                    currentColors,
