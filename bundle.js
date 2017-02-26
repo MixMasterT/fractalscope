@@ -2137,17 +2137,17 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   //zoom controls
-  var zoomFactor = 3 / 2;
+  // const zoomFactor = 3/2;
 
   var currentZoomDisplay = document.getElementById('magnification');
 
   var zoomIn = function zoomIn() {
-    scale /= zoomFactor;
+    scale /= ZOOM_FACTOR;
     updateDisplay();
   };
 
   var zoomOut = function zoomOut() {
-    scale *= zoomFactor;
+    scale *= ZOOM_FACTOR;
     updateDisplay();
   };
 
@@ -2156,25 +2156,25 @@ document.addEventListener('DOMContentLoaded', function () {
     updateDisplay();
   };
 
-  var slideFactor = 1 / 8;
+  // const slideFactor = (1 / 8);
 
   var slideLeft = function slideLeft() {
-    center.r -= scale * slideFactor;
+    center.r -= scale * SLIDE_FACTOR;
     updateDisplay();
   };
 
   var slideRight = function slideRight() {
-    center.r += scale * slideFactor;
+    center.r += scale * SLIDE_FACTOR;
     updateDisplay();
   };
 
   var slideUp = function slideUp() {
-    center.i -= scale * slideFactor;
+    center.i -= scale * SLIDE_FACTOR;
     updateDisplay();
   };
 
   var slideDown = function slideDown() {
-    center.i += scale * slideFactor;
+    center.i += scale * SLIDE_FACTOR;
     updateDisplay();
   };
 

@@ -79,17 +79,17 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   //zoom controls
-  const zoomFactor = 3/2;
+  // const zoomFactor = 3/2;
 
   const currentZoomDisplay = document.getElementById('magnification');
 
   const zoomIn = () => {
-    scale /= zoomFactor;
+    scale /= ZOOM_FACTOR;
     updateDisplay();
   };
 
   const zoomOut = () => {
-    scale *= zoomFactor;
+    scale *= ZOOM_FACTOR;
     updateDisplay();
   };
 
@@ -98,25 +98,25 @@ document.addEventListener('DOMContentLoaded', () => {
     updateDisplay();
   };
 
-  const slideFactor = (1 / 8);
+  // const slideFactor = (1 / 8);
 
   const slideLeft = () => {
-    center.r -= (scale * slideFactor);
+    center.r -= (scale * SLIDE_FACTOR);
     updateDisplay();
   };
 
   const slideRight = () => {
-    center.r += (scale * slideFactor);
+    center.r += (scale * SLIDE_FACTOR);
     updateDisplay();
   };
 
   const slideUp = () => {
-    center.i -= (scale * slideFactor);
+    center.i -= (scale * SLIDE_FACTOR);
     updateDisplay();
   };
 
   const slideDown = () => {
-    center.i += (scale * slideFactor);
+    center.i += (scale * SLIDE_FACTOR);
     updateDisplay();
   };
 
