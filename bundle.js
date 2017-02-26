@@ -2131,8 +2131,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var imaginary = document.getElementById('imaginary');
 
   var updateDisplay = function updateDisplay() {
-    real.innerHTML = center.r.toFixed(3);
-    imaginary.innerHTML = center.i.toFixed(3) + 'i';
+    real.innerHTML = viewPort.center.r.toFixed(3);
+    imaginary.innerHTML = viewPort.center.i.toFixed(3) + 'i';
     currentZoomDisplay.innerHTML = (2 / viewPort.scale).toFixed(1) + ' x';
     (0, _draw_grid2.default)(gridCtx, center, scale);
     (0, _draw_mandlebrot2.default)(fractalCanvas, mandleCache, currentColors, MAX_ITERATIONS);

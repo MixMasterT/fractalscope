@@ -79,8 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const imaginary = document.getElementById('imaginary');
 
   const updateDisplay = () => {
-    real.innerHTML = center.r.toFixed(3);
-    imaginary.innerHTML = `${center.i.toFixed(3)}i`;
+    real.innerHTML = viewPort.center.r.toFixed(3);
+    imaginary.innerHTML = `${viewPort.center.i.toFixed(3)}i`;
     currentZoomDisplay.innerHTML = `${(2 / viewPort.scale).toFixed(1)} x`;
     drawGrid(gridCtx, center, scale);
     drawMandlebrot(fractalCanvas,
