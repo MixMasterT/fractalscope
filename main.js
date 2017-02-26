@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const updateDisplay = () => {
     real.innerHTML = center.r.toFixed(3);
     imaginary.innerHTML = `${center.i.toFixed(3)}i`;
-    currentZoomDisplay.innerHTML = `${(2 / scale).toFixed(1)} x`;
+    currentZoomDisplay.innerHTML = `${(2 / viewPort.scale).toFixed(1)} x`;
     drawGrid(gridCtx, center, scale);
     drawMandlebrot(fractalCanvas,
                    viewPort,
@@ -112,14 +112,14 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const slideLeft = () => {
-    adjustViewPort( viewPort.center.r -= SLIDE_FACTOR,
+    adjustViewPort( viewPort.center.r -= SLIDE_FACTOR * viewPort.scale,
                     viewPort.center.i,
                     viewPort.scale )
     updateDisplay();
   };
 
   const slideRight = () => {
-    adjustViewPort( viewPort.center.r += SLIDE_FACTOR,
+    adjustViewPort( viewPort.center.r += SLIDE_FACTOR * viewPort.scale,
                     viewPort.center.i,
                     viewPort.scale )
     updateDisplay();
@@ -127,14 +127,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const slideUp = () => {
     adjustViewPort( viewPort.center.r,
-                    viewPort.center.i -= SLIDE_FACTOR,
+                    viewPort.center.i -= SLIDE_FACTOR * viewPort.scale,
                     viewPort.scale )
     updateDisplay();
   };
 
   const slideDown = () => {
     adjustViewPort( viewPort.center.r,
-                    viewPort.center.i += SLIDE_FACTOR,
+                    viewPort.center.i += SLIDE_FACTOR * viewPort.scale,
                     viewPort.scale )
     updateDisplay();
   };

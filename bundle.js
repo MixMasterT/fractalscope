@@ -2143,7 +2143,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var updateDisplay = function updateDisplay() {
     real.innerHTML = center.r.toFixed(3);
     imaginary.innerHTML = center.i.toFixed(3) + 'i';
-    currentZoomDisplay.innerHTML = (2 / scale).toFixed(1) + ' x';
+    currentZoomDisplay.innerHTML = (2 / viewPort.scale).toFixed(1) + ' x';
     (0, _draw_grid2.default)(gridCtx, center, scale);
     (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, currentColors, MAX_ITERATIONS);
   };
@@ -2166,22 +2166,22 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   var slideLeft = function slideLeft() {
-    adjustViewPort(viewPort.center.r -= SLIDE_FACTOR, viewPort.center.i, viewPort.scale);
+    adjustViewPort(viewPort.center.r -= SLIDE_FACTOR * viewPort.scale, viewPort.center.i, viewPort.scale);
     updateDisplay();
   };
 
   var slideRight = function slideRight() {
-    adjustViewPort(viewPort.center.r += SLIDE_FACTOR, viewPort.center.i, viewPort.scale);
+    adjustViewPort(viewPort.center.r += SLIDE_FACTOR * viewPort.scale, viewPort.center.i, viewPort.scale);
     updateDisplay();
   };
 
   var slideUp = function slideUp() {
-    adjustViewPort(viewPort.center.r, viewPort.center.i -= SLIDE_FACTOR, viewPort.scale);
+    adjustViewPort(viewPort.center.r, viewPort.center.i -= SLIDE_FACTOR * viewPort.scale, viewPort.scale);
     updateDisplay();
   };
 
   var slideDown = function slideDown() {
-    adjustViewPort(viewPort.center.r, viewPort.center.i += SLIDE_FACTOR, viewPort.scale);
+    adjustViewPort(viewPort.center.r, viewPort.center.i += SLIDE_FACTOR * viewPort.scale, viewPort.scale);
     updateDisplay();
   };
 
