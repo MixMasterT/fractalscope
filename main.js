@@ -8,6 +8,8 @@ import setupColorPicker from './js/color_picker';
 
 import setColors from './js/set_colors';
 
+import getMandleCache from './js/get_mandle_cache';
+
 let MAX_ITERATIONS = 500;
 
 const SLIDE_FACTOR = (1 / 8);
@@ -36,13 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const viewPort = { center, scale }
 
   //Create contained access to adjustments to the viewPort
-  const adjustViewPort = (newR, newI, newScale) => {
-    viewPort.center.r = newR,
-    viewPort.center.i = newI,
-    viewPort.scale = newScale
-
-    // recalculate mandleBrot calc cache Array
-  }
 
   let currentColors = setColors(MAX_ITERATIONS);
 
@@ -51,6 +46,17 @@ document.addEventListener('DOMContentLoaded', () => {
                  viewPort,
                  currentColors,
                  MAX_ITERATIONS);
+
+  let mandleCache = getMandleCache(fractalCanvas, viewPort, MAX_ITERATIONS);
+
+  console.log(mandleCache.length);
+  const adjustViewPort = (newR, newI, newScale) => {
+    viewPort.center.r = newR,
+    viewPort.center.i = newI,
+    viewPort.scale = newScale
+
+    // recalculate mandleBrot calc cache Array
+  }
 
   //Button to Show  and hide Grid
   const showGridButton = document.getElementById('grid-on-off');
@@ -145,13 +151,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const down = document.getElementById('slide-down');
   down.onclick = slideDown;
 
-  const recenterButton = document.getElementById('recenter');
-  recenterButton.onclick = () => {
+  const resetCenter = () => {
     viewPort.center.i = 0;
     viewPort.center.r = 0;
     viewPort.scale = 2;
-    resetZoom();
+    updateDisplay();
   }
+
+  const recenterButton = document.getElementById('recenter');
+  recenterButton.onclick = resetCenter
 
   setupColorPicker();
 
@@ -245,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
         zoomOut();
         break;
       case 82:
-        resetZoom();
+        resetCenter();
         break;
     }
   };

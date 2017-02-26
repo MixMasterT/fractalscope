@@ -2,11 +2,10 @@ import expandMandlebrot from './expand_mandlebrot';
 
 const getMandleCache = (canvas, viewPort, max) => {
   const ctx = canvas.getContext("2d");
-  const width = ctx.canvas.width;
-  const height = ctx.canvas.height;
+  const width = canvas.width;
+  const height = canvas.height;
   const mandleCache = [];
   const imgData = ctx.getImageData(0, 0, width, height);
-  console.log(imgData.length);
   const centerR = viewPort.center.r;
   const centerI = viewPort.center.i;
   const scale = viewPort.scale;
@@ -27,6 +26,7 @@ const getMandleCache = (canvas, viewPort, max) => {
 
     mandleCache.push(incsToEscape);
   }
+  console.log(mandleCache.length);
   return mandleCache;
 }
 

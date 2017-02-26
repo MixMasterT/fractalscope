@@ -2070,6 +2070,10 @@ var _set_colors = __webpack_require__(1);
 
 var _set_colors2 = _interopRequireDefault(_set_colors);
 
+var _get_mandle_cache = __webpack_require__(7);
+
+var _get_mandle_cache2 = _interopRequireDefault(_get_mandle_cache);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var MAX_ITERATIONS = 500;
@@ -2100,16 +2104,20 @@ document.addEventListener('DOMContentLoaded', function () {
   var viewPort = { center: center, scale: scale };
 
   //Create contained access to adjustments to the viewPort
-  var adjustViewPort = function adjustViewPort(newR, newI, newScale) {
-    viewPort.center.r = newR, viewPort.center.i = newI, viewPort.scale = newScale;
-
-    // recalculate mandleBrot calc cache Array
-  };
 
   var currentColors = (0, _set_colors2.default)(MAX_ITERATIONS);
 
   (0, _draw_grid2.default)(gridCtx, center, scale);
   (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, currentColors, MAX_ITERATIONS);
+
+  var mandleCache = (0, _get_mandle_cache2.default)(fractalCanvas, viewPort, MAX_ITERATIONS);
+
+  console.log(mandleCache.length);
+  var adjustViewPort = function adjustViewPort(newR, newI, newScale) {
+    viewPort.center.r = newR, viewPort.center.i = newI, viewPort.scale = newScale;
+
+    // recalculate mandleBrot calc cache Array
+  };
 
   //Button to Show  and hide Grid
   var showGridButton = document.getElementById('grid-on-off');
@@ -2189,13 +2197,15 @@ document.addEventListener('DOMContentLoaded', function () {
   var down = document.getElementById('slide-down');
   down.onclick = slideDown;
 
-  var recenterButton = document.getElementById('recenter');
-  recenterButton.onclick = function () {
+  var resetCenter = function resetCenter() {
     viewPort.center.i = 0;
     viewPort.center.r = 0;
     viewPort.scale = 2;
-    resetZoom();
+    updateDisplay();
   };
+
+  var recenterButton = document.getElementById('recenter');
+  recenterButton.onclick = resetCenter;
 
   (0, _color_picker2.default)();
 
@@ -2289,7 +2299,7 @@ document.addEventListener('DOMContentLoaded', function () {
         zoomOut();
         break;
       case 82:
-        resetZoom();
+        resetCenter();
         break;
     }
   };
@@ -2350,6 +2360,55 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 });
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _expand_mandlebrot = __webpack_require__(0);
+
+var _expand_mandlebrot2 = _interopRequireDefault(_expand_mandlebrot);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getMandleCache = function getMandleCache(canvas, viewPort, max) {
+  var ctx = canvas.getContext("2d");
+  var width = canvas.width;
+  var height = canvas.height;
+  var mandleCache = [];
+  var imgData = ctx.getImageData(0, 0, width, height);
+  var centerR = viewPort.center.r;
+  var centerI = viewPort.center.i;
+  var scale = viewPort.scale;
+
+  // loop over pixels on canvas, mapping each pixel to a Complex number
+  // return an array of increments to escape for each pixel in the image
+  // since the canvas if 500 * 500 pixels, this is array will have
+  // 250 000 values.
+
+  for (var j = 0; j < imgData.data.length; j += 4) {
+    var x = j / 4 % width;
+    var y = (j / 4 - x) / width;
+
+    var r = centerR - scale + x / width * 2 * scale;
+    var i = centerI + scale - y / width * 2 * scale;
+
+    var incsToEscape = (0, _expand_mandlebrot2.default)(r, i, max);
+
+    mandleCache.push(incsToEscape);
+  }
+  console.log(mandleCache.length);
+  return mandleCache;
+};
+
+exports.default = getMandleCache;
 
 /***/ })
 /******/ ]);
