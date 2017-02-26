@@ -107,48 +107,36 @@ exports.default = expandMandlebrot;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var setColors = function setColors(maxIterations) {
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var setColors = function setColors(max) {
+  var _defaultColors = [[1, [0, 0, 0]], [1, [203, 151, 37]], [1, [0, 0, 0]], [1, [229, 184, 46]], [1, [255, 255, 255]]];
 
   var colorsList = document.getElementById('colors-list');
 
+  var colors = [];
+
   if (colorsList.childNodes.length > 1) {
-    var _ret = function () {
-      var colors = [].slice.call(colorsList.getElementsByTagName('li'));
 
-      var newColorsObj = {};
-      var currentSum = 0;
+    var liData = [].slice.call(colorsList.getElementsByTagName('li'));
+    liData.forEach(function (liObj) {
 
-      while (currentSum < max) {
-        colors.forEach(function (color) {
-          var incs = parseInt(color.innerHTML);
-
-          currentSum += incs;
-          //
-          // const rgbArr = color.data;
-          // const rgbInts = [];
-          // Object.keys(rgbData).forEach((k, i) => { rgbInts[i] = rgbData[k] });
-
-          newColorsObj[currentSum] = color.data;
-        });
-      }
-      return {
-        v: newColorsObj
-      };
-    }();
-
-    if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+      colors.push([parseInt(liObj.innerHTML), liObj.data]);
+    });
   } else {
-    return { 20: [0, 0, 0], 40: [203, 151, 37], 60: [0, 0, 0], 80: [229, 184, 46],
-      100: [255, 255, 255], 120: [0, 0, 0], 140: [203, 151, 37], 160: [0, 0, 0],
-      180: [229, 184, 46], 200: [255, 255, 255], 220: [0, 0, 0], 240: [203, 151, 37],
-      260: [0, 0, 0], 280: [229, 184, 46], 300: [255, 255, 255], 320: [0, 0, 0],
-      340: [203, 151, 37], 360: [0, 0, 0], 380: [229, 184, 46], 400: [255, 255, 255],
-      420: [0, 0, 0], 440: [203, 151, 37], 460: [0, 0, 0], 480: [229, 184, 46],
-      500: [255, 255, 255] };
+    colors = _defaultColors;
   }
+
+  var newColorsObj = {};
+  var currentSum = 0;
+
+  while (currentSum < maxIterations) {
+    colors.forEach(function (colorsArr) {
+      currentSum += colorsArr[0];
+
+      newColorsObj[currentSum] = colorsArr[1];
+    });
+  }
+  return newColorsObj;
 };
 
 exports.default = setColors;
@@ -2224,7 +2212,7 @@ document.addEventListener('DOMContentLoaded', function () {
   zoomBack.onclick = zoomOut;
 
   // Add listeners to #click canvas
-  // 
+  //
   // let isDown = false;
   // let dragStartX;
   // let dragStartY;

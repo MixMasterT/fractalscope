@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
   zoomBack.onclick = zoomOut;
 
   // Add listeners to #click canvas
-  // 
+  //
   // let isDown = false;
   // let dragStartX;
   // let dragStartY;
