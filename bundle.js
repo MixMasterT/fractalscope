@@ -107,48 +107,36 @@ exports.default = expandMandlebrot;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var setColors = function setColors(maxIterations) {
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var setColors = function setColors(max) {
+  var _defaultColors = [[1, [0, 0, 0]], [1, [203, 151, 37]], [1, [0, 0, 0]], [1, [229, 184, 46]], [1, [255, 255, 255]]];
 
   var colorsList = document.getElementById('colors-list');
 
+  var colors = [];
+
   if (colorsList.childNodes.length > 1) {
-    var _ret = function () {
-      var colors = [].slice.call(colorsList.getElementsByTagName('li'));
 
-      var newColorsObj = {};
-      var currentSum = 0;
+    var liData = [].slice.call(colorsList.getElementsByTagName('li'));
+    liData.forEach(function (liObj) {
 
-      while (currentSum < max) {
-        colors.forEach(function (color) {
-          var incs = parseInt(color.innerHTML);
-
-          currentSum += incs;
-          //
-          // const rgbArr = color.data;
-          // const rgbInts = [];
-          // Object.keys(rgbData).forEach((k, i) => { rgbInts[i] = rgbData[k] });
-
-          newColorsObj[currentSum] = color.data;
-        });
-      }
-      return {
-        v: newColorsObj
-      };
-    }();
-
-    if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+      colors.push([parseInt(liObj.innerHTML), liObj.data]);
+    });
   } else {
-    return { 20: [0, 0, 0], 40: [203, 151, 37], 60: [0, 0, 0], 80: [229, 184, 46],
-      100: [255, 255, 255], 120: [0, 0, 0], 140: [203, 151, 37], 160: [0, 0, 0],
-      180: [229, 184, 46], 200: [255, 255, 255], 220: [0, 0, 0], 240: [203, 151, 37],
-      260: [0, 0, 0], 280: [229, 184, 46], 300: [255, 255, 255], 320: [0, 0, 0],
-      340: [203, 151, 37], 360: [0, 0, 0], 380: [229, 184, 46], 400: [255, 255, 255],
-      420: [0, 0, 0], 440: [203, 151, 37], 460: [0, 0, 0], 480: [229, 184, 46],
-      500: [255, 255, 255] };
+    colors = _defaultColors;
   }
+
+  var newColorsObj = {};
+  var currentSum = 0;
+
+  while (currentSum < maxIterations) {
+    colors.forEach(function (colorsArr) {
+      currentSum += colorsArr[0];
+
+      newColorsObj[currentSum] = colorsArr[1];
+    });
+  }
+  return newColorsObj;
 };
 
 exports.default = setColors;
@@ -325,26 +313,17 @@ var _expand_mandlebrot2 = _interopRequireDefault(_expand_mandlebrot);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var drawMandlebrot = function drawMandlebrot(canvas, viewPort, colorsObj, max) {
+var drawMandlebrot = function drawMandlebrot(canvas, mandleCache, colorsObj, max) {
   var ctx = canvas.getContext('2d');
   var width = canvas.width;
   var height = canvas.height;
   var imgData = ctx.getImageData(0, 0, width, height);
   var cutoffs = Object.keys(colorsObj);
-  var centerR = viewPort.center.r;
-  var centerI = viewPort.center.i;
-  var scale = viewPort.scale;
 
   // loop over pixels on canvas, mapping each pixel to a Complex numbers
   // move by 4s because each pixel has 4 values for R, G, B and Alpha
   for (var j = 0; j < imgData.data.length; j += 4) {
-    var x = j / 4 % width;
-    var y = (j / 4 - x) / width;
-
-    var r = centerR - scale + x / width * 2 * scale;
-    var i = centerI + scale - y / width * 2 * scale;
-
-    var incsToEscape = (0, _expand_mandlebrot2.default)(r, i, max);
+    var incsToEscape = mandleCache[Math.floor(j / 4)];
 
     for (var k = 0; k < cutoffs.length; k++) {
       if (incsToEscape < cutoffs[k]) {
@@ -2082,6 +2061,10 @@ var _set_colors = __webpack_require__(1);
 
 var _set_colors2 = _interopRequireDefault(_set_colors);
 
+var _get_mandle_cache = __webpack_require__(7);
+
+var _get_mandle_cache2 = _interopRequireDefault(_get_mandle_cache);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var MAX_ITERATIONS = 500;
@@ -2108,10 +2091,23 @@ document.addEventListener('DOMContentLoaded', function () {
   //Set initial scale
   var scale = 2;
 
+  //Set global viewPort variable
+  var viewPort = { center: center, scale: scale };
+
+  //Create contained access to adjustments to the viewPort
+
   var currentColors = (0, _set_colors2.default)(MAX_ITERATIONS);
 
+  var mandleCache = (0, _get_mandle_cache2.default)(fractalCanvas, viewPort, MAX_ITERATIONS);
+
   (0, _draw_grid2.default)(gridCtx, center, scale);
-  (0, _draw_mandlebrot2.default)(fractalCanvas, { center: center, scale: scale }, currentColors, MAX_ITERATIONS);
+  (0, _draw_mandlebrot2.default)(fractalCanvas, mandleCache, currentColors, MAX_ITERATIONS);
+  var adjustViewPort = function adjustViewPort(newR, newI, newScale) {
+    viewPort.center.r = newR, viewPort.center.i = newI, viewPort.scale = newScale;
+
+    // recalculate mandleBrot calc cache Array
+    mandleCache = (0, _get_mandle_cache2.default)(fractalCanvas, viewPort, MAX_ITERATIONS);
+  };
 
   //Button to Show  and hide Grid
   var showGridButton = document.getElementById('grid-on-off');
@@ -2137,10 +2133,9 @@ document.addEventListener('DOMContentLoaded', function () {
   var updateDisplay = function updateDisplay() {
     real.innerHTML = center.r.toFixed(3);
     imaginary.innerHTML = center.i.toFixed(3) + 'i';
-    currentZoomDisplay.innerHTML = (2 / scale).toFixed(1) + ' x';
+    currentZoomDisplay.innerHTML = (2 / viewPort.scale).toFixed(1) + ' x';
     (0, _draw_grid2.default)(gridCtx, center, scale);
-    var viewPort = { scale: scale, center: center };
-    (0, _draw_mandlebrot2.default)(fractalCanvas, viewPort, currentColors, MAX_ITERATIONS);
+    (0, _draw_mandlebrot2.default)(fractalCanvas, mandleCache, currentColors, MAX_ITERATIONS);
   };
 
   var maxIterations = document.getElementById('max-iterations');
@@ -2148,51 +2143,35 @@ document.addEventListener('DOMContentLoaded', function () {
     MAX_ITERATIONS = e.target.value;
   };
 
-  //zoom controls
-  var zoomFactor = 3 / 2;
-
   var currentZoomDisplay = document.getElementById('magnification');
 
   var zoomIn = function zoomIn() {
-    scale /= zoomFactor;
+    adjustViewPort(viewPort.center.r, viewPort.center.i, viewPort.scale /= ZOOM_FACTOR);
     updateDisplay();
   };
 
   var zoomOut = function zoomOut() {
-    scale *= zoomFactor;
+    adjustViewPort(viewPort.center.r, viewPort.center.i, viewPort.scale *= ZOOM_FACTOR);
     updateDisplay();
   };
-
-  var resetZoom = function resetZoom() {
-    scale = 2;
-    updateDisplay();
-  };
-
-  var slideFactor = 1 / 8;
 
   var slideLeft = function slideLeft() {
-    center.r -= scale * slideFactor;
+    adjustViewPort(viewPort.center.r -= SLIDE_FACTOR * viewPort.scale, viewPort.center.i, viewPort.scale);
     updateDisplay();
   };
 
   var slideRight = function slideRight() {
-    center.r += scale * slideFactor;
+    adjustViewPort(viewPort.center.r += SLIDE_FACTOR * viewPort.scale, viewPort.center.i, viewPort.scale);
     updateDisplay();
   };
 
   var slideUp = function slideUp() {
-    center.i -= scale * slideFactor;
+    adjustViewPort(viewPort.center.r, viewPort.center.i -= SLIDE_FACTOR * viewPort.scale, viewPort.scale);
     updateDisplay();
   };
 
   var slideDown = function slideDown() {
-    center.i += scale * slideFactor;
-    updateDisplay();
-  };
-
-  var recenter = function recenter() {
-    center.i = 0;
-    center.r = 0;
+    adjustViewPort(viewPort.center.r, viewPort.center.i += SLIDE_FACTOR * viewPort.scale, viewPort.scale);
     updateDisplay();
   };
 
@@ -2208,12 +2187,13 @@ document.addEventListener('DOMContentLoaded', function () {
   var down = document.getElementById('slide-down');
   down.onclick = slideDown;
 
-  var recenterButton = document.getElementById('recenter');
-  recenterButton.onclick = function () {
-    center.i = 0;
-    center.r = 0;
-    resetZoom();
+  var resetCenter = function resetCenter() {
+    adjustViewPort(0, 0, 2);
+    updateDisplay();
   };
+
+  var recenterButton = document.getElementById('recenter');
+  recenterButton.onclick = resetCenter;
 
   (0, _color_picker2.default)();
 
@@ -2224,7 +2204,7 @@ document.addEventListener('DOMContentLoaded', function () {
   zoomBack.onclick = zoomOut;
 
   // Add listeners to #click canvas
-  // 
+  //
   // let isDown = false;
   // let dragStartX;
   // let dragStartY;
@@ -2279,8 +2259,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var clickX = Math.floor(e.clientX - rect.left);
     var clickY = Math.floor(e.clientY - rect.top);
 
-    center.r = center.r - scale + clickX / 500 * 2 * scale;
-    center.i = center.i + scale - clickY / 500 * 2 * scale;
+    viewPort.center.r = viewPort.center.r - viewPort.scale + clickX / 500 * 2 * viewPort.scale;
+    viewPort.center.i = viewPort.center.i + viewPort.scale - clickY / 500 * 2 * viewPort.scale;
     zoomIn();
   };
 
@@ -2307,9 +2287,10 @@ document.addEventListener('DOMContentLoaded', function () {
         zoomOut();
         break;
       case 82:
-        resetZoom();
+        resetCenter();
         break;
     }
+    updateDisplay();
   };
 
   var rotateColorsButton = document.getElementById('rotate-colors');
@@ -2368,6 +2349,55 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 });
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _expand_mandlebrot = __webpack_require__(0);
+
+var _expand_mandlebrot2 = _interopRequireDefault(_expand_mandlebrot);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getMandleCache = function getMandleCache(canvas, viewPort, max) {
+  var ctx = canvas.getContext("2d");
+  var width = canvas.width;
+  var height = canvas.height;
+  var mandleCache = [];
+  var imgData = ctx.getImageData(0, 0, width, height);
+  var centerR = viewPort.center.r;
+  var centerI = viewPort.center.i;
+  var scale = viewPort.scale;
+
+  // loop over pixels on canvas, mapping each pixel to a Complex number
+  // return an array of increments to escape for each pixel in the image
+  // since the canvas if 500 * 500 pixels, this is array will have
+  // 250 000 values.
+
+  for (var j = 0; j < imgData.data.length; j += 4) {
+    var x = j / 4 % width;
+    var y = (j / 4 - x) / width;
+
+    var r = centerR - scale + x / width * 2 * scale;
+    var i = centerI + scale - y / width * 2 * scale;
+
+    var incsToEscape = (0, _expand_mandlebrot2.default)(r, i, max);
+
+    mandleCache.push(incsToEscape);
+  }
+  console.log("mandleCache reset");
+  return mandleCache;
+};
+
+exports.default = getMandleCache;
 
 /***/ })
 /******/ ]);

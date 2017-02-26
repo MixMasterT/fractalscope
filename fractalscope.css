@@ -19,6 +19,12 @@ li {
   list-style: none;
 }
 
+a {
+  text-decoration: none;
+}
+
+/* Layout and General */
+
 body {
   background-color: hsla(0,0%,83%,1);
   background-image: linear-gradient(-45deg, hsla(0,0%,0%,0), hsla(0,0%,0%,.05) );
@@ -29,26 +35,37 @@ body {
 }
 
 h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: black;
+  font-style: italic;
   font-size: 48px;
   color: hsla(0, 0%, 10%, 0.7);
 }
 
-button {
+button, .link {
   border: 1px solid black;
   border-radius: 8%;
   padding: 10px;
+  transition: all .1s ease-in-out;
   background-image: linear-gradient(180deg, hsl(0,0%,78%)  0%,
                     hsl(0,0%,90%) 47%,
                     hsl(0,0%,78%) 53%,
                     hsl(0,0%,70%)100%);
 }
 
-button:hover {
+button:hover, .link:hover {
   cursor: pointer;
-  box-shadow: 2px 2px 2px 2px blue;
+  box-shadow: 1px 1px 1px 1px hsla(187, 97%, 0%, 1);
+  transform: scale(1.05);
+}
+
+button:active, .link:active {
+  color: hsla(187, 97%, 25%, 1);
+  box-shadow: 1px 1px 1px 1px hsla(187, 97%, 73%, 0.72);
 }
 
 .outer-wrapper {
+  max-width: 900px;
   padding-top: 20px;
   text-align: center;
   width: 80%;
@@ -69,15 +86,18 @@ button:hover {
 
 .wrapper {
   margin: 0 auto;
-  width: 90%;
+  padding: 15px;
   min-width: 700px;
+  width: 90%;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
 }
 
 .main {
-  width: 500px;
+  margin: 10px;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 #canvas-wrapper, .zoom, .slide, .buttons, .color-picker {
@@ -94,13 +114,15 @@ button:hover {
 
     border: 2px solid #444;
     box-shadow: 1px 2px #222;
-
 }
+
+/* Specific Styles */
 
 #canvas-wrapper {
   position: relative;
   width: 500px;
   height: 500px;
+  margin: 0 auto;
 }
 
 #fractal, #grid, #click {
@@ -126,6 +148,33 @@ button:hover {
   flex-direction: row;
   justify-content: space-between;
   position: relative;
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.download-image {
+  width: 240px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.download-image a {
+  height: 45px;
+  display: flex;
+  align-items: center;
+}
+
+.gh-ln-modal {
+  width: 240px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .color-picker {
@@ -171,7 +220,7 @@ button:hover {
 }
 
 .side-panel {
-  margin: 0 15px;
+  margin: 0 10px;
   width: 120px;
   display: flex;
   flex-direction: column;
@@ -216,8 +265,8 @@ button:hover {
 }
 
 .color-picker li div {
-  color: #AAA;
   margin-left: 5px;
+  color: #AAA;
   display: inline-block;
 }
 
@@ -250,20 +299,6 @@ button:hover {
 .link {
   border-radius: 12%;
   padding: 10px 10px 6px 10px;
-  margin-left: 20px;
-  margin-bottom: 20px;
-}
-
-.links {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  min-width: 675px;
-}
-
-.links, .modal {
-  position: relative;
-  right: 40px;
 }
 
 #add-colors {
@@ -276,6 +311,10 @@ button:hover {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+#slide-up, #slide-down, #slide-left, #slide-right {
+  padding: 5px;
 }
 
 #slide-up {
@@ -294,15 +333,6 @@ button:hover {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-}
-
-#download {
-  font-size: 18px;
-  text-decoration: none;
-  position: relative;
-  height: 30px;
-  top: 10px;
-  right: 90px;
 }
 
 #slide-right {
@@ -374,10 +404,15 @@ button:hover {
 }
 /* close Button */
 #close {
-    color: #555;
+    color: #777;
     float: left;
     font-size: 28px;
-    font-weight: bold;
+    font-weight: bolder;
+}
+
+#close:hover {
+  color: #333;
+  cursor: pointer;
 }
 
 .close:hover, .close:focus {

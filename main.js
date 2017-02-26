@@ -8,6 +8,8 @@ import setupColorPicker from './js/color_picker';
 
 import setColors from './js/set_colors';
 
+import getMandleCache from './js/get_mandle_cache';
+
 let MAX_ITERATIONS = 500;
 
 const SLIDE_FACTOR = (1 / 8);
@@ -32,13 +34,28 @@ document.addEventListener('DOMContentLoaded', () => {
   //Set initial scale
   let scale = 2;
 
+  //Set global viewPort variable
+  const viewPort = { center, scale }
+
+  //Create contained access to adjustments to the viewPort
+
   let currentColors = setColors(MAX_ITERATIONS);
+
+  let mandleCache = getMandleCache(fractalCanvas, viewPort, MAX_ITERATIONS);
 
   drawGrid(gridCtx, center, scale);
   drawMandlebrot(fractalCanvas,
-                 { center, scale },
-                  currentColors,
-                  MAX_ITERATIONS);
+                 mandleCache,
+                 currentColors,
+                 MAX_ITERATIONS);
+  const adjustViewPort = (newR, newI, newScale) => {
+    viewPort.center.r = newR,
+    viewPort.center.i = newI,
+    viewPort.scale = newScale
+
+    // recalculate mandleBrot calc cache Array
+    mandleCache = getMandleCache(fractalCanvas, viewPort, MAX_ITERATIONS);
+  }
 
   //Button to Show  and hide Grid
   const showGridButton = document.getElementById('grid-on-off');
@@ -64,11 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const updateDisplay = () => {
     real.innerHTML = center.r.toFixed(3);
     imaginary.innerHTML = `${center.i.toFixed(3)}i`;
-    currentZoomDisplay.innerHTML = `${(2 / scale).toFixed(1)} x`;
+    currentZoomDisplay.innerHTML = `${(2 / viewPort.scale).toFixed(1)} x`;
     drawGrid(gridCtx, center, scale);
-    const viewPort = { scale, center };
     drawMandlebrot(fractalCanvas,
-                   viewPort,
+                   mandleCache,
                    currentColors,
                    MAX_ITERATIONS);
   };
@@ -78,51 +94,47 @@ document.addEventListener('DOMContentLoaded', () => {
     MAX_ITERATIONS = e.target.value;
   };
 
-  //zoom controls
-  const zoomFactor = 3/2;
-
   const currentZoomDisplay = document.getElementById('magnification');
 
   const zoomIn = () => {
-    scale /= zoomFactor;
+    adjustViewPort( viewPort.center.r,
+                    viewPort.center.i,
+                    viewPort.scale /= ZOOM_FACTOR)
     updateDisplay();
   };
 
   const zoomOut = () => {
-    scale *= zoomFactor;
+    adjustViewPort( viewPort.center.r,
+                    viewPort.center.i,
+                    viewPort.scale *= ZOOM_FACTOR)
     updateDisplay();
   };
-
-  const resetZoom = () => {
-    scale = 2;
-    updateDisplay();
-  };
-
-  const slideFactor = (1 / 8);
 
   const slideLeft = () => {
-    center.r -= (scale * slideFactor);
+    adjustViewPort( viewPort.center.r -= SLIDE_FACTOR * viewPort.scale,
+                    viewPort.center.i,
+                    viewPort.scale )
     updateDisplay();
   };
 
   const slideRight = () => {
-    center.r += (scale * slideFactor);
+    adjustViewPort( viewPort.center.r += SLIDE_FACTOR * viewPort.scale,
+                    viewPort.center.i,
+                    viewPort.scale )
     updateDisplay();
   };
 
   const slideUp = () => {
-    center.i -= (scale * slideFactor);
+    adjustViewPort( viewPort.center.r,
+                    viewPort.center.i -= SLIDE_FACTOR * viewPort.scale,
+                    viewPort.scale )
     updateDisplay();
   };
 
   const slideDown = () => {
-    center.i += (scale * slideFactor);
-    updateDisplay();
-  };
-
-  const recenter = () => {
-    center.i = 0;
-    center.r = 0;
+    adjustViewPort( viewPort.center.r,
+                    viewPort.center.i += SLIDE_FACTOR * viewPort.scale,
+                    viewPort.scale )
     updateDisplay();
   };
 
@@ -138,12 +150,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const down = document.getElementById('slide-down');
   down.onclick = slideDown;
 
-  const recenterButton = document.getElementById('recenter');
-  recenterButton.onclick = () => {
-    center.i = 0;
-    center.r = 0;
-    resetZoom();
+  const resetCenter = () => {
+    adjustViewPort( 0, 0, 2);
+    updateDisplay();
   }
+
+  const recenterButton = document.getElementById('recenter');
+  recenterButton.onclick = resetCenter;
 
   setupColorPicker();
 
@@ -154,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
   zoomBack.onclick = zoomOut;
 
   // Add listeners to #click canvas
-  // 
+  //
   // let isDown = false;
   // let dragStartX;
   // let dragStartY;
@@ -209,8 +222,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const clickX = Math.floor(e.clientX - rect.left);
     const clickY = Math.floor(e.clientY - rect.top);
 
-    center.r = (center.r - scale) + (clickX / 500) * 2 * scale;
-    center.i = (center.i + scale) - (clickY / 500) * 2 * scale;
+    viewPort.center.r = (viewPort.center.r - viewPort.scale) +
+                          (clickX / 500) * 2 * viewPort.scale;
+    viewPort.center.i = (viewPort.center.i + viewPort.scale) -
+                          (clickY / 500) * 2 * viewPort.scale;
     zoomIn();
   }
 
@@ -237,9 +252,10 @@ document.addEventListener('DOMContentLoaded', () => {
         zoomOut();
         break;
       case 82:
-        resetZoom();
+        resetCenter();
         break;
     }
+    updateDisplay();
   };
 
   const rotateColorsButton = document.getElementById('rotate-colors');
