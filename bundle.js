@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -152,7 +152,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _jscolor = __webpack_require__(5);
+var _jscolor = __webpack_require__(6);
 
 var _jscolor2 = _interopRequireDefault(_jscolor);
 
@@ -342,6 +342,54 @@ exports.default = drawMandlebrot;
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _expand_mandlebrot = __webpack_require__(0);
+
+var _expand_mandlebrot2 = _interopRequireDefault(_expand_mandlebrot);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getMandleCache = function getMandleCache(canvas, viewPort, max) {
+  var ctx = canvas.getContext("2d");
+  var width = canvas.width;
+  var height = canvas.height;
+  var mandleCache = [];
+  var imgData = ctx.getImageData(0, 0, width, height);
+  var centerR = viewPort.center.r;
+  var centerI = viewPort.center.i;
+  var scale = viewPort.scale;
+
+  // loop over pixels on canvas, mapping each pixel to a Complex number
+  // return an array of increments to escape for each pixel in the image
+  // since the canvas if 500 * 500 pixels, this is array will have
+  // 250 000 values.
+
+  for (var j = 0; j < imgData.data.length; j += 4) {
+    var x = j / 4 % width;
+    var y = (j / 4 - x) / width;
+
+    var r = centerR - scale + x / width * 2 * scale;
+    var i = centerI + scale - y / width * 2 * scale;
+
+    var incsToEscape = (0, _expand_mandlebrot2.default)(r, i, max);
+
+    mandleCache.push(incsToEscape);
+  }
+  return mandleCache;
+};
+
+exports.default = getMandleCache;
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2035,7 +2083,7 @@ if (!window.jscolor) {
 }
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2061,7 +2109,7 @@ var _set_colors = __webpack_require__(1);
 
 var _set_colors2 = _interopRequireDefault(_set_colors);
 
-var _get_mandle_cache = __webpack_require__(7);
+var _get_mandle_cache = __webpack_require__(5);
 
 var _get_mandle_cache2 = _interopRequireDefault(_get_mandle_cache);
 
@@ -2303,14 +2351,24 @@ document.addEventListener('DOMContentLoaded', function () {
       rotationInterval = setInterval(function () {
         var colorKeys = Object.keys(currentColors);
         var newColors = {};
-        for (var i = 0; i < colorKeys.length; i++) {
-          var newKey = colorKeys[i] - 1;
-          if (newKey < 0) {
-            newKey += MAX_ITERATIONS;
-          }
-          newColors[newKey] = currentColors[colorKeys[i]];
+
+        // keep old color for points inside the set
+        newColors[colorKeys[0]] = currentColors[colorKeys[0]];
+
+        //keep old color for fastest escaping points
+        newColors[colorKeys[1]] = currentColors[colorKeys[1]];
+        // console.log(newColors);
+
+        for (var i = 2; i < colorKeys.length; i++) {
+          // let newKey = colorKeys[i] - 1;
+          // if (newKey < 3) {
+          //   newKey += MAX_ITERATIONS;
+          // }
+          newColors[colorKeys[i]] = currentColors[colorKeys[2 + (i + 1) % (colorKeys.length - 2)]];
         }
+
         currentColors = newColors;
+        console.log(currentColors);
         updateDisplay();
       }, 50);
     } else {
@@ -2349,55 +2407,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 });
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _expand_mandlebrot = __webpack_require__(0);
-
-var _expand_mandlebrot2 = _interopRequireDefault(_expand_mandlebrot);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var getMandleCache = function getMandleCache(canvas, viewPort, max) {
-  var ctx = canvas.getContext("2d");
-  var width = canvas.width;
-  var height = canvas.height;
-  var mandleCache = [];
-  var imgData = ctx.getImageData(0, 0, width, height);
-  var centerR = viewPort.center.r;
-  var centerI = viewPort.center.i;
-  var scale = viewPort.scale;
-
-  // loop over pixels on canvas, mapping each pixel to a Complex number
-  // return an array of increments to escape for each pixel in the image
-  // since the canvas if 500 * 500 pixels, this is array will have
-  // 250 000 values.
-
-  for (var j = 0; j < imgData.data.length; j += 4) {
-    var x = j / 4 % width;
-    var y = (j / 4 - x) / width;
-
-    var r = centerR - scale + x / width * 2 * scale;
-    var i = centerI + scale - y / width * 2 * scale;
-
-    var incsToEscape = (0, _expand_mandlebrot2.default)(r, i, max);
-
-    mandleCache.push(incsToEscape);
-  }
-  console.log("mandleCache reset");
-  return mandleCache;
-};
-
-exports.default = getMandleCache;
 
 /***/ })
 /******/ ]);

@@ -268,14 +268,25 @@ document.addEventListener('DOMContentLoaded', () => {
       rotationInterval = setInterval(() => {
         const colorKeys = Object.keys(currentColors);
         const newColors = {};
-        for (let i = 0; i < colorKeys.length; i++) {
-          let newKey = colorKeys[i] - 1;
-          if (newKey < 0) {
-            newKey += MAX_ITERATIONS;
-          }
-          newColors[newKey] = currentColors[colorKeys[i]];
+
+        // keep old color for points inside the set
+        newColors[colorKeys[0]] = currentColors[colorKeys[0]];
+
+        //keep old color for fastest escaping points
+        newColors[colorKeys[1]] = currentColors[colorKeys[1]];
+        // console.log(newColors);
+
+        for (let i = 2; i < colorKeys.length; i++) {
+          // let newKey = colorKeys[i] - 1;
+          // if (newKey < 3) {
+          //   newKey += MAX_ITERATIONS;
+          // }
+          newColors[colorKeys[i]] = currentColors[colorKeys[ 2 + ((i + 1) % (colorKeys.length - 2))]];
         }
+
+
         currentColors = newColors;
+        console.log(currentColors);
         updateDisplay();
       }, 50);
     } else {
