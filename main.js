@@ -277,16 +277,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // console.log(newColors);
 
         for (let i = 2; i < colorKeys.length; i++) {
-          // let newKey = colorKeys[i] - 1;
-          // if (newKey < 3) {
-          //   newKey += MAX_ITERATIONS;
-          // }
           newColors[colorKeys[i]] = currentColors[colorKeys[ 2 + ((i + 1) % (colorKeys.length - 2))]];
         }
 
-
         currentColors = newColors;
-        console.log(currentColors);
         updateDisplay();
       }, 50);
     } else {
