@@ -34,18 +34,20 @@ diverge.
 This project is implemented with the following technologies:
 
 - Vanilla Javascript
-- 'jscolor' for color picking,
-- `HTML5 Canvas` for image rendering,
+- `HTML5 Canvas` for image rendering
+- `HTML5 Color Input` for choosing colors
 - Webpack to bundle, transpile, and serve up the various scripts.
 
 #### Architecture
 Rendering the Mandlebrot set with canvas requires several layers of nested
 functions. At the top level, a simple scaling function is used to map the
 pixels of the canvas to points along the Complex plane. This process is
-handled in the drawMandlebrot Function which lives in the draw_mandlebrot.js file. In order to render the Mandlebrot set, these points must then be expanded
+handled in the drawMandlebrot Function which lives in the draw_mandlebrot.js
+file. In order to render the Mandlebrot set, these points must then be expanded
 by iteratively applying the Mandlebrot function (Z = Z^2 + C) and checking
 how many iterations are required to 'escape.' This process is handled in a
-function called expandMandlebrot which lives in a dedicated JavaScript file called expand_mandlebrot.js.
+function called expandMandlebrot which lives in the dedicated JavaScript file
+expand_mandlebrot.js.
 
 Colors are stored in a custom-designed 'color object' called colorObj locally.
 This object has integer keys which correspond to iteration widths. For example
@@ -63,16 +65,19 @@ floating-point number type.
 
 ### Usage
 
-The 'show/hide grid' button shows range of real and imaginary
-numbers that are currently in view.
+The 'show/hide grid' button reveals grey lines overlaying the fractal image
+showing the approximate range of real and imaginary numbers that are currently
+in view.
 
 The 'max iterations' setting determines the maximum number of
 iterations of the Mandlebrot equation to which each pixel will be
 expanded. Warning: higher settings for this value will slow rendering
-down significantly. If rendering seems to lag, lower this value.
+down significantly. If rendering seems to lag, lower this value. Higher
+values will result in more fine detail at higher magnifications.
 
 Use the buttons on the control panels below the image to zoom in
-out and pan around the Mandlebrot image. Keyboard controls are also
+out and pan around the Mandlebrot image or double-click on the image
+to zoom in on a particular point. Keyboard controls are also
 available. The 'z' key zooms in on the image, and the 'x' key zooms
 out. They arrow keys allow you to slide the image up, down, left, and
 right. The numbers located in the middle of the slide control panel
@@ -83,9 +88,18 @@ to look at.
 To modify the color scheme, click the 'add color' button in the 'color
 picker' panel to the right. Choose a color clicking on the color box and
 using the color picker. The 'iteration width' determines width of that
-colors 'band' in the resulting imgage. Be sure to select <em>at least
-two colors </em> or the image will only be a single solid color! If no
-colors are selected, a default color sheme will be rendered. Click the
-'X' within a color block to remove it from the color scheme.
+colors 'band' in the resulting image. Be sure to select <em>at least
+two</em> colors or nothing will happen because a single color would not
+make a very intersting image. ! If only one or no colors are selected,
+a default color scheme will be rendered. Click the 'X' within a color block
+to remove it from the color scheme.
+
+![colorful image](images/colorful_image.png)
 
 Pan or zoom to generate a new image with your selected color scheme.
+
+Color rotation is also possible. Simply press the 'rotate colors' button
+to start rotation. Zooming in slows the rate of rotation down. At lower
+levels of magnification, the color rotation may seem too fast. If you
+are sensitive to flashing images, be careful with this feature
+![rotating image](images/fractalscope_rotating.gif)

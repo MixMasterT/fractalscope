@@ -1,6 +1,28 @@
 import expandMandlebrot from './expand_mandlebrot';
 
-const drawMandlebrot = (canvas, mandleCache, colorsObj, max) => {
+import drawMandlebrot from './drawMandlebrot';
+
+const animateMandlebrot = (rate, canvas, mandleCache, colorsObj, max) => {
+  // MUST return setTimeOut id so that clearTimeOut can be called externally!
+
+  const timeoutId = setInterval(() => {
+    const colorKeys = Object.keys(colorsObj);
+    const newColors = {};
+
+    // keep old color for points inside the set
+    newColors[colorKeys[0]] = currentColors[colorKeys[0]];
+
+    //keep old color for fastest escaping points
+    newColors[colorKeys[1]] = currentColors[colorKeys[1]];
+    // console.log(newColors);
+
+    for (let i = 2; i < colorKeys.length; i++) {
+      newColors[colorKeys[i]] = currentColors[colorKeys[ 2 + ((i + 1) % (colorKeys.length - 2))]];
+    }
+
+    currentColors = newColors;
+    updateDisplay();
+  }, 50);
   const ctx = canvas.getContext('2d');
   const width = canvas.width;
   const height = canvas.height;
@@ -25,4 +47,4 @@ const drawMandlebrot = (canvas, mandleCache, colorsObj, max) => {
   ctx.putImageData(imgData, 0, 0);
 };
 
-export default drawMandlebrot;
+export default animateMandlebrot;
