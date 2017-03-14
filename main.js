@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
                  mandleCache,
                  currentColors,
                  MAX_ITERATIONS);
+
   const adjustViewPort = (newR, newI, newScale) => {
     viewPort.center.r = newR,
     viewPort.center.i = newI,
@@ -73,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const colorsList = document.getElementById('colors-list');
   colorsList.addEventListener('DOMSubtreeModified', (e) => {
     currentColors = setColors(MAX_ITERATIONS);
+    updateDisplay();
   });
 
   const real = document.getElementById('real');
@@ -268,13 +270,18 @@ document.addEventListener('DOMContentLoaded', () => {
       rotationInterval = setInterval(() => {
         const colorKeys = Object.keys(currentColors);
         const newColors = {};
-        for (let i = 0; i < colorKeys.length; i++) {
-          let newKey = colorKeys[i] - 1;
-          if (newKey < 0) {
-            newKey += MAX_ITERATIONS;
-          }
-          newColors[newKey] = currentColors[colorKeys[i]];
+
+        // keep old color for points inside the set
+        newColors[colorKeys[0]] = currentColors[colorKeys[0]];
+
+        //keep old color for fastest escaping points
+        newColors[colorKeys[1]] = currentColors[colorKeys[1]];
+        // console.log(newColors);
+
+        for (let i = 2; i < colorKeys.length; i++) {
+          newColors[colorKeys[i]] = currentColors[colorKeys[ 2 + ((i + 1) % (colorKeys.length - 2))]];
         }
+
         currentColors = newColors;
         updateDisplay();
       }, 50);

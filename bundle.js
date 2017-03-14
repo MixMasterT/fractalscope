@@ -256,11 +256,11 @@ var drawGrid = function drawGrid(ctx, center, scale) {
   //horizontal lines
   ctx.moveTo(35, 125);
   ctx.lineTo(500, 125);
-  ctx.stroke();
+  // ctx.stroke();
 
   ctx.moveTo(35, 250);
   ctx.lineTo(500, 250);
-  ctx.stroke();
+  // ctx.stroke();
 
   ctx.moveTo(35, 375);
   ctx.lineTo(500, 375);
@@ -269,11 +269,11 @@ var drawGrid = function drawGrid(ctx, center, scale) {
   //vertical lines
   ctx.moveTo(125, 20);
   ctx.lineTo(125, 500);
-  ctx.stroke();
+  // ctx.stroke();
 
   ctx.moveTo(250, 20);
   ctx.lineTo(250, 500);
-  ctx.stroke();
+  // ctx.stroke();
 
   ctx.moveTo(375, 20);
   ctx.lineTo(375, 500);
@@ -383,7 +383,6 @@ var getMandleCache = function getMandleCache(canvas, viewPort, max) {
 
     mandleCache.push(incsToEscape);
   }
-  console.log("mandleCache reset");
   return mandleCache;
 };
 
@@ -2151,6 +2150,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   (0, _draw_grid2.default)(gridCtx, center, scale);
   (0, _draw_mandlebrot2.default)(fractalCanvas, mandleCache, currentColors, MAX_ITERATIONS);
+
   var adjustViewPort = function adjustViewPort(newR, newI, newScale) {
     viewPort.center.r = newR, viewPort.center.i = newI, viewPort.scale = newScale;
 
@@ -2174,6 +2174,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var colorsList = document.getElementById('colors-list');
   colorsList.addEventListener('DOMSubtreeModified', function (e) {
     currentColors = (0, _set_colors2.default)(MAX_ITERATIONS);
+    updateDisplay();
   });
 
   var real = document.getElementById('real');
@@ -2352,13 +2353,18 @@ document.addEventListener('DOMContentLoaded', function () {
       rotationInterval = setInterval(function () {
         var colorKeys = Object.keys(currentColors);
         var newColors = {};
-        for (var i = 0; i < colorKeys.length; i++) {
-          var newKey = colorKeys[i] - 1;
-          if (newKey < 0) {
-            newKey += MAX_ITERATIONS;
-          }
-          newColors[newKey] = currentColors[colorKeys[i]];
+
+        // keep old color for points inside the set
+        newColors[colorKeys[0]] = currentColors[colorKeys[0]];
+
+        //keep old color for fastest escaping points
+        newColors[colorKeys[1]] = currentColors[colorKeys[1]];
+        // console.log(newColors);
+
+        for (var i = 2; i < colorKeys.length; i++) {
+          newColors[colorKeys[i]] = currentColors[colorKeys[2 + (i + 1) % (colorKeys.length - 2)]];
         }
+
         currentColors = newColors;
         updateDisplay();
       }, 50);

@@ -6,11 +6,11 @@ const drawGrid = (ctx, center, scale) => {
   //horizontal lines
   ctx.moveTo(35, 125);
   ctx.lineTo(500,125);
-  ctx.stroke();
+  // ctx.stroke();
 
   ctx.moveTo(35, 250);
   ctx.lineTo(500,250);
-  ctx.stroke();
+  // ctx.stroke();
 
   ctx.moveTo(35, 375);
   ctx.lineTo(500,375);
@@ -19,11 +19,11 @@ const drawGrid = (ctx, center, scale) => {
   //vertical lines
   ctx.moveTo(125, 20);
   ctx.lineTo(125, 500);
-  ctx.stroke();
+  // ctx.stroke();
 
   ctx.moveTo(250, 20);
   ctx.lineTo(250, 500);
-  ctx.stroke();
+  // ctx.stroke();
 
   ctx.moveTo(375, 20);
   ctx.lineTo(375, 500);
