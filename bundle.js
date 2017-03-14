@@ -2150,6 +2150,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   (0, _draw_grid2.default)(gridCtx, center, scale);
   (0, _draw_mandlebrot2.default)(fractalCanvas, mandleCache, currentColors, MAX_ITERATIONS);
+
   var adjustViewPort = function adjustViewPort(newR, newI, newScale) {
     viewPort.center.r = newR, viewPort.center.i = newI, viewPort.scale = newScale;
 
@@ -2173,6 +2174,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var colorsList = document.getElementById('colors-list');
   colorsList.addEventListener('DOMSubtreeModified', function (e) {
     currentColors = (0, _set_colors2.default)(MAX_ITERATIONS);
+    updateDisplay();
   });
 
   var real = document.getElementById('real');

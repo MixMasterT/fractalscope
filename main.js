@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
                  mandleCache,
                  currentColors,
                  MAX_ITERATIONS);
+
   const adjustViewPort = (newR, newI, newScale) => {
     viewPort.center.r = newR,
     viewPort.center.i = newI,
@@ -73,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const colorsList = document.getElementById('colors-list');
   colorsList.addEventListener('DOMSubtreeModified', (e) => {
     currentColors = setColors(MAX_ITERATIONS);
+    updateDisplay();
   });
 
   const real = document.getElementById('real');
