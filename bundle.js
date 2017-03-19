@@ -175,6 +175,13 @@ var setupColorPicker = function setupColorPicker() {
 
   var colorsList = document.getElementById('colors-list');
 
+  var color = document.getElementById('color');
+
+  var colorPickerButton = document.getElementById('open-color-picker');
+  colorPickerButton.onclick = function (e) {
+    color.click();
+  };
+
   addColorForm.onsubmit = function (e) {
     e.preventDefault();
 
@@ -182,8 +189,6 @@ var setupColorPicker = function setupColorPicker() {
       var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
       return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : null;
     };
-
-    var color = document.getElementById('color');
 
     // this is 'width' of color band in iterations, not a pixel value
     var width = document.getElementById('width');
