@@ -99,6 +99,8 @@ function fractal_viz() {
 
   setgray( cache, fracImage ) ;
 
+  console.log('')
+
   var fractalItem = viz.setup_item({
     
     image: fracImage,
@@ -106,6 +108,8 @@ function fractal_viz() {
     y: 0,
 
   }) ;
+
+  viz.run() ;
 
   // var fractalConfig = { 
 
