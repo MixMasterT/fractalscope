@@ -1,16 +1,16 @@
 
 
-function mandelpel( imgData ) {
+function mandelpel( N ) {
 
-  var mandleCache = new Array( imgData.data.length / 4 ) ;
+  var mandleCache = new Array( N ) ;
 
-  var width = Math. sqrt( imgData.data.length / 4 ) ;
+  var width = Math.sqrt( N ) ;
   var scale = 3 ;
   var max   = 255 ;
   var centerR = 0 ;
   var centerI = 0 ;
 
-  for ( var kpel = 0 ; kpel < mandleCache.length ; kpel ++ ) {
+  for ( var kpel = 0 ; kpel < N ; kpel ++ ) {
 
     const x =  (kpel)      % width ;
     const y = ((kpel) - x) / width ;
@@ -25,6 +25,24 @@ function mandelpel( imgData ) {
   }
 
   return mandleCache ;
+
+}
+
+function invertedImage( cache ) {
+
+  var size      = Math.sqrt( cache.length ) ;
+  var fracImage = $Z.helper.image.create( size, size ) ;
+  var max       = 255 ;
+
+  var invertedCache = new Array( cache.length ) ;
+
+  for ( var kpel = 0 ; kpel < cache.length ; kpel ++ ) {
+    invertedCache[kpel] = max - cache[kpel] ;
+  }
+
+  setgray( invertedCache, fracImage ) ;  
+
+  return fracImage ;
 
 }
 
@@ -73,35 +91,30 @@ function setgray(gray, canvas) {
 }
 
 function fractal_viz() {
+
   console.log('fractal viz start') ;
   
   var canvasSize = 500 ;
 
   var vizConfig = {
-    width: canvasSize,
+    width:  canvasSize,
     height: canvasSize,
     collision_detect: function() {},
   } ;
 
-  var viz = $Z.helper.viz.setup(vizConfig) ; // frameDuration computed
+  var viz = $Z.helper.viz.setup( vizConfig ) ; // frameDuration computed
 
   var imageWidth  = canvasSize ;
   var imageHeight = canvasSize ;
 
   var fracImage = $Z.helper.image.create( imageWidth, imageHeight ) ;
-  var imgData = $Z.helper.image.get_data(fracImage) ;
-
-  // console.log('imgData', imgData) ;
-
-  var cache = mandelpel( imgData ) ;
-
-  // console.log(  'cache', cache, 'max', Math.max.apply(null, cache), 'min', Math.max.apply(null, cache) ) ;
+  var cache     = mandelpel( imageWidth * imageHeight ) ;
 
   setgray( cache, fracImage ) ;
 
-  console.log('')
+  var fractalItem = new Array( 2 ) ;
 
-  var fractalItem = viz.setup_item({
+  fractalItem[0] = viz.setup_item({
     
     image: fracImage,
     x: 0,
@@ -109,7 +122,26 @@ function fractal_viz() {
 
   }) ;
 
+  var fracImage2 = invertedImage( cache ) ;
+
+  fractalItem[1] = viz.setup_item({
+    
+    image: fracImage2,
+    x: 0,
+    y: 0,
+    opacity: 1,
+
+  }) ;
+
+
   viz.run() ;
+
+  var dur     = 1000 ;
+  var fadeOut = $Z.helper.transition.new_linear('opacity', 0, dur) ;
+
+  fractalItem[1].add_transition( fadeOut ) ;
+
+  console.log('fadeOut', fadeOut) ;
 
   // var fractalConfig = { 
 
