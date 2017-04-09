@@ -1,5 +1,3 @@
-
-
 function mandelpel( N ) {
 
   var mandleCache = new Array( N ) ;
@@ -119,6 +117,7 @@ function fractal_viz() {
     image: fracImage,
     x: 0,
     y: 0,
+    opacity: 0,
 
   }) ;
 
@@ -133,28 +132,11 @@ function fractal_viz() {
 
   }) ;
 
-
   viz.run() ;
 
-  var dur     = 1000 ;
-  var fadeOut = $Z.helper.transition.new_linear('opacity', 0, dur) ;
+  viz.fadeDuration = 1000 ;
 
-  fractalItem[1].add_transition( fadeOut ) ;
-
-  console.log('fadeOut', fadeOut) ;
-
-  // var fractalConfig = { 
-
-  //   x: viz.width  * 0.5,
-  //   y: viz.height * 0.5,
-  //   xOrigin: fractalCanvas.width * 0.5,
-  //   yOrigin: fractalCanvas.height * 0.5,
-  //   image: fractalImage,
-  //   opacity: .25,
-  //   uiSwitch: false,
-  //   addSwitch: true,
-  //   viz: viz,
-
-  // } ;
+  fractalItem[0].loop_fade() ;
+  fractalItem[0].call('focus', 1) ; // weird delay bug
 
 }
