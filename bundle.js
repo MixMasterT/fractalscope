@@ -63,11 +63,420 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _draw_grid = __webpack_require__(7);
+
+var _draw_grid2 = _interopRequireDefault(_draw_grid);
+
+var _expand_mandlebrot = __webpack_require__(2);
+
+var _expand_mandlebrot2 = _interopRequireDefault(_expand_mandlebrot);
+
+var _draw_mandlebrot = __webpack_require__(8);
+
+var _draw_mandlebrot2 = _interopRequireDefault(_draw_mandlebrot);
+
+var _color_picker = __webpack_require__(6);
+
+var _color_picker2 = _interopRequireDefault(_color_picker);
+
+var _set_colors = __webpack_require__(3);
+
+var _set_colors2 = _interopRequireDefault(_set_colors);
+
+var _get_mandle_cache = __webpack_require__(9);
+
+var _get_mandle_cache2 = _interopRequireDefault(_get_mandle_cache);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var MAX_ITERATIONS = 500;
+
+var SLIDE_FACTOR = 1 / 8;
+
+var ZOOM_FACTOR = 3 / 2;
+
+document.addEventListener('DOMContentLoaded', function () {
+  var fractalCanvas = document.getElementById('fractal');
+  var gridCanvas = document.getElementById('grid');
+  var clickCanvas = document.getElementById('click');
+
+  var fractalCtx = fractalCanvas.getContext("2d");
+  var gridCtx = gridCanvas.getContext("2d");
+
+  //set center
+  var centerR = 0;
+  var centerI = 0;
+
+  //set complex center
+  var center = { r: centerR, i: centerI };
+
+  //Set initial scale
+  var scale = 2;
+
+  //Set global viewPort variable
+  var viewPort = { center: center, scale: scale };
+
+  //Create contained access to adjustments to the viewPort
+
+  var currentColors = (0, _set_colors2.default)(MAX_ITERATIONS);
+
+  var mandleCache = (0, _get_mandle_cache2.default)(fractalCanvas, viewPort, MAX_ITERATIONS);
+
+  (0, _draw_grid2.default)(gridCtx, center, scale);
+  (0, _draw_mandlebrot2.default)(fractalCanvas, mandleCache, currentColors, MAX_ITERATIONS);
+
+  var adjustViewPort = function adjustViewPort(newR, newI, newScale) {
+    viewPort.center.r = newR, viewPort.center.i = newI, viewPort.scale = newScale;
+
+    // recalculate mandleBrot calc cache Array
+    mandleCache = (0, _get_mandle_cache2.default)(fractalCanvas, viewPort, MAX_ITERATIONS);
+  };
+
+  //Button to Show  and hide Grid
+  var showGridButton = document.getElementById('grid-on-off');
+  showGridButton.onclick = function () {
+    if (showGridButton.innerHTML === 'hide grid') {
+      showGridButton.innerHTML = 'show grid';
+      gridCanvas.style.visibility = 'hidden';
+    } else {
+      showGridButton.innerHTML = 'hide grid';
+      (0, _draw_grid2.default)(gridCtx, center, scale);
+      gridCanvas.style.visibility = 'visible';
+    }
+  };
+
+  var colorsList = document.getElementById('colors-list');
+  colorsList.addEventListener('DOMSubtreeModified', function (e) {
+    currentColors = (0, _set_colors2.default)(MAX_ITERATIONS);
+    updateDisplay();
+  });
+
+  var real = document.getElementById('real');
+  var imaginary = document.getElementById('imaginary');
+
+  var updateDisplay = function updateDisplay() {
+    real.innerHTML = viewPort.center.r.toFixed(3);
+    imaginary.innerHTML = viewPort.center.i.toFixed(3) + 'i';
+    currentZoomDisplay.innerHTML = (2 / viewPort.scale).toFixed(1) + ' x';
+    (0, _draw_grid2.default)(gridCtx, viewPort.center, viewPort.scale);
+    (0, _draw_mandlebrot2.default)(fractalCanvas, mandleCache, currentColors, MAX_ITERATIONS);
+  };
+
+  var maxIterations = document.getElementById('max-iterations');
+  maxIterations.onchange = function (e) {
+    MAX_ITERATIONS = e.target.value;
+  };
+
+  var currentZoomDisplay = document.getElementById('magnification');
+
+  var zoomIn = function zoomIn() {
+    adjustViewPort(viewPort.center.r, viewPort.center.i, viewPort.scale /= ZOOM_FACTOR);
+    updateDisplay();
+  };
+
+  var zoomOut = function zoomOut() {
+    adjustViewPort(viewPort.center.r, viewPort.center.i, viewPort.scale *= ZOOM_FACTOR);
+    updateDisplay();
+  };
+
+  var slideLeft = function slideLeft() {
+    adjustViewPort(viewPort.center.r -= SLIDE_FACTOR * viewPort.scale, viewPort.center.i, viewPort.scale);
+    updateDisplay();
+  };
+
+  var slideRight = function slideRight() {
+    adjustViewPort(viewPort.center.r += SLIDE_FACTOR * viewPort.scale, viewPort.center.i, viewPort.scale);
+    updateDisplay();
+  };
+
+  var slideUp = function slideUp() {
+    adjustViewPort(viewPort.center.r, viewPort.center.i -= SLIDE_FACTOR * viewPort.scale, viewPort.scale);
+    updateDisplay();
+  };
+
+  var slideDown = function slideDown() {
+    adjustViewPort(viewPort.center.r, viewPort.center.i += SLIDE_FACTOR * viewPort.scale, viewPort.scale);
+    updateDisplay();
+  };
+
+  var left = document.getElementById('slide-left');
+  left.onclick = slideLeft;
+
+  var right = document.getElementById('slide-right');
+  right.onclick = slideRight;
+
+  var up = document.getElementById('slide-up');
+  up.onclick = slideUp;
+
+  var down = document.getElementById('slide-down');
+  down.onclick = slideDown;
+
+  var resetCenter = function resetCenter() {
+    adjustViewPort(0, 0, 2);
+    updateDisplay();
+  };
+
+  var recenterButton = document.getElementById('recenter');
+  recenterButton.onclick = resetCenter;
+
+  (0, _color_picker2.default)();
+
+  var zoom = document.getElementById('in');
+  zoom.onclick = zoomIn;
+
+  var zoomBack = document.getElementById('out');
+  zoomBack.onclick = zoomOut;
+
+  // Add listeners to #click canvas
+  //
+  // let isDown = false;
+  // let dragStartX;
+  // let dragStartY;
+  // let mouseX;
+  // let mouseY;
+  //
+  // clickCanvas.onmousedown = (e) => {
+  //   e.stopPropagation();
+  //   const rect = clickCanvas.getBoundingClientRect();
+  //   dragStartX = Math.floor(e.clientX - rect.left);
+  //   dragStartY = Math.floor(e.clientY - rect.top);
+  //   isDown = true;
+  //
+  //   mouseX = dragStartX;
+  //   mouseY = dragStartY;
+  // }
+  //
+  // clickCanvas.onmousemove = (e) => {
+  //   if (!isDown) {
+  //     return;
+  //   }
+  //   const rect = clickCanvas.getBoundingClientRect();
+  //   mouseX = Math.floor(e.clientX - rect.left);
+  //   mouseY = Math.floor(e.clientY - rect.top);
+  //
+  //   center.r = center.r + ((dragStartX - mouseX) / 500) * scale;
+  //   center.i = center.i + ((mouseY - dragStartY) / 500) * scale;
+  //
+  //   updateDisplay();
+  // }
+  //
+  // const handleRelease = (e) => {
+  //   const rect = clickCanvas.getBoundingClientRect();
+  //   const finishX = Math.floor(e.clientX - rect.left);
+  //   const finishY = Math.floor(e.clientY - rect.top);
+  //
+  //   center.r = center.r + ((dragStartX - finishX) / 500) * scale;
+  //   center.i = center.i + ((finishY - dragStartY) / 500) * scale;
+  //
+  //   updateDisplay();
+  //
+  //   isDown = false;
+  // }
+  //
+  // clickCanvas.onmouseup = handleRelease;
+  // clickCanvas.onmouseout = handleRelease;
+
+  clickCanvas.ondblclick = function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var rect = clickCanvas.getBoundingClientRect();
+    var clickX = Math.floor(e.clientX - rect.left);
+    var clickY = Math.floor(e.clientY - rect.top);
+
+    viewPort.center.r = viewPort.center.r - viewPort.scale + clickX / 500 * 2 * viewPort.scale;
+    viewPort.center.i = viewPort.center.i + viewPort.scale - clickY / 500 * 2 * viewPort.scale;
+    zoomIn();
+  };
+
+  // Key binding for slide and zoom actions
+  document.onkeydown = function (e) {
+    e.preventDefault();
+    switch (e.keyCode) {
+      case 39:
+        slideLeft();
+        break;
+      case 38:
+        slideUp();
+        break;
+      case 37:
+        slideRight();
+        break;
+      case 40:
+        slideDown();
+        break;
+      case 90:
+        zoomIn();
+        break;
+      case 88:
+        zoomOut();
+        break;
+      case 82:
+        resetCenter();
+        break;
+    }
+    updateDisplay();
+  };
+
+  var rotateColorsButton = document.getElementById('rotate-colors');
+
+  var rotationInterval = void 0;
+
+  var vizConfig = {
+    frameDurationFactor: 4,
+    width: fractalCanvas.width,
+    height: fractalCanvas.height,
+    collision_detect: function collision_detect() {}
+  };
+
+  rotateColorsButton.onclick = function (e) {
+    if (rotateColorsButton.innerHTML === 'Rotate Colors') {
+      rotateColorsButton.innerHTML = 'Stop Rotation';
+
+      var colorRotations = [];
+
+      var viz = $Z.helper.viz.setup(vizConfig);
+
+      for (var k = 0; k < colorsList.children.length; k++) {
+        var newColors = {};
+        var colorKeys = Object.keys(currentColors);
+
+        if (colorsList.childNodes.length === 3) {
+          // extra fixed value necessary to avoid strange harmonic effect
+          // at 3 colors, whereby colors only change once every 500 rotations
+
+          // keep old color for points inside the set
+          newColors[colorKeys[0]] = currentColors[colorKeys[0]];
+
+          //keep old color for fastest escaping points at first and second
+          //color band
+          newColors[colorKeys[1]] = currentColors[colorKeys[1]];
+          newColors[colorKeys[2]] = currentColors[colorKeys[2]];
+
+          //rotate all colors higher than two
+          for (var i = 3; i < colorKeys.length; i++) {
+            newColors[colorKeys[i]] = currentColors[colorKeys[3 + (i + 1) % (colorKeys.length - 3)]];
+          }
+        } else {
+          // keep old color for points inside the set
+          newColors[colorKeys[0]] = currentColors[colorKeys[0]];
+
+          //keep old color for fastest escaping points
+          newColors[colorKeys[1]] = currentColors[colorKeys[1]];
+          // newColors[colorKeys[2]] = currentColors[colorKeys[2]];
+
+          //rotate all colors higher than two
+          for (var _i = 2; _i < colorKeys.length; _i++) {
+            newColors[colorKeys[_i]] = currentColors[colorKeys[2 + (_i + 1) % (colorKeys.length - 2)]];
+          }
+        }
+        var currentColoredImage = $Z.helper.image.create(fractalCanvas.width, fractalCanvas.height);
+        (0, _draw_mandlebrot2.default)(currentColoredImage, mandleCache, newColors, MAX_ITERATIONS);
+        colorRotations.push(currentColoredImage);
+        currentColors = newColors;
+      }
+
+      console.log(colorRotations);
+      var colorRotationItem = viz.setup_item({
+
+        image: colorRotations[0],
+        x: 0,
+        y: 0,
+        opacity: 1
+
+      });
+
+      var colorLoop = $Z.helper.sprite.animate_loop({ Nstep: colorsList.children.length }, colorRotations, viz.image_transition).animation;
+
+      colorRotationItem.add_transition(colorLoop);
+
+      viz.run();
+
+      // rotationInterval = setInterval(() => {
+      //   const colorKeys = Object.keys(currentColors);
+      //   const newColors = {};
+      //
+      //   if (colorsList.childNodes.length === 3) {
+      //     // extra fixed value necessary to avoid strange harmonic effect
+      //     // at 3 colors, whereby colors only change once every 500 rotations
+      //
+      //     // keep old color for points inside the set
+      //     newColors[colorKeys[0]] = currentColors[colorKeys[0]];
+      //
+      //     //keep old color for fastest escaping points at first and second
+      //     //color band
+      //     newColors[colorKeys[1]] = currentColors[colorKeys[1]];
+      //     newColors[colorKeys[2]] = currentColors[colorKeys[2]];
+      //
+      //     //rotate all colors higher than two
+      //     for (let i = 3; i < colorKeys.length; i++) {
+      //       newColors[colorKeys[i]] = currentColors[colorKeys[ 3 + ((i + 1) % (colorKeys.length - 3))]];
+      //     }
+      //   } else {
+      //     // keep old color for points inside the set
+      //     newColors[colorKeys[0]] = currentColors[colorKeys[0]];
+      //
+      //     //keep old color for fastest escaping points
+      //     newColors[colorKeys[1]] = currentColors[colorKeys[1]];
+      //     // newColors[colorKeys[2]] = currentColors[colorKeys[2]];
+      //
+      //     //rotate all colors higher than two
+      //     for (let i = 2; i < colorKeys.length; i++) {
+      //       newColors[colorKeys[i]] = currentColors[colorKeys[ 2 + ((i + 1) % (colorKeys.length - 2))]];
+      //     }
+      //   }
+      //   currentColors = newColors;
+      //   updateDisplay();
+      // }, 50);
+    } else {
+      rotateColorsButton.innerHTML = 'Rotate Colors';
+      clearInterval(rotationInterval);
+    }
+  };
+
+  var downloadButton = document.getElementById('download');
+  downloadButton.addEventListener('click', function (e) {
+    var dataURL = fractalCanvas.toDataURL('image/png');
+    downloadButton.href = dataURL;
+  });
+
+  var infoModal = document.getElementById('info');
+
+  var openModalButton = document.getElementById("info-modal");
+
+  // Get the element that closes the modal
+  var closeButton = document.getElementById("close");
+
+  // When the user clicks on the button, open the modal
+  openModalButton.onclick = function () {
+    infoModal.style.display = "block";
+  };
+
+  // close the infoModal
+  closeButton.onclick = function () {
+    infoModal.style.display = "none";
+  };
+
+  // When the user clicks outside of the infoModal, close it
+  window.onclick = function (event) {
+    if (event.target == infoModal) {
+      infoModal.style.display = "none";
+    }
+  };
+});
+
+/***/ }),
+/* 1 */,
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98,7 +507,7 @@ var expandMandlebrot = function expandMandlebrot(real, imaginary, max) {
 exports.default = expandMandlebrot;
 
 /***/ }),
-/* 1 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -142,7 +551,9 @@ var setColors = function setColors(maxIterations) {
 exports.default = setColors;
 
 /***/ }),
-/* 2 */
+/* 4 */,
+/* 5 */,
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -152,11 +563,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _jscolor = __webpack_require__(6);
+var _jscolor = __webpack_require__(12);
 
 var _jscolor2 = _interopRequireDefault(_jscolor);
 
-var _set_colors = __webpack_require__(1);
+var _set_colors = __webpack_require__(3);
 
 var _set_colors2 = _interopRequireDefault(_set_colors);
 
@@ -244,7 +655,7 @@ var setupColorPicker = function setupColorPicker() {
 exports.default = setupColorPicker;
 
 /***/ }),
-/* 3 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -302,7 +713,7 @@ var drawGrid = function drawGrid(ctx, center, scale) {
 exports.default = drawGrid;
 
 /***/ }),
-/* 4 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -312,7 +723,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _expand_mandlebrot = __webpack_require__(0);
+var _expand_mandlebrot = __webpack_require__(2);
 
 var _expand_mandlebrot2 = _interopRequireDefault(_expand_mandlebrot);
 
@@ -346,7 +757,7 @@ var drawMandlebrot = function drawMandlebrot(canvas, mandleCache, colorsObj, max
 exports.default = drawMandlebrot;
 
 /***/ }),
-/* 5 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -356,7 +767,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _expand_mandlebrot = __webpack_require__(0);
+var _expand_mandlebrot = __webpack_require__(2);
 
 var _expand_mandlebrot2 = _interopRequireDefault(_expand_mandlebrot);
 
@@ -394,7 +805,9 @@ var getMandleCache = function getMandleCache(canvas, viewPort, max) {
 exports.default = getMandleCache;
 
 /***/ }),
-/* 6 */
+/* 10 */,
+/* 11 */,
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2086,347 +2499,6 @@ if (!window.jscolor) {
 		return jsc.jscolor;
 	}();
 }
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _draw_grid = __webpack_require__(3);
-
-var _draw_grid2 = _interopRequireDefault(_draw_grid);
-
-var _expand_mandlebrot = __webpack_require__(0);
-
-var _expand_mandlebrot2 = _interopRequireDefault(_expand_mandlebrot);
-
-var _draw_mandlebrot = __webpack_require__(4);
-
-var _draw_mandlebrot2 = _interopRequireDefault(_draw_mandlebrot);
-
-var _color_picker = __webpack_require__(2);
-
-var _color_picker2 = _interopRequireDefault(_color_picker);
-
-var _set_colors = __webpack_require__(1);
-
-var _set_colors2 = _interopRequireDefault(_set_colors);
-
-var _get_mandle_cache = __webpack_require__(5);
-
-var _get_mandle_cache2 = _interopRequireDefault(_get_mandle_cache);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var MAX_ITERATIONS = 500;
-
-var SLIDE_FACTOR = 1 / 8;
-
-var ZOOM_FACTOR = 3 / 2;
-
-document.addEventListener('DOMContentLoaded', function () {
-  var fractalCanvas = document.getElementById('fractal');
-  var gridCanvas = document.getElementById('grid');
-  var clickCanvas = document.getElementById('click');
-
-  var fractalCtx = fractalCanvas.getContext("2d");
-  var gridCtx = gridCanvas.getContext("2d");
-
-  //set center
-  var centerR = 0;
-  var centerI = 0;
-
-  //set complex center
-  var center = { r: centerR, i: centerI };
-
-  //Set initial scale
-  var scale = 2;
-
-  //Set global viewPort variable
-  var viewPort = { center: center, scale: scale };
-
-  //Create contained access to adjustments to the viewPort
-
-  var currentColors = (0, _set_colors2.default)(MAX_ITERATIONS);
-
-  var mandleCache = (0, _get_mandle_cache2.default)(fractalCanvas, viewPort, MAX_ITERATIONS);
-
-  (0, _draw_grid2.default)(gridCtx, center, scale);
-  (0, _draw_mandlebrot2.default)(fractalCanvas, mandleCache, currentColors, MAX_ITERATIONS);
-
-  var adjustViewPort = function adjustViewPort(newR, newI, newScale) {
-    viewPort.center.r = newR, viewPort.center.i = newI, viewPort.scale = newScale;
-
-    // recalculate mandleBrot calc cache Array
-    mandleCache = (0, _get_mandle_cache2.default)(fractalCanvas, viewPort, MAX_ITERATIONS);
-  };
-
-  //Button to Show  and hide Grid
-  var showGridButton = document.getElementById('grid-on-off');
-  showGridButton.onclick = function () {
-    if (showGridButton.innerHTML === 'hide grid') {
-      showGridButton.innerHTML = 'show grid';
-      gridCanvas.style.visibility = 'hidden';
-    } else {
-      showGridButton.innerHTML = 'hide grid';
-      (0, _draw_grid2.default)(gridCtx, center, scale);
-      gridCanvas.style.visibility = 'visible';
-    }
-  };
-
-  var colorsList = document.getElementById('colors-list');
-  colorsList.addEventListener('DOMSubtreeModified', function (e) {
-    currentColors = (0, _set_colors2.default)(MAX_ITERATIONS);
-    updateDisplay();
-  });
-
-  var real = document.getElementById('real');
-  var imaginary = document.getElementById('imaginary');
-
-  var updateDisplay = function updateDisplay() {
-    real.innerHTML = viewPort.center.r.toFixed(3);
-    imaginary.innerHTML = viewPort.center.i.toFixed(3) + 'i';
-    currentZoomDisplay.innerHTML = (2 / viewPort.scale).toFixed(1) + ' x';
-    (0, _draw_grid2.default)(gridCtx, viewPort.center, viewPort.scale);
-    (0, _draw_mandlebrot2.default)(fractalCanvas, mandleCache, currentColors, MAX_ITERATIONS);
-  };
-
-  var maxIterations = document.getElementById('max-iterations');
-  maxIterations.onchange = function (e) {
-    MAX_ITERATIONS = e.target.value;
-  };
-
-  var currentZoomDisplay = document.getElementById('magnification');
-
-  var zoomIn = function zoomIn() {
-    adjustViewPort(viewPort.center.r, viewPort.center.i, viewPort.scale /= ZOOM_FACTOR);
-    updateDisplay();
-  };
-
-  var zoomOut = function zoomOut() {
-    adjustViewPort(viewPort.center.r, viewPort.center.i, viewPort.scale *= ZOOM_FACTOR);
-    updateDisplay();
-  };
-
-  var slideLeft = function slideLeft() {
-    adjustViewPort(viewPort.center.r -= SLIDE_FACTOR * viewPort.scale, viewPort.center.i, viewPort.scale);
-    updateDisplay();
-  };
-
-  var slideRight = function slideRight() {
-    adjustViewPort(viewPort.center.r += SLIDE_FACTOR * viewPort.scale, viewPort.center.i, viewPort.scale);
-    updateDisplay();
-  };
-
-  var slideUp = function slideUp() {
-    adjustViewPort(viewPort.center.r, viewPort.center.i -= SLIDE_FACTOR * viewPort.scale, viewPort.scale);
-    updateDisplay();
-  };
-
-  var slideDown = function slideDown() {
-    adjustViewPort(viewPort.center.r, viewPort.center.i += SLIDE_FACTOR * viewPort.scale, viewPort.scale);
-    updateDisplay();
-  };
-
-  var left = document.getElementById('slide-left');
-  left.onclick = slideLeft;
-
-  var right = document.getElementById('slide-right');
-  right.onclick = slideRight;
-
-  var up = document.getElementById('slide-up');
-  up.onclick = slideUp;
-
-  var down = document.getElementById('slide-down');
-  down.onclick = slideDown;
-
-  var resetCenter = function resetCenter() {
-    adjustViewPort(0, 0, 2);
-    updateDisplay();
-  };
-
-  var recenterButton = document.getElementById('recenter');
-  recenterButton.onclick = resetCenter;
-
-  (0, _color_picker2.default)();
-
-  var zoom = document.getElementById('in');
-  zoom.onclick = zoomIn;
-
-  var zoomBack = document.getElementById('out');
-  zoomBack.onclick = zoomOut;
-
-  // Add listeners to #click canvas
-  //
-  // let isDown = false;
-  // let dragStartX;
-  // let dragStartY;
-  // let mouseX;
-  // let mouseY;
-  //
-  // clickCanvas.onmousedown = (e) => {
-  //   e.stopPropagation();
-  //   const rect = clickCanvas.getBoundingClientRect();
-  //   dragStartX = Math.floor(e.clientX - rect.left);
-  //   dragStartY = Math.floor(e.clientY - rect.top);
-  //   isDown = true;
-  //
-  //   mouseX = dragStartX;
-  //   mouseY = dragStartY;
-  // }
-  //
-  // clickCanvas.onmousemove = (e) => {
-  //   if (!isDown) {
-  //     return;
-  //   }
-  //   const rect = clickCanvas.getBoundingClientRect();
-  //   mouseX = Math.floor(e.clientX - rect.left);
-  //   mouseY = Math.floor(e.clientY - rect.top);
-  //
-  //   center.r = center.r + ((dragStartX - mouseX) / 500) * scale;
-  //   center.i = center.i + ((mouseY - dragStartY) / 500) * scale;
-  //
-  //   updateDisplay();
-  // }
-  //
-  // const handleRelease = (e) => {
-  //   const rect = clickCanvas.getBoundingClientRect();
-  //   const finishX = Math.floor(e.clientX - rect.left);
-  //   const finishY = Math.floor(e.clientY - rect.top);
-  //
-  //   center.r = center.r + ((dragStartX - finishX) / 500) * scale;
-  //   center.i = center.i + ((finishY - dragStartY) / 500) * scale;
-  //
-  //   updateDisplay();
-  //
-  //   isDown = false;
-  // }
-  //
-  // clickCanvas.onmouseup = handleRelease;
-  // clickCanvas.onmouseout = handleRelease;
-
-  clickCanvas.ondblclick = function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    var rect = clickCanvas.getBoundingClientRect();
-    var clickX = Math.floor(e.clientX - rect.left);
-    var clickY = Math.floor(e.clientY - rect.top);
-
-    viewPort.center.r = viewPort.center.r - viewPort.scale + clickX / 500 * 2 * viewPort.scale;
-    viewPort.center.i = viewPort.center.i + viewPort.scale - clickY / 500 * 2 * viewPort.scale;
-    zoomIn();
-  };
-
-  // Key binding for slide and zoom actions
-  document.onkeydown = function (e) {
-    e.preventDefault();
-    switch (e.keyCode) {
-      case 39:
-        slideLeft();
-        break;
-      case 38:
-        slideUp();
-        break;
-      case 37:
-        slideRight();
-        break;
-      case 40:
-        slideDown();
-        break;
-      case 90:
-        zoomIn();
-        break;
-      case 88:
-        zoomOut();
-        break;
-      case 82:
-        resetCenter();
-        break;
-    }
-    updateDisplay();
-  };
-
-  var rotateColorsButton = document.getElementById('rotate-colors');
-
-  var rotationInterval = void 0;
-
-  rotateColorsButton.onclick = function (e) {
-    if (rotateColorsButton.innerHTML === 'Rotate Colors') {
-      rotateColorsButton.innerHTML = 'Stop Rotation';
-      rotationInterval = setInterval(function () {
-        var colorKeys = Object.keys(currentColors);
-        var newColors = {};
-
-        if (colorsList.childNodes.length === 3) {
-          // extra fixed value necessary to avoid strange harmonic effect
-          // at 3 colors, whereby colors only change once every 500 rotations
-
-          // keep old color for points inside the set
-          newColors[colorKeys[0]] = currentColors[colorKeys[0]];
-
-          //keep old color for fastest escaping points at first and second
-          //color band
-          newColors[colorKeys[1]] = currentColors[colorKeys[1]];
-          newColors[colorKeys[2]] = currentColors[colorKeys[2]];
-
-          //rotate all colors higher than two
-          for (var i = 3; i < colorKeys.length; i++) {
-            newColors[colorKeys[i]] = currentColors[colorKeys[3 + (i + 1) % (colorKeys.length - 3)]];
-          }
-        } else {
-          // keep old color for points inside the set
-          newColors[colorKeys[0]] = currentColors[colorKeys[0]];
-
-          //keep old color for fastest escaping points
-          newColors[colorKeys[1]] = currentColors[colorKeys[1]];
-          // newColors[colorKeys[2]] = currentColors[colorKeys[2]];
-
-          //rotate all colors higher than two
-          for (var _i = 2; _i < colorKeys.length; _i++) {
-            newColors[colorKeys[_i]] = currentColors[colorKeys[2 + (_i + 1) % (colorKeys.length - 2)]];
-          }
-        }
-        currentColors = newColors;
-        updateDisplay();
-      }, 50);
-    } else {
-      rotateColorsButton.innerHTML = 'Rotate Colors';
-      clearInterval(rotationInterval);
-    }
-  };
-
-  var downloadButton = document.getElementById('download');
-  downloadButton.addEventListener('click', function (e) {
-    var dataURL = fractalCanvas.toDataURL('image/png');
-    downloadButton.href = dataURL;
-  });
-
-  var infoModal = document.getElementById('info');
-
-  var openModalButton = document.getElementById("info-modal");
-
-  // Get the element that closes the modal
-  var closeButton = document.getElementById("close");
-
-  // When the user clicks on the button, open the modal
-  openModalButton.onclick = function () {
-    infoModal.style.display = "block";
-  };
-
-  // close the infoModal
-  closeButton.onclick = function () {
-    infoModal.style.display = "none";
-  };
-
-  // When the user clicks outside of the infoModal, close it
-  window.onclick = function (event) {
-    if (event.target == infoModal) {
-      infoModal.style.display = "none";
-    }
-  };
-});
 
 /***/ })
 /******/ ]);

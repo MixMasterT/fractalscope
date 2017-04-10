@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const slideDown = () => {
     adjustViewPort( viewPort.center.r,
                     viewPort.center.i += SLIDE_FACTOR * viewPort.scale,
-                    viewPort.scale )
+                    viewPort.scale );
     updateDisplay();
   };
 
@@ -264,12 +264,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let rotationInterval;
 
+  var vizConfig = {
+    frameDurationFactor: 4,
+    width:  fractalCanvas.width,
+    height: fractalCanvas.height,
+    collision_detect: function() {},
+  };
+
   rotateColorsButton.onclick = (e) => {
     if (rotateColorsButton.innerHTML === 'Rotate Colors') {
       rotateColorsButton.innerHTML = 'Stop Rotation';
-      rotationInterval = setInterval(() => {
-        const colorKeys = Object.keys(currentColors);
+
+      const colorRotations = [];
+
+      const viz = $Z.helper.viz.setup(vizConfig);
+
+      for (let k = 0; k < colorsList.children.length; k++) {
         const newColors = {};
+        const colorKeys = Object.keys(currentColors);
 
         if (colorsList.childNodes.length === 3) {
           // extra fixed value necessary to avoid strange harmonic effect
@@ -300,9 +312,67 @@ document.addEventListener('DOMContentLoaded', () => {
             newColors[colorKeys[i]] = currentColors[colorKeys[ 2 + ((i + 1) % (colorKeys.length - 2))]];
           }
         }
+        const currentColoredImage = $Z.helper.image.create(fractalCanvas.width, fractalCanvas.height);
+        drawMandlebrot(currentColoredImage, mandleCache, newColors, MAX_ITERATIONS);
+        colorRotations.push(currentColoredImage);
         currentColors = newColors;
-        updateDisplay();
-      }, 50);
+      }
+
+      console.log(colorRotations);
+      const colorRotationItem = viz.setup_item({
+
+        image: colorRotations[0],
+        x: 0,
+        y: 0,
+        opacity: 1,
+
+      }) ;
+
+      var colorLoop = $Z.helper.sprite.animate_loop({ Nstep: colorsList.children.length },
+                                                      colorRotations,
+                                                      viz.image_transition
+                                                    ).animation ;
+
+      colorRotationItem.add_transition( colorLoop ) ;
+
+      viz.run() ;
+
+      // rotationInterval = setInterval(() => {
+      //   const colorKeys = Object.keys(currentColors);
+      //   const newColors = {};
+      //
+      //   if (colorsList.childNodes.length === 3) {
+      //     // extra fixed value necessary to avoid strange harmonic effect
+      //     // at 3 colors, whereby colors only change once every 500 rotations
+      //
+      //     // keep old color for points inside the set
+      //     newColors[colorKeys[0]] = currentColors[colorKeys[0]];
+      //
+      //     //keep old color for fastest escaping points at first and second
+      //     //color band
+      //     newColors[colorKeys[1]] = currentColors[colorKeys[1]];
+      //     newColors[colorKeys[2]] = currentColors[colorKeys[2]];
+      //
+      //     //rotate all colors higher than two
+      //     for (let i = 3; i < colorKeys.length; i++) {
+      //       newColors[colorKeys[i]] = currentColors[colorKeys[ 3 + ((i + 1) % (colorKeys.length - 3))]];
+      //     }
+      //   } else {
+      //     // keep old color for points inside the set
+      //     newColors[colorKeys[0]] = currentColors[colorKeys[0]];
+      //
+      //     //keep old color for fastest escaping points
+      //     newColors[colorKeys[1]] = currentColors[colorKeys[1]];
+      //     // newColors[colorKeys[2]] = currentColors[colorKeys[2]];
+      //
+      //     //rotate all colors higher than two
+      //     for (let i = 2; i < colorKeys.length; i++) {
+      //       newColors[colorKeys[i]] = currentColors[colorKeys[ 2 + ((i + 1) % (colorKeys.length - 2))]];
+      //     }
+      //   }
+      //   currentColors = newColors;
+      //   updateDisplay();
+      // }, 50);
     } else {
       rotateColorsButton.innerHTML = 'Rotate Colors';
       clearInterval(rotationInterval);
