@@ -269,7 +269,11 @@ document.addEventListener('DOMContentLoaded', () => {
     width:  fractalCanvas.width,
     height: fractalCanvas.height,
     collision_detect: function() {},
+    // resize: function() {},
   };
+
+  const viz = $Z.helper.viz.setup(vizConfig);
+  viz.run() ;
 
   rotateColorsButton.onclick = (e) => {
     if (rotateColorsButton.innerHTML === 'Rotate Colors') {
@@ -277,7 +281,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const colorRotations = [];
 
-      const viz = $Z.helper.viz.setup(vizConfig);
+
+      // viz.resize = function() { return; }
+
+      console.log(viz.resize);
 
       for (let k = 0; k < colorsList.children.length; k++) {
         const newColors = {};
@@ -318,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentColors = newColors;
       }
 
-      console.log(colorRotations);
+
       const colorRotationItem = viz.setup_item({
 
         image: colorRotations[0],
@@ -328,14 +335,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
       }) ;
 
-      var colorLoop = $Z.helper.sprite.animate_loop({ Nstep: colorsList.children.length },
-                                                      colorRotations,
-                                                      viz.image_transition
-                                                    ).animation ;
+      function color_loop() {
+        return $Z.helper.sprite.animate(
+                                          colorRotations,
+                                          viz.image_transition
+                                        ) ;
+      }
+      // var colorLoop = $Z.helper.sprite.animate(
+      //                                           colorRotations,
+      //                                           viz.image_transition
+      //                                         ) ;
 
-      colorRotationItem.add_transition( colorLoop ) ;
+      // colorRotationItem.add_transition( colorLoop ) ;
 
-      viz.run() ;
+      // colorRotationItem.loop(color_loop);
+
+
 
       // rotationInterval = setInterval(() => {
       //   const colorKeys = Object.keys(currentColors);

@@ -41,7 +41,7 @@ function invertedImage( cache ) {
     invertedCache[kpel] = max - cache[kpel] ;
   }
 
-  setgray( invertedCache, fracSprite ) ;  
+  setgray( invertedCache, fracSprite ) ;
 
   return fracSprite ;
 
@@ -54,16 +54,16 @@ function expandMandlebrot (real, imaginary, max) {
   var i = imaginary;
   var magnitude = Math.sqrt(real * real + imaginary * imaginary);
   var newReal = 0;
-  
+
   while(magnitude < 4.0) {
-  
+
     ++incsCount;
     if(incsCount > max) { return -1; }
     newReal = r * r - i * i + real;
     i = r * i * 2 + imaginary;
     r = newReal;
     magnitude = Math.sqrt(r * r + i * i);
-  
+
   }
 
   return incsCount ;
@@ -94,7 +94,7 @@ function setgray(gray, canvas) {
 function fractal_viz() {
 
   // console.log('fractal viz start') ;
-  
+
   var canvasSize = 500 ;
 
   var vizConfig = {
@@ -113,30 +113,30 @@ function fractal_viz() {
     scaleGrid[ks] = scaleGrid[ks - 1] * scaleScale ;
   }
 
-  // console.log('scaleGrid', scaleGrid) ;  
+  // console.log('scaleGrid', scaleGrid) ;
 
   var viz = $Z.helper.viz.setup( vizConfig ) ; // frameDuration computed
 
   var imageWidth  = canvasSize ;
   var imageHeight = canvasSize ;
 
-  var fracSprite = new Array( Nscale ) ; 
+  var fracSprite = new Array( Nscale ) ;
   var rev        = new Array( Nscale ) ;
   for( var kimg = 0 ; kimg < Nscale ; kimg++ ) { // builds the sprite
     fracSprite[kimg] = $Z.helper.image.create( imageWidth, imageHeight ) ;
     var cache = mandelpel( imageWidth * imageHeight, scaleGrid[kimg] ) ;
     setgray( cache, fracSprite[kimg] ) ;
-    rev[kimg] = fracSprite[kimg] ; // copy pointer to image 
+    rev[kimg] = fracSprite[kimg] ; // copy pointer to image
   }
 
   rev.reverse() ;
-  fracSprite = fracSprite.concat( rev ) ; 
+  fracSprite = fracSprite.concat( rev ) ;
 
   var Nitem = 1 ;
   var fractalItem = new Array( Nitem ) ;
 
   fractalItem[0] = viz.setup_item({
-    
+
     image: fracSprite[0],
     x: 0,
     y: 0,
@@ -145,9 +145,14 @@ function fractal_viz() {
   }) ;
 
   // var zoomTransition = $Z.helper.sprite.animate( fracSprite, viz.image_transition )[0] ;
-  var zoomTransition = $Z.helper.sprite.animate_loop({ Nstep: 60 }, fracSprite, viz.image_transition ).animation ;
+  function zoom_trans() {
+    return $Z.helper.sprite.animate_loop({ Nstep: 60 }, fracSprite, viz.image_transition ).animation[0] ;
+  }
 
-  fractalItem[0].add_transition( zoomTransition ) ;
+  // var zoomTransition = $Z.helper.sprite.animate_loop({ Nstep: 60 }, fracSprite, viz.image_transition ).animation ;
+
+  // fractalItem[0].add_transition( zoomTransition ) ;
+  fractalItem[0].loop( zoom_trans ) ;
 
   viz.run() ;
 
@@ -158,7 +163,7 @@ function fractal_viz() {
   // var fracSprite2 = invertedImage( cache ) ;
 
   // fractalItem[1] = viz.setup_item({
-    
+
   //   image: fracSprite2,
   //   x: 0,
   //   y: 0,
