@@ -2359,9 +2359,6 @@ document.addEventListener('DOMContentLoaded', function () {
     collision_detect: function collision_detect() {}
   };
 
-  var viz = $Z.helper.viz.setup(vizConfig);
-  viz.run();
-
   rotateColorsButton.onclick = function (e) {
     if (rotateColorsButton.innerHTML === 'Rotate Colors') {
       var color_loop = function color_loop() {
@@ -2418,6 +2415,9 @@ document.addEventListener('DOMContentLoaded', function () {
       rotateColorsButton.innerHTML = 'Stop Rotation';
 
       var colorRotations = [];
+
+      var viz = $Z.helper.viz.setup(vizConfig);
+      viz.run();
 
       // viz.resize = function() { return; }
 

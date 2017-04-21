@@ -272,8 +272,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // resize: function() {},
   };
 
-  const viz = $Z.helper.viz.setup(vizConfig);
-  viz.run() ;
 
   rotateColorsButton.onclick = (e) => {
     if (rotateColorsButton.innerHTML === 'Rotate Colors') {
@@ -281,6 +279,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const colorRotations = [];
 
+      const viz = $Z.helper.viz.setup(vizConfig);
+      viz.run() ;
 
       // viz.resize = function() { return; }
 

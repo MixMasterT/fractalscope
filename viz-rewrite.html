@@ -1,0 +1,106 @@
+<html class="blue">
+  <head>
+
+    <!-- <link href="css/nanobio.css" rel="stylesheet"> -->
+
+    <style>
+
+      body {
+
+        margin: 0;
+        font: 13pt courier;
+        font-weight: bold;
+        overflow-y:hidden;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+
+        background-color: white;
+
+        /*background: #051d3b; /* For browsers that do not support gradients */
+        /*background: -webkit-radial-gradient(circle, #051d3b, black); /* Safari */
+        /*background: -o-radial-gradient(circle, #051d3b, black); /* Opera 11.6 to 12.0 */
+        /*background: -moz-radial-gradient(circle, #051d3b, black); /* Firefox 3.6 to 15 */
+        /*background: radial-gradient(circle, #051d3b, black); /* Standard syntax */
+
+      }
+/*
+      div {
+        width:5vh;
+        height:5vh;
+        display:inline;
+        z-index:2;
+      }
+
+      canvas {
+        z-index: 1;
+      }
+
+      .facebook {
+          background-image: url(img/social/facebook.svg), none;
+          position: absolute;
+          left: 2vw;
+          top: 2.5vh;
+      }
+      .twitter {
+          background-image: url(img/social/twitter.svg), none;
+          position: absolute;
+          left: 2vw;
+          top:10vh;
+      }
+      .linkedin {
+          background-image: url(img/social/linkedin.svg), none;
+          position: absolute;
+          left: 2vw;
+          top:17.5vh;
+      }
+*/
+    </style>
+
+    <link rel="icon" href="./favicon.ico?v=2" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0,width=device-width,maximum-scale=1,user-scalable=no,minimal-ui">
+    <title>nanobio.md</title>
+
+  </head>
+
+  <body class="blue">
+
+    <script type="text/javascript" src="vizflow.js"></script>
+    <script type="text/javascript" src="vizflow-helper.js"></script>
+    <script type="text/javascript" src="viz-rewrite.js"></script>
+
+    <script>
+
+      document.imageList = [
+        './images/up_arrow.png',
+        './images/right_arrow.png',
+        './images/left_arrow.png',
+        './images/down_arrow.png',
+        // './img/nanobio_logo1.png',
+        // './img/nanobio_logo2.png',
+        // './img/button1.png',
+        // './img/social/facebook.png',
+        // './img/social/twitter.png',
+        // './img/social/linkedin.png',
+        // './img/slidetext.png',
+        // './img/slides/biosensor_structure1.png',
+        // './img/slides/us_vs_them2.png',
+        // './img/slides/team2t.png',
+        // './img/slides/market1.png',
+      ] ;
+
+      document.audioList = [] ;
+
+      $Z.helper.loader.all(document.imageList, document.audioList, document.vizRewrite) ;
+
+    </script>
+
+<!--     <a href="https://facebook.com/nanobio.md"><div class="facebook"></div></a>
+    <a href="https://twitter.com/nanobiomd"><div class="twitter"></div></a>
+    <a href="https://linkedin.com/company/nanobio-md"><div class="linkedin"></div></a>
+ -->
+
+  </body>
+</html>
