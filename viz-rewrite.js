@@ -37,6 +37,43 @@ document.vizRewrite = function vizRewrite() {
     uiSwitch: true,
     callback: function() { console.log('callback invoked');},
   })
+  var upArrow = $Z.helper.image.to_canvas(document.imageList[0]);
+
+  console.log(upArrow);
+
+  viz.setup_item({
+    image: upArrow,
+    x: vizSize * 0.5,
+    y: vizSize * 0.5,
+    xScale: 0.5,
+    yScale: 0.5,
+    uiSwitch: true,
+    callback: function() { console.log('callback invoked');},
+  })
+  var upArrow = $Z.helper.image.to_canvas(document.imageList[0]);
+
+  viz.setup_item({
+    image: upArrow,
+    x: vizSize * 0.5,
+    y: vizSize * 0.5,
+    xScale: 0.5,
+    yScale: 0.5,
+    uiSwitch: true,
+    callback: function() { console.log('callback invoked');},
+  })
+  var rightArrow = $Z.helper.image.to_canvas(document.imageList[1]);
+
+  console.log(rightArrow);
+
+  viz.setup_item({
+    image: rightArrow,
+    x: vizSize * 0.5,
+    y: vizSize * 0.5,
+    xScale: 0.5,
+    yScale: 0.5,
+    uiSwitch: true,
+    callback: function() { console.log('callback invoked');},
+  })
 
   // var socialSize = 100 ;
   //
