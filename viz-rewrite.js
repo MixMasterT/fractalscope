@@ -31,7 +31,7 @@ document.vizRewrite = function vizRewrite() {
   viz.setup_item({
     image: upArrow,
     x: vizSize * 0.5,
-    y: vizSize * 0.5,
+    y: vizSize * 0.1,
     xScale: 0.5,
     yScale: 0.5,
     uiSwitch: true,
@@ -44,8 +44,8 @@ document.vizRewrite = function vizRewrite() {
 
   viz.setup_item({
     image: rightArrow,
-    x: vizSize * 0.65,
-    y: vizSize * 0.65,
+    x: vizSize * 0.85,
+    y: vizSize * 0.5 - rightArrow.height / 2,
     xScale: 0.5,
     yScale: 0.5,
     uiSwitch: true,
@@ -57,8 +57,8 @@ document.vizRewrite = function vizRewrite() {
 
   viz.setup_item({
     image: leftArrow,
-    x: vizSize * 0.35,
-    y: vizSize * 0.35,
+    x: vizSize * 0.15,
+    y: vizSize * 0.5 - leftArrow.height / 2,
     xScale: 0.5,
     yScale: 0.5,
     uiSwitch: true,
@@ -70,8 +70,8 @@ document.vizRewrite = function vizRewrite() {
 
   viz.setup_item({
     image: downArrow,
-    x: vizSize * 0.65,
-    y: vizSize * 0.75,
+    x: vizSize * 0.5,
+    y: vizSize * 0.85,
     xScale: 0.5,
     yScale: 0.5,
     uiSwitch: true,
