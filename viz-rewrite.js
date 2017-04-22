@@ -37,38 +37,41 @@ document.vizRewrite = function vizRewrite() {
     uiSwitch: true,
     callback: function() { console.log('callback invoked');},
   })
-  var upArrow = $Z.helper.image.to_canvas(document.imageList[0]);
 
-  console.log(upArrow);
-
-  viz.setup_item({
-    image: upArrow,
-    x: vizSize * 0.5,
-    y: vizSize * 0.5,
-    xScale: 0.5,
-    yScale: 0.5,
-    uiSwitch: true,
-    callback: function() { console.log('callback invoked');},
-  })
-  var upArrow = $Z.helper.image.to_canvas(document.imageList[0]);
-
-  viz.setup_item({
-    image: upArrow,
-    x: vizSize * 0.5,
-    y: vizSize * 0.5,
-    xScale: 0.5,
-    yScale: 0.5,
-    uiSwitch: true,
-    callback: function() { console.log('callback invoked');},
-  })
   var rightArrow = $Z.helper.image.to_canvas(document.imageList[1]);
 
   console.log(rightArrow);
 
   viz.setup_item({
     image: rightArrow,
-    x: vizSize * 0.5,
-    y: vizSize * 0.5,
+    x: vizSize * 0.65,
+    y: vizSize * 0.65,
+    xScale: 0.5,
+    yScale: 0.5,
+    uiSwitch: true,
+    callback: function() { console.log('callback invoked');},
+  })
+  var leftArrow = $Z.helper.image.to_canvas(document.imageList[2]);
+
+  console.log(leftArrow);
+
+  viz.setup_item({
+    image: leftArrow,
+    x: vizSize * 0.35,
+    y: vizSize * 0.35,
+    xScale: 0.5,
+    yScale: 0.5,
+    uiSwitch: true,
+    callback: function() { console.log('callback invoked');},
+  })
+  var downArrow = $Z.helper.image.to_canvas(document.imageList[3]);
+
+  console.log(downArrow);
+
+  viz.setup_item({
+    image: downArrow,
+    x: vizSize * 0.65,
+    y: vizSize * 0.75,
     xScale: 0.5,
     yScale: 0.5,
     uiSwitch: true,
