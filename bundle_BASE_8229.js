@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -152,7 +152,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _jscolor = __webpack_require__(6);
+var _jscolor = __webpack_require__(5);
 
 var _jscolor2 = _interopRequireDefault(_jscolor);
 
@@ -175,13 +175,6 @@ var setupColorPicker = function setupColorPicker() {
 
   var colorsList = document.getElementById('colors-list');
 
-  var color = document.getElementById('color');
-
-  var colorPickerButton = document.getElementById('open-color-picker');
-  colorPickerButton.onclick = function (e) {
-    color.click();
-  };
-
   addColorForm.onsubmit = function (e) {
     e.preventDefault();
 
@@ -189,6 +182,8 @@ var setupColorPicker = function setupColorPicker() {
       var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
       return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : null;
     };
+
+    var color = document.getElementById('color');
 
     // this is 'width' of color band in iterations, not a pixel value
     var width = document.getElementById('width');
@@ -261,11 +256,11 @@ var drawGrid = function drawGrid(ctx, center, scale) {
   //horizontal lines
   ctx.moveTo(35, 125);
   ctx.lineTo(500, 125);
-  // ctx.stroke();
+  ctx.stroke();
 
   ctx.moveTo(35, 250);
   ctx.lineTo(500, 250);
-  // ctx.stroke();
+  ctx.stroke();
 
   ctx.moveTo(35, 375);
   ctx.lineTo(500, 375);
@@ -274,11 +269,11 @@ var drawGrid = function drawGrid(ctx, center, scale) {
   //vertical lines
   ctx.moveTo(125, 20);
   ctx.lineTo(125, 500);
-  // ctx.stroke();
+  ctx.stroke();
 
   ctx.moveTo(250, 20);
   ctx.lineTo(250, 500);
-  // ctx.stroke();
+  ctx.stroke();
 
   ctx.moveTo(375, 20);
   ctx.lineTo(375, 500);
@@ -347,54 +342,6 @@ exports.default = drawMandlebrot;
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _expand_mandlebrot = __webpack_require__(0);
-
-var _expand_mandlebrot2 = _interopRequireDefault(_expand_mandlebrot);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var getMandleCache = function getMandleCache(canvas, viewPort, max) {
-  var ctx = canvas.getContext("2d");
-  var width = canvas.width;
-  var height = canvas.height;
-  var mandleCache = [];
-  var imgData = ctx.getImageData(0, 0, width, height);
-  var centerR = viewPort.center.r;
-  var centerI = viewPort.center.i;
-  var scale = viewPort.scale;
-
-  // loop over pixels on canvas, mapping each pixel to a Complex number
-  // return an array of increments to escape for each pixel in the image
-  // since the canvas if 500 * 500 pixels, this is array will have
-  // 250 000 values.
-
-  for (var j = 0; j < imgData.data.length; j += 4) {
-    var x = j / 4 % width;
-    var y = (j / 4 - x) / width;
-
-    var r = centerR - scale + x / width * 2 * scale;
-    var i = centerI + scale - y / width * 2 * scale;
-
-    var incsToEscape = (0, _expand_mandlebrot2.default)(r, i, max);
-
-    mandleCache.push(incsToEscape);
-  }
-  return mandleCache;
-};
-
-exports.default = getMandleCache;
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2088,7 +2035,7 @@ if (!window.jscolor) {
 }
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2114,7 +2061,7 @@ var _set_colors = __webpack_require__(1);
 
 var _set_colors2 = _interopRequireDefault(_set_colors);
 
-var _get_mandle_cache = __webpack_require__(5);
+var _get_mandle_cache = __webpack_require__(7);
 
 var _get_mandle_cache2 = _interopRequireDefault(_get_mandle_cache);
 
@@ -2155,7 +2102,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   (0, _draw_grid2.default)(gridCtx, center, scale);
   (0, _draw_mandlebrot2.default)(fractalCanvas, mandleCache, currentColors, MAX_ITERATIONS);
-
   var adjustViewPort = function adjustViewPort(newR, newI, newScale) {
     viewPort.center.r = newR, viewPort.center.i = newI, viewPort.scale = newScale;
 
@@ -2179,7 +2125,6 @@ document.addEventListener('DOMContentLoaded', function () {
   var colorsList = document.getElementById('colors-list');
   colorsList.addEventListener('DOMSubtreeModified', function (e) {
     currentColors = (0, _set_colors2.default)(MAX_ITERATIONS);
-    updateDisplay();
   });
 
   var real = document.getElementById('real');
@@ -2358,35 +2303,12 @@ document.addEventListener('DOMContentLoaded', function () {
       rotationInterval = setInterval(function () {
         var colorKeys = Object.keys(currentColors);
         var newColors = {};
-
-        if (colorsList.childNodes.length === 3) {
-          // extra fixed value necessary to avoid strange harmonic effect
-          // at 3 colors, whereby colors only change once every 500 rotations
-
-          // keep old color for points inside the set
-          newColors[colorKeys[0]] = currentColors[colorKeys[0]];
-
-          //keep old color for fastest escaping points at first and second
-          //color band
-          newColors[colorKeys[1]] = currentColors[colorKeys[1]];
-          newColors[colorKeys[2]] = currentColors[colorKeys[2]];
-
-          //rotate all colors higher than two
-          for (var i = 3; i < colorKeys.length; i++) {
-            newColors[colorKeys[i]] = currentColors[colorKeys[3 + (i + 1) % (colorKeys.length - 3)]];
+        for (var i = 0; i < colorKeys.length; i++) {
+          var newKey = colorKeys[i] - 1;
+          if (newKey < 0) {
+            newKey += MAX_ITERATIONS;
           }
-        } else {
-          // keep old color for points inside the set
-          newColors[colorKeys[0]] = currentColors[colorKeys[0]];
-
-          //keep old color for fastest escaping points
-          newColors[colorKeys[1]] = currentColors[colorKeys[1]];
-          // newColors[colorKeys[2]] = currentColors[colorKeys[2]];
-
-          //rotate all colors higher than two
-          for (var _i = 2; _i < colorKeys.length; _i++) {
-            newColors[colorKeys[_i]] = currentColors[colorKeys[2 + (_i + 1) % (colorKeys.length - 2)]];
-          }
+          newColors[newKey] = currentColors[colorKeys[i]];
         }
         currentColors = newColors;
         updateDisplay();
@@ -2427,6 +2349,55 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 });
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _expand_mandlebrot = __webpack_require__(0);
+
+var _expand_mandlebrot2 = _interopRequireDefault(_expand_mandlebrot);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getMandleCache = function getMandleCache(canvas, viewPort, max) {
+  var ctx = canvas.getContext("2d");
+  var width = canvas.width;
+  var height = canvas.height;
+  var mandleCache = [];
+  var imgData = ctx.getImageData(0, 0, width, height);
+  var centerR = viewPort.center.r;
+  var centerI = viewPort.center.i;
+  var scale = viewPort.scale;
+
+  // loop over pixels on canvas, mapping each pixel to a Complex number
+  // return an array of increments to escape for each pixel in the image
+  // since the canvas if 500 * 500 pixels, this is array will have
+  // 250 000 values.
+
+  for (var j = 0; j < imgData.data.length; j += 4) {
+    var x = j / 4 % width;
+    var y = (j / 4 - x) / width;
+
+    var r = centerR - scale + x / width * 2 * scale;
+    var i = centerI + scale - y / width * 2 * scale;
+
+    var incsToEscape = (0, _expand_mandlebrot2.default)(r, i, max);
+
+    mandleCache.push(incsToEscape);
+  }
+  console.log("mandleCache reset");
+  return mandleCache;
+};
+
+exports.default = getMandleCache;
 
 /***/ })
 /******/ ]);

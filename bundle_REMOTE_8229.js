@@ -175,13 +175,6 @@ var setupColorPicker = function setupColorPicker() {
 
   var colorsList = document.getElementById('colors-list');
 
-  var color = document.getElementById('color');
-
-  var colorPickerButton = document.getElementById('open-color-picker');
-  colorPickerButton.onclick = function (e) {
-    color.click();
-  };
-
   addColorForm.onsubmit = function (e) {
     e.preventDefault();
 
@@ -189,6 +182,8 @@ var setupColorPicker = function setupColorPicker() {
       var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
       return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : null;
     };
+
+    var color = document.getElementById('color');
 
     // this is 'width' of color band in iterations, not a pixel value
     var width = document.getElementById('width');
@@ -2359,35 +2354,17 @@ document.addEventListener('DOMContentLoaded', function () {
         var colorKeys = Object.keys(currentColors);
         var newColors = {};
 
-        if (colorsList.childNodes.length === 3) {
-          // extra fixed value necessary to avoid strange harmonic effect
-          // at 3 colors, whereby colors only change once every 500 rotations
+        // keep old color for points inside the set
+        newColors[colorKeys[0]] = currentColors[colorKeys[0]];
 
-          // keep old color for points inside the set
-          newColors[colorKeys[0]] = currentColors[colorKeys[0]];
+        //keep old color for fastest escaping points
+        newColors[colorKeys[1]] = currentColors[colorKeys[1]];
+        // console.log(newColors);
 
-          //keep old color for fastest escaping points at first and second
-          //color band
-          newColors[colorKeys[1]] = currentColors[colorKeys[1]];
-          newColors[colorKeys[2]] = currentColors[colorKeys[2]];
-
-          //rotate all colors higher than two
-          for (var i = 3; i < colorKeys.length; i++) {
-            newColors[colorKeys[i]] = currentColors[colorKeys[3 + (i + 1) % (colorKeys.length - 3)]];
-          }
-        } else {
-          // keep old color for points inside the set
-          newColors[colorKeys[0]] = currentColors[colorKeys[0]];
-
-          //keep old color for fastest escaping points
-          newColors[colorKeys[1]] = currentColors[colorKeys[1]];
-          // newColors[colorKeys[2]] = currentColors[colorKeys[2]];
-
-          //rotate all colors higher than two
-          for (var _i = 2; _i < colorKeys.length; _i++) {
-            newColors[colorKeys[_i]] = currentColors[colorKeys[2 + (_i + 1) % (colorKeys.length - 2)]];
-          }
+        for (var i = 2; i < colorKeys.length; i++) {
+          newColors[colorKeys[i]] = currentColors[colorKeys[2 + (i + 1) % (colorKeys.length - 2)]];
         }
+
         currentColors = newColors;
         updateDisplay();
       }, 50);

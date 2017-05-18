@@ -15,6 +15,13 @@ const setupColorPicker = () => {
 
   const colorsList = document.getElementById('colors-list');
 
+  const color = document.getElementById('color');
+
+  const colorPickerButton = document.getElementById('open-color-picker');
+  colorPickerButton.onclick = (e) => {
+    color.click();
+  }
+
   addColorForm.onsubmit = (e) => {
     e.preventDefault();
 
@@ -26,8 +33,6 @@ const setupColorPicker = () => {
         parseInt(result[3], 16)
       ] : null;
     }
-
-    const color = document.getElementById('color');
 
     // this is 'width' of color band in iterations, not a pixel value
     const width = document.getElementById('width');

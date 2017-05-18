@@ -271,17 +271,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const colorKeys = Object.keys(currentColors);
         const newColors = {};
 
-        // keep old color for points inside the set
-        newColors[colorKeys[0]] = currentColors[colorKeys[0]];
+        if (colorsList.childNodes.length === 3) {
+          // extra fixed value necessary to avoid strange harmonic effect
+          // at 3 colors, whereby colors only change once every 500 rotations
 
-        //keep old color for fastest escaping points
-        newColors[colorKeys[1]] = currentColors[colorKeys[1]];
-        // console.log(newColors);
+          // keep old color for points inside the set
+          newColors[colorKeys[0]] = currentColors[colorKeys[0]];
 
-        for (let i = 2; i < colorKeys.length; i++) {
-          newColors[colorKeys[i]] = currentColors[colorKeys[ 2 + ((i + 1) % (colorKeys.length - 2))]];
+          //keep old color for fastest escaping points at first and second
+          //color band
+          newColors[colorKeys[1]] = currentColors[colorKeys[1]];
+          newColors[colorKeys[2]] = currentColors[colorKeys[2]];
+
+          //rotate all colors higher than two
+          for (let i = 3; i < colorKeys.length; i++) {
+            newColors[colorKeys[i]] = currentColors[colorKeys[ 3 + ((i + 1) % (colorKeys.length - 3))]];
+          }
+        } else {
+          // keep old color for points inside the set
+          newColors[colorKeys[0]] = currentColors[colorKeys[0]];
+
+          //keep old color for fastest escaping points
+          newColors[colorKeys[1]] = currentColors[colorKeys[1]];
+          // newColors[colorKeys[2]] = currentColors[colorKeys[2]];
+
+          //rotate all colors higher than two
+          for (let i = 2; i < colorKeys.length; i++) {
+            newColors[colorKeys[i]] = currentColors[colorKeys[ 2 + ((i + 1) % (colorKeys.length - 2))]];
+          }
         }
-
         currentColors = newColors;
         updateDisplay();
       }, 50);
